@@ -19,7 +19,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'Truffle Artifacts Format Proposal'
+project = 'Proposal: New Truffle Artifacts Format'
 copyright = '2018, Truffle Suite'
 author = 'Truffle Suite'
 
