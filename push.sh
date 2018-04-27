@@ -42,7 +42,7 @@ setup_gh () {
 clone_gh_pages () {
   # Clone the gh-pages branch outside of the repo and cd into it.
   cd ..
-  git clone -b gh-pages "git@github.com/$ORG/$REPO.git" gh-pages
+  git clone -b gh-pages "git@github.com:$ORG/$REPO.git" gh-pages
   cd gh-pages
 }
 
