@@ -10,11 +10,6 @@ EMAIL="no-reply@trufflesuite.com"
 
 set -e
 
-DRY_RUN=
-if [ "$1" != "dry" ]; then
-  DRY_RUN="true"
-fi
-
 
 ###############################################################################
 # authenticate deployment
@@ -98,10 +93,8 @@ publish () {
   git add -A .
   git commit -m "Update docs"
 
-  if [ "${DRY_RUN}" != "true" ]; then
-    echo "Pushing..."
-    git push origin gh-pages
-  fi
+  echo "Pushing..."
+  git push origin gh-pages
 }
 
 
