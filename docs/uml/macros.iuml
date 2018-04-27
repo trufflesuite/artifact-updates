@@ -1,0 +1,4 @@
+!define directory(name) class name << (D,cyan) Directory >>
+!define file(name) class name << (F,turquoise) File >>
+!define object(name) class name << (O,orchid) Object >>
+!define collection(name) class name << (C,deeppink) Collection >>
