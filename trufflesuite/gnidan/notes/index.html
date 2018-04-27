@@ -1,0 +1,366 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Truffle Artifacts Format Proposal &mdash; Truffle Artifacts Format Proposal  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="#" class="icon icon-home"> Truffle Artifacts Format Proposal
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Truffle Artifacts Format Proposal</a></li>
+<li><a class="reference internal" href="#diagrams">Diagrams</a><ul>
+<li><a class="reference internal" href="#class-diagram">Class Diagram</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Truffle Artifacts Format Proposal</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>Truffle Artifacts Format Proposal</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="truffle-artifacts-format-proposal">
+<h1>Truffle Artifacts Format Proposal<a class="headerlink" href="#truffle-artifacts-format-proposal" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="diagrams">
+<h1>Diagrams<a class="headerlink" href="#diagrams" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="class-diagram">
+<h2>Class Diagram<a class="headerlink" href="#class-diagram" title="Permalink to this headline">¶</a></h2>
+<p class="plantuml">
+<img src="_images/plantuml-fc6765a38a7d9fc8da6cbf1e1f901d05e1491a3a.png" alt="&#64;startuml
+
+!define directory(name) class name &lt;&lt; (D,cyan) Directory &gt;&gt;
+!define file(name) class name &lt;&lt; (F,turquoise) File &gt;&gt;
+!define object(name) class name &lt;&lt; (O,orchid) Object &gt;&gt;
+!define collection(name) class name &lt;&lt; (C,deeppink) Collection &gt;&gt;
+
+directory(Project) {
+  - resolve(name : String) : Artifact
+  - resolve(name : String, network : String) : Artifact
+}
+
+
+directory(Network) {
+  - name : String
+}
+
+file(Artifact) {
+  - JSON
+}
+
+collection(Snapshots) {
+  - snapshots : Map&lt;String =&gt; Snapshot&gt;
+  - currentId : String
+  - getById(id : String) : Snapshot
+  - getByBytecode(bytecode : String) : Snapshot
+}
+
+object(Source) {
+  - sourcePath : String
+  - source : String
+  - ast : AST
+}
+
+abstract class Contract {
+  - name : String
+  - snapshots : Snapshots
+  - links : Map&lt;String =&gt; LinkValue&gt;
+  - abi()
+}
+
+class Instance {
+  - address
+  - transactionHash
+  - constructorArgs
+  __
+  - methods() : MethodsInterface
+  - events() : EventsInterface
+  - sendTransaction() : TransactionInterface
+  - send()
+  ..
+  - type() : Type
+}
+
+class Type {
+  __
+  - link(name : String, value : String)
+  ..
+  - new() : Promise&lt;Instance&gt;
+  - at(address : String) : Instance
+}
+
+object(Snapshot) {
+  - {field} id
+  - abi : ABI
+  - callBytecode : Bytecode
+  - createBytecode : Bytecode
+  - compiler : Compiler
+  - sources : Array&lt;Source&gt;
+}
+
+object(Compiler) {
+  - name : String
+  - version : String
+  - settings : Object
+}
+
+object(Bytecode) {
+  - unlinkedBinary : String
+  - sourceMap : SourceMap
+  - linkReferences : Map&lt;String =&gt; LinkReference&gt;
+}
+
+object(SourceMap) {
+  - sourceMap : String
+}
+
+object(LinkReference) {
+  - name : String
+  - offsets : Array&lt;Integer&gt;
+  - length : Integer
+}
+
+object(LinkValue) {
+  - value : String
+}
+
+object(AST) {
+  - root : ASTNode
+}
+
+Project *-- &quot;n&quot; Artifact : build/contracts/
+Project *-right- &quot;n&quot; Network : build/networks/
+Network *-- &quot;n&quot; Artifact
+
+Artifact *-right- &quot;1&quot; Contract
+
+Instance ..|&gt; Contract
+Type ..|&gt; Contract
+
+Contract *-down- &quot;1&quot; Snapshots
+Contract *-right- &quot;n&quot; LinkValue : maps by name
+
+
+Snapshots o-- &quot;1&quot; Snapshot : current
+Snapshots *-down- &quot;n&quot; Snapshot : all
+
+
+Snapshot *-right- &quot;2&quot; Bytecode
+Snapshot *-- &quot;1&quot; Compiler
+Snapshot *-left- &quot;n&quot; Source
+
+Source *-- &quot;1&quot; AST
+
+Bytecode *-- &quot;1&quot; SourceMap
+Bytecode *-up- &quot;n&quot; LinkReference : missing by name
+
+
+LinkValue ..&gt; LinkReference : &lt;&lt;resolves&gt;&gt;
+
+&#64;enduml" />
+</p>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Truffle Suite.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
+      });
+  </script> 
+
+</body>
+</html>
