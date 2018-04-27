@@ -21,6 +21,7 @@ fi
 ###############################################################################
 
 setup_gh () {
+  echo "Decrypting deploy key..."
   openssl aes-256-cbc \
     -K $encrypted_ed68d7c9ebd1_key \
     -iv $encrypted_ed68d7c9ebd1_iv \
@@ -28,6 +29,8 @@ setup_gh () {
     -out deploy-key -d
 
   chmod 600 deploy-key
+
+  echo "Configuring git..."
   eval `ssh-agent -s`
   ssh-add deploy-key
   git config user.name "${NAME}"
@@ -40,6 +43,8 @@ setup_gh () {
 ###############################################################################
 
 clone_gh_pages () {
+  echo "Cloning gh-pages branch..."
+
   # Clone the gh-pages branch outside of the repo and cd into it.
   cd ..
   git clone -b gh-pages "git@github.com:$ORG/$REPO.git" gh-pages
@@ -71,11 +76,13 @@ copy_docs () {
   fi
 
   # nested directories for authors and branches
-  directory="./${author}/${branch}"
+  directory="${author}/${branch}/"
 
+  echo "Making gh-pages directory ${directory}..."
   # ensure output directory exists
   mkdir -p "${directory}"
 
+  echo "Copying build output to ${directory}..."
   # copy gh-pages output
   cp -R ../${REPO}/_build/html/* ${directory}
 }
@@ -86,11 +93,13 @@ copy_docs () {
 ###############################################################################
 
 publish () {
+  echo "Committing..."
   # Add and commit changes.
   git add -A .
   git commit -m "Update docs"
 
   if [ "${DRY_RUN}" != "true" ]; then
+    echo "Pushing..."
     git push origin gh-pages
   fi
 }
