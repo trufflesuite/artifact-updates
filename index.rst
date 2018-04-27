@@ -1,21 +1,19 @@
-Truffle Artifacts Format Proposal
-=================================
+Proposal: Improved Artifacts Format
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-Diagrams
-========
+   docs/overview
+   docs/glossary
+   docs/concepts
+   docs/use-cases
 
-Class Diagram
--------------
-
-.. uml:: class-diagram.plantuml
 
 
 Indices and tables
-==================
+~~~~~~~~~~~~~~~~~~
 
 * :ref:`genindex`
 * :ref:`modindex`
