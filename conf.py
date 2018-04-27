@@ -47,6 +47,8 @@ plantuml = 'java -jar {}/plantuml.jar'.format(
     os.path.dirname(os.path.abspath(__file__))
 )
 
+plantuml_output_format = "svg"
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
