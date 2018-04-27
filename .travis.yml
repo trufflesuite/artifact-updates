@@ -3,7 +3,7 @@ python:
   - 3.5
 install:
   - sudo apt-get install graphviz
-  - pip install sphinx sphinx_bootstrap_theme sphinxcontrib-plantuml
+  - pip install sphinx sphinx_rtd_theme sphinxcontrib-plantuml
 script: make html
 after_success:
   - ./push.sh
