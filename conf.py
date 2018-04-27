@@ -39,7 +39,13 @@ release = ''
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinxcontrib.plantuml'
 ]
+
+import os
+plantuml = 'java -jar {}/plantuml.jar'.format(
+    os.path.dirname(os.path.abspath(__file__))
+)
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
