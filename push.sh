@@ -3,7 +3,7 @@
 
 # Fill this out with the correct org/repo
 ORG=trufflesuite
-REPO=proposal-artifacts-format
+REPO=artifact-updates
 # This probably should match an email for one of your users.
 NAME="Travis Deployer"
 EMAIL="no-reply@trufflesuite.com"
