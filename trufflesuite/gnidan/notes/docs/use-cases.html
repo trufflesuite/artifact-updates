@@ -83,7 +83,44 @@
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="concepts.html">Concepts</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Use Cases</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Use Cases</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#compilation">Compilation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#compile-a-single-source-file-as-a-contract-type">Compile a single source file as a contract type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compile-primary-and-related-source-files-as-a-contract-type">Compile primary and related source files as a contract type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#migrations">Migrations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#determine-last-completed-migration">Determine last completed migration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-all-migrations">Run all migrations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-specific-migration">Run specific migration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#link-contract-type-to-library-instance">Link contract type to library instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#link-contract-instance-to-library-instance">Link contract instance to library instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deploy-instance-of-a-type">Deploy instance of a type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deploy-multiple-instances">Deploy multiple instances</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-with-historical-types">Run with historical types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#run-automated-tests-for-contract-type">Run automated tests for contract type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-automated-tests-for-contract-instance">Run automated tests for contract instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-automated-tests-for-library-type">Run automated tests for library type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-automated-tests-for-library-instance">Run automated tests for library instance</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#interacting-with-externally-deployed-contracts">Interacting with externally-deployed contracts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#save-contract-instance">Save contract instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#save-library-instance">Save library instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#save-interface-instance">Save interface instance</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#reading-contract-information">Reading contract information</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#read-contract-instance-information">Read contract instance information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#read-contract-type-info">Read contract type info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#read-contract-instance-historical-type-info">Read contract instance historical type info</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
             
@@ -150,7 +187,259 @@
             
   <div class="section" id="use-cases">
 <h1>Use Cases<a class="headerlink" href="#use-cases" title="Permalink to this headline">¶</a></h1>
-<p><strong>To-Do</strong>: Fill this in</p>
+<div class="section" id="compilation">
+<h2>Compilation<a class="headerlink" href="#compilation" title="Permalink to this headline">¶</a></h2>
+<p class="plantuml">
+<object data="../_images/plantuml-1393e31e770dca79af204ab66bba96a05ba6175a.svg" type="image/svg+xml" style="width:687px;height:256px;">
+<img src="../_images/plantuml-1393e31e770dca79af204ab66bba96a05ba6175a.png" alt="left to right direction
+
+:Smart Contract Developer: as :Developer:
+
+rectangle Compilation {
+  (Compile single source file) as (Compile)
+  (Compile primary and related source files as a contract type) as (CompileMultiple)
+}
+
+Developer -- Compile
+Developer -- CompileMultiple" />
+
+</object></p>
+<div class="section" id="compile-a-single-source-file-as-a-contract-type">
+<h3>Compile a single source file as a contract type<a class="headerlink" href="#compile-a-single-source-file-as-a-contract-type" title="Permalink to this headline">¶</a></h3>
+<p>Resulting in a single contract type with no contract instances.</p>
+</div>
+<div class="section" id="compile-primary-and-related-source-files-as-a-contract-type">
+<h3>Compile primary and related source files as a contract type<a class="headerlink" href="#compile-primary-and-related-source-files-as-a-contract-type" title="Permalink to this headline">¶</a></h3>
+<p>Primary source file and recursively all imports. Primary source declares
+contract type</p>
+</div>
+</div>
+<div class="section" id="migrations">
+<h2>Migrations<a class="headerlink" href="#migrations" title="Permalink to this headline">¶</a></h2>
+<p class="plantuml">
+<object data="../_images/plantuml-bd151d40403b6eec605491d098e459adf863b603.svg" type="image/svg+xml" style="width:694px;height:247px;">
+<img src="../_images/plantuml-bd151d40403b6eec605491d098e459adf863b603.png" alt="scale 0.65
+left to right direction
+
+:Smart Contract Developer: as :Developer:
+
+rectangle Migrations {
+  (Run all migrations) as (RunMigrations)
+  (Run specific migration) as (RunSpecific)
+
+  RunMigrations --&gt; RunSpecific
+
+  (Run as historical) as (RunHistorical)
+  RunHistorical .|&gt; RunMigrations
+
+  (Determine last completed migration) as (DetermineLastCompleted)
+
+  RunMigrations -right-&gt; DetermineLastCompleted
+
+  (Link contract type to library) as (LinkType)
+  (Link contract instance to library) as (LinkInstance)
+  LinkInstance .left.|&gt; LinkType
+
+  RunSpecific --&gt; LinkType
+
+  (Deploy instance of a type) as (DeployInstance)
+  (Deploy multiple instances) as (MultipleInstances)
+  MultipleInstances .|&gt; DeployInstance
+
+  RunSpecific --&gt; DeployInstance
+}
+
+Developer -- RunMigrations
+Developer -- RunSpecific
+Developer -- RunHistorical
+Developer -- DetermineLastCompleted" />
+
+</object></p>
+<div class="section" id="determine-last-completed-migration">
+<h3>Determine last completed migration<a class="headerlink" href="#determine-last-completed-migration" title="Permalink to this headline">¶</a></h3>
+<p>On a particular network.</p>
+</div>
+<div class="section" id="run-all-migrations">
+<h3>Run all migrations<a class="headerlink" href="#run-all-migrations" title="Permalink to this headline">¶</a></h3>
+<p>On a particular network, resetting from the beginning and running in sequence.</p>
+</div>
+<div class="section" id="run-specific-migration">
+<h3>Run specific migration<a class="headerlink" href="#run-specific-migration" title="Permalink to this headline">¶</a></h3>
+<p>Perform operations in a single migration.</p>
+</div>
+<div class="section" id="link-contract-type-to-library-instance">
+<h3>Link contract type to library instance<a class="headerlink" href="#link-contract-type-to-library-instance" title="Permalink to this headline">¶</a></h3>
+<p>On a particular network, so that future deployments of that type are
+pre-linked.</p>
+</div>
+<div class="section" id="link-contract-instance-to-library-instance">
+<h3>Link contract instance to library instance<a class="headerlink" href="#link-contract-instance-to-library-instance" title="Permalink to this headline">¶</a></h3>
+<p>On a particular network, to set specific link value for an instance.</p>
+</div>
+<div class="section" id="deploy-instance-of-a-type">
+<h3>Deploy instance of a type<a class="headerlink" href="#deploy-instance-of-a-type" title="Permalink to this headline">¶</a></h3>
+<p>On a particular network.</p>
+</div>
+<div class="section" id="deploy-multiple-instances">
+<h3>Deploy multiple instances<a class="headerlink" href="#deploy-multiple-instances" title="Permalink to this headline">¶</a></h3>
+<p>On a particular network, giving each instance a unique name.</p>
+</div>
+<div class="section" id="run-with-historical-types">
+<h3>Run with historical types<a class="headerlink" href="#run-with-historical-types" title="Permalink to this headline">¶</a></h3>
+<p>Specifying parent network, determine types for instances, and deploy
+instances matching those types instead of current.</p>
+</div>
+</div>
+<div class="section" id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<p class="plantuml">
+<object data="../_images/plantuml-d28b3f3319589464ca765fa49b2dd34e06d174bd.svg" type="image/svg+xml" style="width:685px;height:354px;">
+<img src="../_images/plantuml-d28b3f3319589464ca765fa49b2dd34e06d174bd.png" alt="scale 0.80
+left to right direction
+
+:Smart Contract Developer: as :Developer:
+
+rectangle tests {
+  (Run automated tests for contract type) as (TestType)
+  (Run automated tests for contract instance) as (TestInstance)
+  (Run automated tests for library type) as (TestLibrary)
+  (Run automated tests for library instance) as (TestLibraryInstance)
+
+  (Run test written in Solidity) as (RunSolidity)
+  (Run test written in Javascript) as (RunJavascript)
+
+  TestType ..|&gt; RunSolidity
+  TestType ..|&gt; RunJavascript
+
+  TestInstance ..|&gt; RunSolidity
+  TestInstance ..|&gt; RunJavascript
+
+  TestLibrary ..|&gt; RunSolidity
+  TestLibraryInstance ..|&gt; RunSolidity
+}
+
+Developer -- TestType
+Developer -- TestInstance
+Developer -- TestLibrary
+Developer -- TestLibraryInstance" />
+
+</object></p>
+<div class="section" id="run-automated-tests-for-contract-type">
+<h3>Run automated tests for contract type<a class="headerlink" href="#run-automated-tests-for-contract-type" title="Permalink to this headline">¶</a></h3>
+<p>Run migrations to deploy fresh instances locally.</p>
+</div>
+<div class="section" id="run-automated-tests-for-contract-instance">
+<h3>Run automated tests for contract instance<a class="headerlink" href="#run-automated-tests-for-contract-instance" title="Permalink to this headline">¶</a></h3>
+<p>Contract instance may have a historical contract type (old source, etc.)</p>
+<p>Run migrations assuming historical versions and deploy instances locally.</p>
+</div>
+<div class="section" id="run-automated-tests-for-library-type">
+<h3>Run automated tests for library type<a class="headerlink" href="#run-automated-tests-for-library-type" title="Permalink to this headline">¶</a></h3>
+<p>Run deploy new instance of library and run tests linked to it.</p>
+</div>
+<div class="section" id="run-automated-tests-for-library-instance">
+<h3>Run automated tests for library instance<a class="headerlink" href="#run-automated-tests-for-library-instance" title="Permalink to this headline">¶</a></h3>
+<p>Library instance may represent a historical version of the library type.</p>
+<p>Deploy instance of possibly-historical type and run tests linked to it.</p>
+</div>
+</div>
+<div class="section" id="interacting-with-externally-deployed-contracts">
+<h2>Interacting with externally-deployed contracts<a class="headerlink" href="#interacting-with-externally-deployed-contracts" title="Permalink to this headline">¶</a></h2>
+<p class="plantuml">
+<object data="../_images/plantuml-52d12cee47435f7dd2351863129b9a82a7c8b101.svg" type="image/svg+xml" style="width:457px;height:279px;">
+<img src="../_images/plantuml-52d12cee47435f7dd2351863129b9a82a7c8b101.png" alt="left to right direction
+
+:Smart Contract Developer: as :SmartContractDev:
+
+rectangle saving {
+  (Save contract instance) as (SaveInstance)
+  (Save library instance) as (SaveLibrary)
+  (Save interface instance) as (SaveInterface)
+}
+
+SmartContractDev -- SaveInstance
+SmartContractDev -- SaveLibrary
+SmartContractDev -- SaveInterface" />
+
+</object></p>
+<div class="section" id="save-contract-instance">
+<h3>Save contract instance<a class="headerlink" href="#save-contract-instance" title="Permalink to this headline">¶</a></h3>
+<p>On a given network, with a given address, as a given contract type.</p>
+</div>
+<div class="section" id="save-library-instance">
+<h3>Save library instance<a class="headerlink" href="#save-library-instance" title="Permalink to this headline">¶</a></h3>
+<p>On a given network, with a given address, as a given library type.</p>
+</div>
+<div class="section" id="save-interface-instance">
+<h3>Save interface instance<a class="headerlink" href="#save-interface-instance" title="Permalink to this headline">¶</a></h3>
+<p>On a given network, with a given address, as a given interface type.</p>
+</div>
+</div>
+<div class="section" id="reading-contract-information">
+<h2>Reading contract information<a class="headerlink" href="#reading-contract-information" title="Permalink to this headline">¶</a></h2>
+<p class="plantuml">
+<object data="../_images/plantuml-65d0cd4dce08e0e1d64b28b9288d338f979f7dc1.svg" type="image/svg+xml" style="width:732px;height:319px;">
+<img src="../_images/plantuml-65d0cd4dce08e0e1d64b28b9288d338f979f7dc1.png" alt="scale 0.60
+left to right direction
+
+:Smart Contract Developer: as :SmartContractDev:
+
+rectangle reading {
+  (Read contract instance info) as (ReadContractInstance)
+  (Read contract type info) as (ReadContractType)
+  (Read historical contract instance type info) as (ReadHistoricalInstanceType)
+
+  (Read instance) as (ReadInstanceData)
+  (Read type) as (ReadTypeData)
+
+  ReadInstanceData &lt;|.up. ReadContractInstance
+  ReadTypeData &lt;|.up.. ReadContractType
+  ReadTypeData &lt;|.up.. ReadHistoricalInstanceType
+
+  ' both
+  (Read name) as (ReadName)
+  (Read ABI) as (ReadABI)
+  (Read bytecodes) as (ReadBytecodes)
+  (Read source mappings) as (ReadSourceMaps)
+  (Read link values) as (ReadLinkVals)
+  (Read sources) as (ReadSources)
+  (Read ASTs) as (ReadASTs)
+
+  ' instance
+  (Read link references) as (ReadLinkRefs)
+  (Read address) as (ReadAddress)
+
+  ReadTypeData --&gt; ReadName
+  ReadTypeData --&gt; ReadABI
+  ReadTypeData --&gt; ReadBytecodes
+  ReadTypeData --&gt; ReadSourceMaps
+  ReadTypeData --&gt; ReadLinkRefs
+  ReadTypeData --&gt; ReadSources
+  ReadTypeData --&gt; ReadASTs
+
+  ReadInstanceData --&gt; ReadTypeData
+  ReadInstanceData --&gt; ReadLinkVals
+  ReadInstanceData --&gt; ReadAddress
+}
+
+SmartContractDev -- ReadContractInstance
+SmartContractDev -- ReadContractType
+SmartContractDev -- ReadHistoricalInstanceType" />
+
+</object></p>
+<div class="section" id="read-contract-instance-information">
+<h3>Read contract instance information<a class="headerlink" href="#read-contract-instance-information" title="Permalink to this headline">¶</a></h3>
+<p>From saved data about a particular instance on a particular network</p>
+</div>
+<div class="section" id="read-contract-type-info">
+<h3>Read contract type info<a class="headerlink" href="#read-contract-type-info" title="Permalink to this headline">¶</a></h3>
+<p>From saved data about a particular type known, deployed or not</p>
+</div>
+<div class="section" id="read-contract-instance-historical-type-info">
+<h3>Read contract instance historical type info<a class="headerlink" href="#read-contract-instance-historical-type-info" title="Permalink to this headline">¶</a></h3>
+<p>For a particular instance, read the type as known at deploy time.</p>
+</div>
+</div>
 </div>
 
 

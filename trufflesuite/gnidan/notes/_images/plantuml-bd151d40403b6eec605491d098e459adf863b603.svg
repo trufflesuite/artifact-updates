@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="247px" preserveAspectRatio="none" style="width:694px;height:247px;" version="1.1" viewBox="0 0 694 247" width="694.85px" zoomAndPan="magnify"><defs><filter height="300%" id="f1c1b1tn35rjt" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="1.3"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="2.6" dy="2.6" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--cluster Migrations--><rect fill="#FFFFFF" filter="url(#f1c1b1tn35rjt)" height="224.25" style="stroke: #000000; stroke-width: 0.9750000000000001;" width="539.5" x="148.2" y="15.6"/><text fill="#000000" font-family="sans-serif" font-size="9.1" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="53.3" x="391.3" y="25.3468">Migrations</text><ellipse cx="244.9556" cy="124.2611" fill="#FEFECE" filter="url(#f1c1b1tn35rjt)" rx="49.6306" ry="11.4861" style="stroke: #A80036; stroke-width: 0.9750000000000001;"/><text fill="#000000" font-family="sans-serif" font-size="9.1" lengthAdjust="spacingAndGlyphs" textLength="79.3" x="205.3056" y="127.2826">Run all migrations</text><ellipse cx="428.5007" cy="149.6601" fill="#FEFECE" filter="url(#f1c1b1tn35rjt)" rx="58.0007" ry="13.1601" style="stroke: #A80036; stroke-width: 0.9750000000000001;"/><text fill="#000000" font-family="sans-serif" font-size="9.1" lengthAdjust="spacingAndGlyphs" textLength="98.8" x="379.1007" y="152.6816">Run specific migration</text><ellipse cx="245.1524" cy="169.6055" fill="#FEFECE" filter="url(#f1c1b1tn35rjt)" rx="47.2274" ry="11.0055" style="stroke: #A80036; stroke-width: 0.9750000000000001;"/><text fill="#000000" font-family="sans-serif" font-size="9.1" lengthAdjust="spacingAndGlyphs" textLength="73.45" x="208.4274" y="172.627">Run as historical</text><ellipse cx="245.0804" cy="70.8561" fill="#FEFECE" filter="url(#f1c1b1tn35rjt)" rx="86.4804" ry="18.8561" style="stroke: #A80036; stroke-width: 0.9750000000000001;"/><text fill="#000000" font-family="sans-serif" font-size="9.1" lengthAdjust="spacingAndGlyphs" textLength="160.55" x="164.8054" y="73.8776">Determine last completed migration</text><ellipse cx="601.3265" cy="110.5803" fill="#FEFECE" filter="url(#f1c1b1tn35rjt)" rx="67.3515" ry="15.0303" style="stroke: #A80036; stroke-width: 0.9750000000000001;"/><text fill="#000000" font-family="sans-serif" font-size="9.1" lengthAdjust="spacingAndGlyphs" textLength="119.6" x="541.5265" y="113.6018">Link contract type to library</text><ellipse cx="601.2676" cy="55.7735" fill="#FEFECE" filter="url(#f1c1b1tn35rjt)" rx="76.0676" ry="16.7735" style="stroke: #A80036; stroke-width: 0.9750000000000001;"/><text fill="#000000" font-family="sans-serif" font-size="9.1" lengthAdjust="spacingAndGlyphs" textLength="138.45" x="532.0426" y="58.795">Link contract instance to library</text><ellipse cx="601.2937" cy="162.6387" fill="#FEFECE" filter="url(#f1c1b1tn35rjt)" rx="64.3937" ry="14.4387" style="stroke: #A80036; stroke-width: 0.9750000000000001;"/><text fill="#000000" font-family="sans-serif" font-size="9.1" lengthAdjust="spacingAndGlyphs" textLength="113.1" x="544.7437" y="165.6602">Deploy instance of a type</text><ellipse cx="601.2031" cy="214.4906" fill="#FEFECE" filter="url(#f1c1b1tn35rjt)" rx="65.2781" ry="14.6156" style="stroke: #A80036; stroke-width: 0.9750000000000001;"/><text fill="#000000" font-family="sans-serif" font-size="9.1" lengthAdjust="spacingAndGlyphs" textLength="115.05" x="543.6781" y="217.5121">Deploy multiple instances</text><!--entity Developer--><ellipse cx="61.75" cy="126.425" fill="#FEFECE" filter="url(#f1c1b1tn35rjt)" rx="5.2" ry="5.2" style="stroke: #A80036; stroke-width: 1.3;"/><path d="M61.75,131.625 L61.75,149.175 M53.3,136.825 L70.2,136.825 M61.75,149.175 L53.3,158.925 M61.75,149.175 L70.2,158.925 " fill="none" filter="url(#f1c1b1tn35rjt)" style="stroke: #A80036; stroke-width: 1.3;"/><text fill="#000000" font-family="sans-serif" font-size="9.1" lengthAdjust="spacingAndGlyphs" textLength="115.7" x="3.9" y="171.9218">Smart Contract Developer</text><!--link RunMigrations to RunSpecific--><path d="M287.6829,129.9974 C313.8103,133.6368 347.622,138.346 375.4732,142.2252 " fill="none" id="RunMigrations-RunSpecific" style="stroke: #A80036; stroke-width: 0.65;"/><polygon fill="#A80036" points="378.8389,142.6945,373.4027,139.3135,375.6198,142.2468,372.6865,144.4639,378.8389,142.6945" style="stroke: #A80036; stroke-width: 0.65;"/><!--link RunHistorical to RunMigrations--><path d="M245.05,158.4525 C245.05,155.1518 245.05,151.8504 245.05,148.5497 " fill="none" id="RunHistorical-RunMigrations" style="stroke: #A80036; stroke-width: 0.65; stroke-dasharray: 7.0,7.0;"/><polygon fill="none" points="240.5,148.4054,245.05,135.4054,249.6,148.4054,240.5,148.4054" style="stroke: #A80036; stroke-width: 0.65;"/><!--link RunMigrations to DetermineLastCompleted--><path d="M245.05,112.907 C245.05,106.1775 245.05,99.4474 245.05,92.718 " fill="none" id="RunMigrations-DetermineLastCompleted" style="stroke: #A80036; stroke-width: 0.65;"/><polygon fill="#A80036" points="245.05,89.414,242.45,95.264,245.05,92.664,247.65,95.264,245.05,89.414" style="stroke: #A80036; stroke-width: 0.65;"/><!--link LinkType to LinkInstance--><path d="M601.25,82.3479 C601.25,79.183 601.25,76.0188 601.25,72.854 " fill="none" id="LinkType-LinkInstance" style="stroke: #A80036; stroke-width: 0.65; stroke-dasharray: 7.0,7.0;"/><polygon fill="none" points="605.8,82.3569,601.25,95.357,596.7,82.3569,605.8,82.3569" style="stroke: #A80036; stroke-width: 0.65;"/><!--link RunSpecific to LinkType--><path d="M469.4495,140.3071 C493.6308,134.8113 524.5565,127.7829 550.3037,121.9309 " fill="none" id="RunSpecific-LinkType" style="stroke: #A80036; stroke-width: 0.65;"/><polygon fill="#A80036" points="553.7389,121.1503,547.458,119.9119,550.5698,121.8708,548.6109,124.9825,553.7389,121.1503" style="stroke: #A80036; stroke-width: 0.65;"/><!--link MultipleInstances to DeployInstance--><path d="M601.25,199.875 C601.25,196.4684 601.25,193.0618 601.25,189.6552 " fill="none" id="MultipleInstances-DeployInstance" style="stroke: #A80036; stroke-width: 0.65; stroke-dasharray: 7.0,7.0;"/><polygon fill="none" points="596.7,189.5156,601.25,176.5153,605.8,189.5156,596.7,189.5156" style="stroke: #A80036; stroke-width: 0.65;"/><!--link RunSpecific to DeployInstance--><path d="M483.2952,153.6132 C500.396,154.9087 519.4358,156.351 537.1171,157.6907 " fill="none" id="RunSpecific-DeployInstance" style="stroke: #A80036; stroke-width: 0.65;"/><polygon fill="#A80036" points="540.4015,157.9396,534.7643,154.9057,537.1608,157.6945,534.3721,160.0909,540.4015,157.9396" style="stroke: #A80036; stroke-width: 0.65;"/><!--link Developer to RunMigrations--><path d="M119.7359,139.7331 C146.0973,136.4376 176.8462,132.5942 201.2095,129.5489 " fill="none" id="Developer-RunMigrations" style="stroke: #A80036; stroke-width: 0.65;"/><!--link Developer to RunSpecific--><path d="M101.285,173.7444 C114.0061,181.0673 128.585,188.0094 143,191.75 C224.0921,212.7927 249.509,208.9614 331.5,191.75 C358.9027,185.9976 388.0305,171.9536 406.9624,161.629 " fill="none" id="Developer-RunSpecific" style="stroke: #A80036; stroke-width: 0.65;"/><!--link Developer to RunHistorical--><path d="M119.7359,154.0669 C146.8266,157.4534 178.5511,161.4191 203.2167,164.502 " fill="none" id="Developer-RunHistorical" style="stroke: #A80036; stroke-width: 0.65;"/><!--link Developer to DetermineLastCompleted--><path d="M105.8486,120.055 C117.6396,113.4166 130.585,106.6969 143,101.4 C157.6276,95.1587 173.9472,89.6474 189.1455,85.085 " fill="none" id="Developer-DetermineLastCompleted" style="stroke: #A80036; stroke-width: 0.65;"/><!--
+@startuml
+scale 0.65
+left to right direction
+
+:Smart Contract Developer: as :Developer:
+
+rectangle Migrations {
+  (Run all migrations) as (RunMigrations)
+  (Run specific migration) as (RunSpecific)
+
+  RunMigrations - -> RunSpecific
+
+  (Run as historical) as (RunHistorical)
+  RunHistorical .|> RunMigrations
+
+  (Determine last completed migration) as (DetermineLastCompleted)
+
+  RunMigrations -right-> DetermineLastCompleted
+
+  (Link contract type to library) as (LinkType)
+  (Link contract instance to library) as (LinkInstance)
+  LinkInstance .left.|> LinkType
+
+  RunSpecific - -> LinkType
+
+  (Deploy instance of a type) as (DeployInstance)
+  (Deploy multiple instances) as (MultipleInstances)
+  MultipleInstances .|> DeployInstance
+
+  RunSpecific - -> DeployInstance
+}
+
+Developer - - RunMigrations
+Developer - - RunSpecific
+Developer - - RunHistorical
+Developer - - DetermineLastCompleted
+
+@enduml
+
+PlantUML version 1.2018.03(Thu Apr 05 16:59:15 UTC 2018)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Java Version: 1.8.0_151-b12
+Operating System: Linux
+OS Version: 4.4.0-101-generic
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>
