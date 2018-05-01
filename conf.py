@@ -43,7 +43,7 @@ extensions = [
 ]
 
 import os
-plantuml = 'java -jar {}/plantuml.jar'.format(
+plantuml = 'java -Djava.awt.headless=true -jar {}/plantuml.jar'.format(
     os.path.dirname(os.path.abspath(__file__))
 )
 
