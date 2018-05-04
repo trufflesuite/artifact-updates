@@ -5,6 +5,11 @@ Glossary
 
 .. glossary::
 
+   ABI
+      A JSON description of the external interface for a |ContractInstance|,
+      or for the description of common interface of all instances of a
+      |ContractType|
+
    Artifact
       A JSON file describing a single :term:`Contract`.
 

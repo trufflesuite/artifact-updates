@@ -1,3 +1,5 @@
+.. |ABI| replace:: :term:`ABI`
+
 .. |Artifact| replace:: :term:`Artifact<Artifact>`
 .. |Artifacts| replace:: :term:`Artifacts<Artifact>`
 
@@ -25,6 +27,7 @@
 .. |LinkValues| replace:: :term:`Link Values<Link Value>`
 
 .. |Network| replace:: :term:`Network`
+.. |Networks| replace:: :term:`Networks<Network>`
 
 .. |NetworkDirectory| replace:: :term:`Network Directory`
 .. |NetworkDirectories| replace:: :term:`Network Directories<Network Directory>`
