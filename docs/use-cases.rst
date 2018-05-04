@@ -181,7 +181,7 @@ instances over the network.
 
   :User: as :User:
 
-  rectangle Metadata {
+  rectangle Metadata << external >> {
     (Read ABI) as (ReadABI)
     (Read instance) as (ReadInstance)
     (ReadInstance) -> ReadABI
@@ -298,7 +298,7 @@ reason about for the user of the tool.
 
   :Smart Contract Developer: as :Developer:
 
-  rectangle Interacting {
+  rectangle Interacting << external >> {
     (Call read-only method) as (Call)
   }
 
@@ -448,23 +448,3 @@ Run automated tests for library instance
 Library instance may represent a historical version of the library type.
 
 Deploy instance of possibly-historical type and run tests linked to it.
-
-
-
-Save contract instance
-``````````````````````
-
-On a given network, with a given address, as a given contract type.
-
-
-Save library instance
-`````````````````````
-
-On a given network, with a given address, as a given library type.
-
-Save interface instance
-```````````````````````
-
-On a given network, with a given address, as a given interface type.
-
-
