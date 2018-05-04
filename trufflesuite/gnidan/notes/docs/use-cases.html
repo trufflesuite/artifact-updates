@@ -129,9 +129,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#run-automated-tests-for-contract-instance">Run automated tests for contract instance</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#run-automated-tests-for-library-type">Run automated tests for library type</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#run-automated-tests-for-library-instance">Run automated tests for library instance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id1">Save contract instance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id2">Save library instance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id3">Save interface instance</a></li>
 </ul>
 </li>
 </ul>
@@ -352,12 +349,12 @@ to list all equivalent instances to a given role.</p>
 information about <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instances</span></a> and to be able to write to those
 instances over the network.</p>
 <p class="plantuml">
-<object data="../_images/plantuml-3798333eb55567c7dab8068d1358d81d3af15c00.svg" type="image/svg+xml" style="width:561px;height:304px;">
-<img src="../_images/plantuml-3798333eb55567c7dab8068d1358d81d3af15c00.png" alt="left to right direction
+<object data="../_images/plantuml-acf0235557910cdf8d66be30c2da4abb016f0dde.svg" type="image/svg+xml" style="width:561px;height:304px;">
+<img src="../_images/plantuml-acf0235557910cdf8d66be30c2da4abb016f0dde.png" alt="left to right direction
 
 :User: as :User:
 
-rectangle Metadata {
+rectangle Metadata &lt;&lt; external &gt;&gt; {
   (Read ABI) as (ReadABI)
   (Read instance) as (ReadInstance)
   (ReadInstance) -&gt; ReadABI
@@ -452,13 +449,13 @@ networks can be of different versions of the same contract type. This
 difference should be understood by the underlying tooling, and easy to
 reason about for the user of the tool.</p>
 <p class="plantuml">
-<object data="../_images/plantuml-94dade11dfb08d77211f64eb2dc42c4b8ef3e908.svg" type="image/svg+xml" style="width:631px;height:297px;">
-<img src="../_images/plantuml-94dade11dfb08d77211f64eb2dc42c4b8ef3e908.png" alt="scale 0.60
+<object data="../_images/plantuml-d5f7e63d33c867981da73fb93d78a2cd74caa1ff.svg" type="image/svg+xml" style="width:631px;height:307px;">
+<img src="../_images/plantuml-d5f7e63d33c867981da73fb93d78a2cd74caa1ff.png" alt="scale 0.60
 left to right direction
 
 :Smart Contract Developer: as :Developer:
 
-rectangle Interacting {
+rectangle Interacting &lt;&lt; external &gt;&gt; {
   (Call read-only method) as (Call)
 }
 
@@ -588,18 +585,6 @@ Developer -- TestLibraryInstance" />
 <h3>Run automated tests for library instance<a class="headerlink" href="#run-automated-tests-for-library-instance" title="Permalink to this headline">¶</a></h3>
 <p>Library instance may represent a historical version of the library type.</p>
 <p>Deploy instance of possibly-historical type and run tests linked to it.</p>
-</div>
-<div class="section" id="id1">
-<h3>Save contract instance<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<p>On a given network, with a given address, as a given contract type.</p>
-</div>
-<div class="section" id="id2">
-<h3>Save library instance<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<p>On a given network, with a given address, as a given library type.</p>
-</div>
-<div class="section" id="id3">
-<h3>Save interface instance<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-<p>On a given network, with a given address, as a given interface type.</p>
 </div>
 </div>
 </div>
