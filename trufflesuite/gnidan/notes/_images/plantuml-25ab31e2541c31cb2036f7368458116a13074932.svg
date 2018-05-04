@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="335px" preserveAspectRatio="none" style="width:575px;height:335px;" version="1.1" viewBox="0 0 575 335" width="575px" zoomAndPan="magnify"><defs><filter height="300%" id="ffz54ol90cj6s" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--cluster Listing--><rect fill="#FFFFFF" filter="url(#ffz54ol90cj6s)" height="300" style="stroke: #000000; stroke-width: 1.5;" width="336" x="228" y="24"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="52" x="370" y="38.9951">Listing</text><ellipse cx="396.0468" cy="279.0094" fill="#FEFECE" filter="url(#ffz54ol90cj6s)" rx="133.0468" ry="29.0094" style="stroke: #A80036; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="247" x="272.5468" y="283.6578">List all instances for a given network</text><ellipse cx="395.8655" cy="86.7731" fill="#FEFECE" filter="url(#ffz54ol90cj6s)" rx="119.3655" ry="26.2731" style="stroke: #A80036; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="218" x="286.8655" y="91.4215">List all networks for a given type</text><ellipse cx="396.1716" cy="181.8343" fill="#FEFECE" filter="url(#ffz54ol90cj6s)" rx="152.1716" ry="32.8343" style="stroke: #A80036; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="287" x="252.6716" y="186.4828">List equivalent instances across networks</text><!--entity Developer--><ellipse cx="95" cy="150.5" fill="#FEFECE" filter="url(#ffz54ol90cj6s)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"/><path d="M95,158.5 L95,185.5 M82,166.5 L108,166.5 M95,185.5 L82,200.5 M95,185.5 L108,200.5 " fill="none" filter="url(#ffz54ol90cj6s)" style="stroke: #A80036; stroke-width: 2.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="178" x="6" y="220.4951">Smart Contract Developer</text><!--link ListInstance to ListType--><path d="M396,148.973 C396,143.91 396,138.848 396,133.786 " fill="none" id="ListInstance-ListType" style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 7.0,7.0;"/><polygon fill="none" points="389,133.629,396,113.629,403,133.629,389,133.629" style="stroke: #A80036; stroke-width: 1.0;"/><!--link Developer to ListNetwork--><path d="M184.248,219.096 C196.182,223.667 208.333,228.097 220,232 C248.043,241.3815 279.087,250.2104 307.147,257.6275 " fill="none" id="Developer-ListNetwork" style="stroke: #A80036; stroke-width: 1.0;"/><!--link Developer to ListType--><path d="M184.152,143.935 C196.102,139.308 208.282,134.86 220,131 C249.308,121.344 281.97,112.605 311.067,105.506 " fill="none" id="Developer-ListType" style="stroke: #A80036; stroke-width: 1.0;"/><!--link Developer to ListInstance--><path d="M184.093,182 C202.955,182 223.396,182 243.878,182 " fill="none" id="Developer-ListInstance" style="stroke: #A80036; stroke-width: 1.0;"/><!--
+@startuml
+left to right direction
+:Smart Contract Developer: as :Developer:
+
+rectangle Listing {
+  (List all instances for a given network) as (ListNetwork)
+  (List all networks for a given type) as (ListType)
+  (List equivalent instances across networks) as (ListInstance)
+
+  ListInstance .|> ListType
+}
+
+Developer - - ListNetwork
+Developer - - ListType
+Developer - - ListInstance
+
+@enduml
+
+PlantUML version 1.2018.03(Thu Apr 05 16:59:15 UTC 2018)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Java Version: 1.8.0_151-b12
+Operating System: Linux
+OS Version: 4.4.0-101-generic
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>
