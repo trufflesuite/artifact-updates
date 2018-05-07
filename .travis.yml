@@ -2,7 +2,8 @@ language: python
 python:
   - 3.5
 install:
-  - pip install sphinx sphinx_rtd_theme
+  - sudo apt-get install graphviz
+  - pip install sphinx sphinx_rtd_theme sphinxcontrib-plantuml
 script: make html
 after_success:
   - ./push.sh
