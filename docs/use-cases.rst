@@ -3,6 +3,7 @@ Use Cases
 
 .. include:: _include.rst
 
+
 Compilation
 -----------
 
@@ -11,7 +12,6 @@ of high-level languages to the underlying EVM |Bytecode|.
 
 Smart contract developers frequently compile/recompile |Sources| many times
 throughout the entire lifecycle of development.
-
 
 .. uml::
 
@@ -55,7 +55,6 @@ metadata heavily.
 
 Metadata should be accessible both for current versions and for all historical
 versions that may be in use.
-
 
 .. uml::
 
@@ -106,24 +105,29 @@ versions that may be in use.
   SmartContractDev -- ReadContractType
   SmartContractDev -- ReadHistoricalInstanceType
 
-
 Read contract instance information
 ``````````````````````````````````
 
-From saved data about a particular instance on a particular network.
+Users must be able to read |ContractInstance| metadata, including ABI, any
+link values, and all type-level metadata for that instance.
 
 Read contract type info
 ```````````````````````
 
-From saved data about a particular type known, deployed or not.
+Users must be able to read metadata about a |ContractType| that has not been
+deployed, as well as type-level metadata for a given |ContractInstance|.
 
 Read contract instance historical type info
 ````````````````````````````````````````````
 
-For a particular instance, read the type as known at deploy time.
+If the |ContractInstance| has a type that is no longer the current version
+in source, users should still be able to read that |ContractType| information,
+for the type at deploy-time. This may differ from the current type version
+arbitrarily: different source, different ABI, etc.
 
-Listing known contracts
------------------------
+
+Querying for specific contracts
+-------------------------------
 
 Developers must be able to view all known |ContractInstances| on a given
 network, or a list of networks with known instances of a given |ContractType|.
@@ -134,37 +138,74 @@ network, or a list of networks with known instances of a given |ContractType|.
   left to right direction
   :Smart Contract Developer: as :Developer:
 
-  rectangle Listing {
-    (List all instances for a given network) as (ListNetwork)
-    (List all networks for a given type) as (ListType)
-    (List equivalent instances across networks) as (ListInstance)
+  rectangle Querying {
+    (Query known instances on a given network) as (QueryNetwork)
+    (Query all networks for a given type) as (QueryType)
+    (Query all networks for instances with a given role) as (QueryInstance)
+    (Query for instance by network and address) as (QueryAddress)
+    (Query all contracts with a given bytecode) as (QueryBytecode)
+    (Query for bytecode ignoring link references) as (QueryBytecodeUnlinked)
 
-    ListInstance .|> ListType
+    QueryInstance .|> QueryType
+    QueryBytecodeUnlinked .|> QueryBytecode
   }
 
-  Developer -- ListNetwork
-  Developer -- ListType
-  Developer -- ListInstance
+  Developer -- QueryNetwork
+  Developer -- QueryType
+  Developer -- QueryInstance
+  Developer -- QueryAddress
+  Developer -- QueryBytecode
 
-List all instances for a given network
-``````````````````````````````````````
 
-For a full view of the system in its current state of deployment/operation.
-
-List all networks for a given type
-``````````````````````````````````
-
-To identify differences in versions, e.g., or to ensure front-end support
-for multiple networks.
-
-List equivalent instances across networks
+Query for instance by network and address
 `````````````````````````````````````````
 
-An extenstion of listing networks for a given |ContractType|.
+Users must be able to look up known |ContractInstances| given a |Network|
+and an |Address|.
 
-In the case of applications that maintain multiple |ContractInstances| for a
-single type, perhaps with named roles, tooling should support the ability
-to list all equivalent instances to a given role.
+Query all contracts with a given bytecode
+`````````````````````````````````````````
+
+Because it is immutable, contract |Bytecode| serves as a reliable secondary
+index for both |ContractInstances| and |ContractTypes|. Users should be able to
+find all known |Contracts| based on the raw hexadecimal representation of
+EVM machine code.
+
+Query for bytecode ignoring link references
+```````````````````````````````````````````
+
+Two sets of contract |Bytecode| can differ only by |LinkValues|. Users should
+be able to query for all |ContractTypes| and |ContractInstances| matching
+a given bytecode, whether or not the |LinkReferences| have values or match.
+
+Query known instances on a given network
+````````````````````````````````````````
+
+Users should be able to see, at a glance, all |ContractInstances| on a given
+|Network|. This can be useful for validating migration state, or for easy
+listing of address / ABI information, to present/share externally.
+
+Query all networks for a given type
+```````````````````````````````````
+
+Developers often write applications so that each |ContractType| has a singleton
+deployed |ContractInstance|. Tooling should enable this first-class nature of
+contract types, and users should be able to track the various instances across
+all known |Networks|.
+
+This is particularly useful when creating front-end applications, referencing
+instances across networks with a single type description.
+
+Query all networks for instances with a given role
+``````````````````````````````````````````````````
+
+In cases where a particular |ContractType| is not deployed as a singleton,
+tooling should provide a mechanism by which users can deploy multiple
+|ContractInstances|, identified in some way distinct from type (i.e., *role*)
+
+As a result, users should be able to use this distinct identifier to query
+for analogous instances across |Networks|, instead of relying solely on the
+type.
 
 
 Interacting with deployed instances
@@ -203,17 +244,19 @@ instances over the network.
 Call read-only method
 `````````````````````
 
-In order to view the state of a contract instance at a particular time.
+Almost every smart contract provides mechanisms for viewing information
+about a |ContractInstance|'s current state, including public storage variables
+and computed data views. These interfaces are specified for each instance's
+|ContractType|, and described in its |ABI|.
 
-For accessing state variables as well as computed information exposed by the
-contract's |ABI|.
+Users must be able to call these read-only methods and obtain their results.
 
 Invoke method via a transaction
 ```````````````````````````````
 
-Following the contract's |ABI|, users must be able to execute the allowable
+Similarly to calls, most contracts provide interface methods for modifying
+|ContractInstance| state. Users must be able to execute the allowable
 "write" operations for a contract instance.
-
 
 Send ETH to a contract instance
 ```````````````````````````````
@@ -260,22 +303,25 @@ able to account for the record-keeping in such cases.
 Save contract instance
 ``````````````````````
 
-Either deployed externally as part of another application on the network, or
-as part of a factory contract internally.
+Users must be able to save new |ContractInstances| on a given network,
+identifying them as a known |ContractType|.
 
 
 Save library instance
 `````````````````````
 
-To avoid the extra gas expense of redeployment.
+Similarly, users must be able to save records of externally-deployed
+|Libraries|. This is particularly useful, as many commonly-used libraries are
+already deployed on a majority of |Networks|, and users should not have to pay
+the extra gas just to accommodate tooling.
 
 
 Save interface instance
 ```````````````````````
 
-In cases where source is not known for an external contract, it may still
-be required to keep a reference of that contract's interface (i.e. via
-Solidity's ``interface`` mechanism).
+In cases where source is not known for an external contract, users may need
+reference that |ContractInstance| by its interface (i.e. via Solidity's
+``interface`` mechanism).
 
 
 Migrations
@@ -293,10 +339,14 @@ reason about for the user of the tool.
 
 .. uml::
 
-  scale 0.60
+  scale 0.53
   left to right direction
 
   :Smart Contract Developer: as :Developer:
+
+  rectangle Querying << external >> {
+    (Query for a given type) as (QueryType)
+  }
 
   rectangle Interacting << external >> {
     (Call read-only method) as (Call)
@@ -305,29 +355,30 @@ reason about for the user of the tool.
   rectangle Migrations {
     (Run all migrations) as (RunMigrations)
     (Run specific migration) as (RunSpecific)
-
-    RunMigrations --> RunSpecific
-
     (Run as historical) as (RunHistorical)
-    RunHistorical .|> RunMigrations
-
     (Determine last completed migration) as (DetermineLastCompleted)
-
-    DetermineLastCompleted -> Call : query Migrations instance
-
-    RunMigrations --> DetermineLastCompleted
-
     (Link contract type to library) as (LinkType)
     (Link contract instance to library) as (LinkInstance)
-    LinkInstance .left.|> LinkType
-
-    RunSpecific --> LinkType
-
     (Deploy instance of a type) as (DeployInstance)
     (Deploy multiple instances) as (MultipleInstances)
+
+
+    RunMigrations --> RunSpecific
+    RunHistorical .|> RunMigrations
+
+
+    DetermineLastCompleted -up-> QueryType : find deployed Migrations
+    DetermineLastCompleted -up-> Call : read instance state
+
+    RunMigrations -> DetermineLastCompleted
+
+    LinkInstance .left.|> LinkType
+
+
     MultipleInstances .|> DeployInstance
 
     RunSpecific --> DeployInstance
+    RunSpecific --> LinkType
   }
 
   Developer -- RunMigrations

@@ -10,6 +10,10 @@ Glossary
       or for the description of common interface of all instances of a
       |ContractType|
 
+   Address
+      0x-prefixed hexadecimal string representing an account's public
+      identifier
+
    Artifact
       A JSON file describing a single :term:`Contract`.
 
