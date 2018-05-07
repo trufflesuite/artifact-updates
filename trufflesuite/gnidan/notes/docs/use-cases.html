@@ -95,10 +95,13 @@
 <li class="toctree-l3"><a class="reference internal" href="#read-contract-instance-historical-type-info">Read contract instance historical type info</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#listing-known-contracts">Listing known contracts</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#list-all-instances-for-a-given-network">List all instances for a given network</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#list-all-networks-for-a-given-type">List all networks for a given type</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#list-equivalent-instances-across-networks">List equivalent instances across networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#querying-for-specific-contracts">Querying for specific contracts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#query-for-instance-by-network-and-address">Query for instance by network and address</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#query-all-contracts-with-a-given-bytecode">Query all contracts with a given bytecode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#query-for-bytecode-ignoring-link-references">Query for bytecode ignoring link references</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#query-known-instances-on-a-given-network">Query known instances on a given network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#query-all-networks-for-a-given-type">Query all networks for a given type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#query-all-networks-for-instances-with-a-given-role">Query all networks for instances with a given role</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#interacting-with-deployed-instances">Interacting with deployed instances</a><ul>
@@ -293,54 +296,91 @@ SmartContractDev -- ReadHistoricalInstanceType" />
 </object></p>
 <div class="section" id="read-contract-instance-information">
 <h3>Read contract instance information<a class="headerlink" href="#read-contract-instance-information" title="Permalink to this headline">¶</a></h3>
-<p>From saved data about a particular instance on a particular network.</p>
+<p>Users must be able to read <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instance</span></a> metadata, including ABI, any
+link values, and all type-level metadata for that instance.</p>
 </div>
 <div class="section" id="read-contract-type-info">
 <h3>Read contract type info<a class="headerlink" href="#read-contract-type-info" title="Permalink to this headline">¶</a></h3>
-<p>From saved data about a particular type known, deployed or not.</p>
+<p>Users must be able to read metadata about a <a class="reference internal" href="glossary.html#term-contract-type"><span class="xref std std-term">Contract Type</span></a> that has not been
+deployed, as well as type-level metadata for a given <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instance</span></a>.</p>
 </div>
 <div class="section" id="read-contract-instance-historical-type-info">
 <h3>Read contract instance historical type info<a class="headerlink" href="#read-contract-instance-historical-type-info" title="Permalink to this headline">¶</a></h3>
-<p>For a particular instance, read the type as known at deploy time.</p>
+<p>If the <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instance</span></a> has a type that is no longer the current version
+in source, users should still be able to read that <a class="reference internal" href="glossary.html#term-contract-type"><span class="xref std std-term">Contract Type</span></a> information,
+for the type at deploy-time. This may differ from the current type version
+arbitrarily: different source, different ABI, etc.</p>
 </div>
 </div>
-<div class="section" id="listing-known-contracts">
-<h2>Listing known contracts<a class="headerlink" href="#listing-known-contracts" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="querying-for-specific-contracts">
+<h2>Querying for specific contracts<a class="headerlink" href="#querying-for-specific-contracts" title="Permalink to this headline">¶</a></h2>
 <p>Developers must be able to view all known <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instances</span></a> on a given
 network, or a list of networks with known instances of a given <a class="reference internal" href="glossary.html#term-contract-type"><span class="xref std std-term">Contract Type</span></a>.</p>
 <p class="plantuml">
-<object data="../_images/plantuml-25ab31e2541c31cb2036f7368458116a13074932.svg" type="image/svg+xml" style="width:575px;height:335px;">
-<img src="../_images/plantuml-25ab31e2541c31cb2036f7368458116a13074932.png" alt="left to right direction
+<object data="../_images/plantuml-0cff306764a4de9c58e4a105baa0aa007dbc819a.svg" type="image/svg+xml" style="width:623px;height:662px;">
+<img src="../_images/plantuml-0cff306764a4de9c58e4a105baa0aa007dbc819a.png" alt="left to right direction
 :Smart Contract Developer: as :Developer:
 
-rectangle Listing {
-  (List all instances for a given network) as (ListNetwork)
-  (List all networks for a given type) as (ListType)
-  (List equivalent instances across networks) as (ListInstance)
+rectangle Querying {
+  (Query known instances on a given network) as (QueryNetwork)
+  (Query all networks for a given type) as (QueryType)
+  (Query all networks for instances with a given role) as (QueryInstance)
+  (Query for instance by network and address) as (QueryAddress)
+  (Query all contracts with a given bytecode) as (QueryBytecode)
+  (Query for bytecode ignoring link references) as (QueryBytecodeUnlinked)
 
-  ListInstance .|&gt; ListType
+  QueryInstance .|&gt; QueryType
+  QueryBytecodeUnlinked .|&gt; QueryBytecode
 }
 
-Developer -- ListNetwork
-Developer -- ListType
-Developer -- ListInstance" />
+Developer -- QueryNetwork
+Developer -- QueryType
+Developer -- QueryInstance
+Developer -- QueryAddress
+Developer -- QueryBytecode" />
 
 </object></p>
-<div class="section" id="list-all-instances-for-a-given-network">
-<h3>List all instances for a given network<a class="headerlink" href="#list-all-instances-for-a-given-network" title="Permalink to this headline">¶</a></h3>
-<p>For a full view of the system in its current state of deployment/operation.</p>
+<div class="section" id="query-for-instance-by-network-and-address">
+<h3>Query for instance by network and address<a class="headerlink" href="#query-for-instance-by-network-and-address" title="Permalink to this headline">¶</a></h3>
+<p>Users must be able to look up known <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instances</span></a> given a <a class="reference internal" href="glossary.html#term-network"><span class="xref std std-term">Network</span></a>
+and an <a class="reference internal" href="glossary.html#term-address"><span class="xref std std-term">Address</span></a>.</p>
 </div>
-<div class="section" id="list-all-networks-for-a-given-type">
-<h3>List all networks for a given type<a class="headerlink" href="#list-all-networks-for-a-given-type" title="Permalink to this headline">¶</a></h3>
-<p>To identify differences in versions, e.g., or to ensure front-end support
-for multiple networks.</p>
+<div class="section" id="query-all-contracts-with-a-given-bytecode">
+<h3>Query all contracts with a given bytecode<a class="headerlink" href="#query-all-contracts-with-a-given-bytecode" title="Permalink to this headline">¶</a></h3>
+<p>Because it is immutable, contract <a class="reference internal" href="glossary.html#term-bytecode"><span class="xref std std-term">Bytecode</span></a> serves as a reliable secondary
+index for both <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instances</span></a> and <a class="reference internal" href="glossary.html#term-contract-type"><span class="xref std std-term">Contract Types</span></a>. Users should be able to
+find all known <a class="reference internal" href="glossary.html#term-contract"><span class="xref std std-term">Contracts</span></a> based on the raw hexadecimal representation of
+EVM machine code.</p>
 </div>
-<div class="section" id="list-equivalent-instances-across-networks">
-<h3>List equivalent instances across networks<a class="headerlink" href="#list-equivalent-instances-across-networks" title="Permalink to this headline">¶</a></h3>
-<p>An extenstion of listing networks for a given <a class="reference internal" href="glossary.html#term-contract-type"><span class="xref std std-term">Contract Type</span></a>.</p>
-<p>In the case of applications that maintain multiple <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instances</span></a> for a
-single type, perhaps with named roles, tooling should support the ability
-to list all equivalent instances to a given role.</p>
+<div class="section" id="query-for-bytecode-ignoring-link-references">
+<h3>Query for bytecode ignoring link references<a class="headerlink" href="#query-for-bytecode-ignoring-link-references" title="Permalink to this headline">¶</a></h3>
+<p>Two sets of contract <a class="reference internal" href="glossary.html#term-bytecode"><span class="xref std std-term">Bytecode</span></a> can differ only by <a class="reference internal" href="glossary.html#term-link-value"><span class="xref std std-term">Link Values</span></a>. Users should
+be able to query for all <a class="reference internal" href="glossary.html#term-contract-type"><span class="xref std std-term">Contract Types</span></a> and <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instances</span></a> matching
+a given bytecode, whether or not the <a class="reference internal" href="glossary.html#term-link-reference"><span class="xref std std-term">Link References</span></a> have values or match.</p>
+</div>
+<div class="section" id="query-known-instances-on-a-given-network">
+<h3>Query known instances on a given network<a class="headerlink" href="#query-known-instances-on-a-given-network" title="Permalink to this headline">¶</a></h3>
+<p>Users should be able to see, at a glance, all <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instances</span></a> on a given
+<a class="reference internal" href="glossary.html#term-network"><span class="xref std std-term">Network</span></a>. This can be useful for validating migration state, or for easy
+listing of address / ABI information, to present/share externally.</p>
+</div>
+<div class="section" id="query-all-networks-for-a-given-type">
+<h3>Query all networks for a given type<a class="headerlink" href="#query-all-networks-for-a-given-type" title="Permalink to this headline">¶</a></h3>
+<p>Developers often write applications so that each <a class="reference internal" href="glossary.html#term-contract-type"><span class="xref std std-term">Contract Type</span></a> has a singleton
+deployed <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instance</span></a>. Tooling should enable this first-class nature of
+contract types, and users should be able to track the various instances across
+all known <a class="reference internal" href="glossary.html#term-network"><span class="xref std std-term">Networks</span></a>.</p>
+<p>This is particularly useful when creating front-end applications, referencing
+instances across networks with a single type description.</p>
+</div>
+<div class="section" id="query-all-networks-for-instances-with-a-given-role">
+<h3>Query all networks for instances with a given role<a class="headerlink" href="#query-all-networks-for-instances-with-a-given-role" title="Permalink to this headline">¶</a></h3>
+<p>In cases where a particular <a class="reference internal" href="glossary.html#term-contract-type"><span class="xref std std-term">Contract Type</span></a> is not deployed as a singleton,
+tooling should provide a mechanism by which users can deploy multiple
+<a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instances</span></a>, identified in some way distinct from type (i.e., <em>role</em>)</p>
+<p>As a result, users should be able to use this distinct identifier to query
+for analogous instances across <a class="reference internal" href="glossary.html#term-network"><span class="xref std std-term">Networks</span></a>, instead of relying solely on the
+type.</p>
 </div>
 </div>
 <div class="section" id="interacting-with-deployed-instances">
@@ -376,13 +416,16 @@ User -- Send" />
 </object></p>
 <div class="section" id="call-read-only-method">
 <h3>Call read-only method<a class="headerlink" href="#call-read-only-method" title="Permalink to this headline">¶</a></h3>
-<p>In order to view the state of a contract instance at a particular time.</p>
-<p>For accessing state variables as well as computed information exposed by the
-contract’s <a class="reference internal" href="glossary.html#term-abi"><span class="xref std std-term">ABI</span></a>.</p>
+<p>Almost every smart contract provides mechanisms for viewing information
+about a <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instance</span></a>’s current state, including public storage variables
+and computed data views. These interfaces are specified for each instance’s
+<a class="reference internal" href="glossary.html#term-contract-type"><span class="xref std std-term">Contract Type</span></a>, and described in its <a class="reference internal" href="glossary.html#term-abi"><span class="xref std std-term">ABI</span></a>.</p>
+<p>Users must be able to call these read-only methods and obtain their results.</p>
 </div>
 <div class="section" id="invoke-method-via-a-transaction">
 <h3>Invoke method via a transaction<a class="headerlink" href="#invoke-method-via-a-transaction" title="Permalink to this headline">¶</a></h3>
-<p>Following the contract’s <a class="reference internal" href="glossary.html#term-abi"><span class="xref std std-term">ABI</span></a>, users must be able to execute the allowable
+<p>Similarly to calls, most contracts provide interface methods for modifying
+<a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instance</span></a> state. Users must be able to execute the allowable
 “write” operations for a contract instance.</p>
 </div>
 <div class="section" id="send-eth-to-a-contract-instance">
@@ -424,18 +467,21 @@ SmartContractDev -- SaveInterface" />
 </object></p>
 <div class="section" id="save-contract-instance">
 <h3>Save contract instance<a class="headerlink" href="#save-contract-instance" title="Permalink to this headline">¶</a></h3>
-<p>Either deployed externally as part of another application on the network, or
-as part of a factory contract internally.</p>
+<p>Users must be able to save new <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instances</span></a> on a given network,
+identifying them as a known <a class="reference internal" href="glossary.html#term-contract-type"><span class="xref std std-term">Contract Type</span></a>.</p>
 </div>
 <div class="section" id="save-library-instance">
 <h3>Save library instance<a class="headerlink" href="#save-library-instance" title="Permalink to this headline">¶</a></h3>
-<p>To avoid the extra gas expense of redeployment.</p>
+<p>Similarly, users must be able to save records of externally-deployed
+<span class="xref std std-term">Libraries</span>. This is particularly useful, as many commonly-used libraries are
+already deployed on a majority of <a class="reference internal" href="glossary.html#term-network"><span class="xref std std-term">Networks</span></a>, and users should not have to pay
+the extra gas just to accommodate tooling.</p>
 </div>
 <div class="section" id="save-interface-instance">
 <h3>Save interface instance<a class="headerlink" href="#save-interface-instance" title="Permalink to this headline">¶</a></h3>
-<p>In cases where source is not known for an external contract, it may still
-be required to keep a reference of that contract’s interface (i.e. via
-Solidity’s <code class="docutils literal notranslate"><span class="pre">interface</span></code> mechanism).</p>
+<p>In cases where source is not known for an external contract, users may need
+reference that <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instance</span></a> by its interface (i.e. via Solidity’s
+<code class="docutils literal notranslate"><span class="pre">interface</span></code> mechanism).</p>
 </div>
 </div>
 <div class="section" id="migrations">
@@ -449,11 +495,15 @@ networks can be of different versions of the same contract type. This
 difference should be understood by the underlying tooling, and easy to
 reason about for the user of the tool.</p>
 <p class="plantuml">
-<object data="../_images/plantuml-d5f7e63d33c867981da73fb93d78a2cd74caa1ff.svg" type="image/svg+xml" style="width:631px;height:307px;">
-<img src="../_images/plantuml-d5f7e63d33c867981da73fb93d78a2cd74caa1ff.png" alt="scale 0.60
+<object data="../_images/plantuml-068dd0d925aff9ec97165c71b6d5adb238040379.svg" type="image/svg+xml" style="width:671px;height:238px;">
+<img src="../_images/plantuml-068dd0d925aff9ec97165c71b6d5adb238040379.png" alt="scale 0.53
 left to right direction
 
 :Smart Contract Developer: as :Developer:
+
+rectangle Querying &lt;&lt; external &gt;&gt; {
+  (Query for a given type) as (QueryType)
+}
 
 rectangle Interacting &lt;&lt; external &gt;&gt; {
   (Call read-only method) as (Call)
@@ -462,29 +512,30 @@ rectangle Interacting &lt;&lt; external &gt;&gt; {
 rectangle Migrations {
   (Run all migrations) as (RunMigrations)
   (Run specific migration) as (RunSpecific)
-
-  RunMigrations --&gt; RunSpecific
-
   (Run as historical) as (RunHistorical)
-  RunHistorical .|&gt; RunMigrations
-
   (Determine last completed migration) as (DetermineLastCompleted)
-
-  DetermineLastCompleted -&gt; Call : query Migrations instance
-
-  RunMigrations --&gt; DetermineLastCompleted
-
   (Link contract type to library) as (LinkType)
   (Link contract instance to library) as (LinkInstance)
-  LinkInstance .left.|&gt; LinkType
-
-  RunSpecific --&gt; LinkType
-
   (Deploy instance of a type) as (DeployInstance)
   (Deploy multiple instances) as (MultipleInstances)
+
+
+  RunMigrations --&gt; RunSpecific
+  RunHistorical .|&gt; RunMigrations
+
+
+  DetermineLastCompleted -up-&gt; QueryType : find deployed Migrations
+  DetermineLastCompleted -up-&gt; Call : read instance state
+
+  RunMigrations -&gt; DetermineLastCompleted
+
+  LinkInstance .left.|&gt; LinkType
+
+
   MultipleInstances .|&gt; DeployInstance
 
   RunSpecific --&gt; DeployInstance
+  RunSpecific --&gt; LinkType
 }
 
 Developer -- RunMigrations
