@@ -732,29 +732,48 @@ early and often in the process. Developers should be able to test their
 contracts locally before deployment, and once deployed, be able to test their
 contract instances locally, matching expected behavior on the network itself.</p>
 <p class="plantuml">
-<object data="../_images/plantuml-d28b3f3319589464ca765fa49b2dd34e06d174bd.svg" type="image/svg+xml" style="width:685px;height:354px;">
-<img src="../_images/plantuml-d28b3f3319589464ca765fa49b2dd34e06d174bd.png" alt="scale 0.80
+<object data="../_images/plantuml-b5a9bdb55e48d85911bcee7bd40c90bf2e8ac344.svg" type="image/svg+xml" style="width:732px;height:287px;">
+<img src="../_images/plantuml-b5a9bdb55e48d85911bcee7bd40c90bf2e8ac344.png" alt="scale 0.65
 left to right direction
 
 :Smart Contract Developer: as :Developer:
 
-rectangle tests {
+
+rectangle Compilation &lt;&lt; external &gt;&gt; {
+  (Compile all project sources) as (CompileAll)
+}
+
+rectangle Migrations &lt;&lt; external &gt;&gt; {
+  (Run all migrations) as (RunMigrations)
+  (Run as historical) as (RunHistorical)
+  RunHistorical .|&gt; RunMigrations
+}
+
+rectangle Testing {
   (Run automated tests for contract type) as (TestType)
   (Run automated tests for contract instance) as (TestInstance)
   (Run automated tests for library type) as (TestLibrary)
   (Run automated tests for library instance) as (TestLibraryInstance)
 
+  TestInstance --&gt; RunHistorical
+  TestLibraryInstance --&gt; RunHistorical
+
   (Run test written in Solidity) as (RunSolidity)
+  RunSolidity --&gt; CompileAll
+  RunSolidity --&gt; RunMigrations
+
   (Run test written in Javascript) as (RunJavascript)
+  RunJavascript --&gt; CompileAll
+  RunJavascript --&gt; RunMigrations
 
-  TestType ..|&gt; RunSolidity
-  TestType ..|&gt; RunJavascript
+  TestType --&gt; RunSolidity
+  TestType --&gt; RunJavascript
 
-  TestInstance ..|&gt; RunSolidity
-  TestInstance ..|&gt; RunJavascript
+  TestInstance --&gt; RunSolidity
+  TestInstance --&gt; RunJavascript
 
-  TestLibrary ..|&gt; RunSolidity
-  TestLibraryInstance ..|&gt; RunSolidity
+  TestLibrary --&gt; RunSolidity
+  TestLibraryInstance --&gt; RunSolidity
 }
 
 Developer -- TestType
@@ -765,21 +784,27 @@ Developer -- TestLibraryInstance" />
 </object></p>
 <div class="section" id="run-automated-tests-for-contract-type">
 <h3>Run automated tests for contract type<a class="headerlink" href="#run-automated-tests-for-contract-type" title="Permalink to this headline">¶</a></h3>
-<p>Run migrations to deploy fresh instances locally.</p>
+<p>Users must be able to run the full test suite for a given <a class="reference internal" href="glossary.html#term-contract-type"><span class="xref std std-term">Contract Type</span></a>,
+written in either Solidity or Javascript, starting fresh on a given <a class="reference internal" href="glossary.html#term-network"><span class="xref std std-term">Network</span></a>
+and running all compilation/migration steps in the process.</p>
 </div>
 <div class="section" id="run-automated-tests-for-contract-instance">
 <h3>Run automated tests for contract instance<a class="headerlink" href="#run-automated-tests-for-contract-instance" title="Permalink to this headline">¶</a></h3>
-<p>Contract instance may have a historical contract type (old source, etc.)</p>
-<p>Run migrations assuming historical versions and deploy instances locally.</p>
+<p>Some tests may be written for a specific <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instance</span></a> to account for
+historical differences between that instance and the current
+<a class="reference internal" href="glossary.html#term-source"><span class="xref std std-term">Source</span></a> for the corresponding <a class="reference internal" href="glossary.html#term-contract-type"><span class="xref std std-term">Contract Type</span></a>.</p>
+<p>Users should be able run tests on a fresh local <a class="reference internal" href="glossary.html#term-network"><span class="xref std std-term">Network</span></a>, reflecting that
+historical version.</p>
 </div>
 <div class="section" id="run-automated-tests-for-library-type">
 <h3>Run automated tests for library type<a class="headerlink" href="#run-automated-tests-for-library-type" title="Permalink to this headline">¶</a></h3>
-<p>Run deploy new instance of library and run tests linked to it.</p>
+<p>In order to validate a particular <a class="reference internal" href="glossary.html#term-library"><span class="xref std std-term">Library</span></a>, users should be able to run
+tests in a fresh local <a class="reference internal" href="glossary.html#term-network"><span class="xref std std-term">Network</span></a> environment, with given library deployed.</p>
 </div>
 <div class="section" id="run-automated-tests-for-library-instance">
 <h3>Run automated tests for library instance<a class="headerlink" href="#run-automated-tests-for-library-instance" title="Permalink to this headline">¶</a></h3>
-<p>Library instance may represent a historical version of the library type.</p>
-<p>Deploy instance of possibly-historical type and run tests linked to it.</p>
+<p>Much like running automated tests for a <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instance</span></a>, users should be
+able to validate behavior for outdated instances of a given <a class="reference internal" href="glossary.html#term-library"><span class="xref std std-term">Library</span></a>.</p>
 </div>
 </div>
 </div>

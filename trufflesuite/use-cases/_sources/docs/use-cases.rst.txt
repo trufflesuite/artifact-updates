@@ -589,28 +589,47 @@ contract instances locally, matching expected behavior on the network itself.
 
 .. uml::
 
-  scale 0.80
+  scale 0.65
   left to right direction
 
   :Smart Contract Developer: as :Developer:
 
-  rectangle tests {
+
+  rectangle Compilation << external >> {
+    (Compile all project sources) as (CompileAll)
+  }
+
+  rectangle Migrations << external >> {
+    (Run all migrations) as (RunMigrations)
+    (Run as historical) as (RunHistorical)
+    RunHistorical .|> RunMigrations
+  }
+
+  rectangle Testing {
     (Run automated tests for contract type) as (TestType)
     (Run automated tests for contract instance) as (TestInstance)
     (Run automated tests for library type) as (TestLibrary)
     (Run automated tests for library instance) as (TestLibraryInstance)
 
+    TestInstance --> RunHistorical
+    TestLibraryInstance --> RunHistorical
+
     (Run test written in Solidity) as (RunSolidity)
+    RunSolidity --> CompileAll
+    RunSolidity --> RunMigrations
+
     (Run test written in Javascript) as (RunJavascript)
+    RunJavascript --> CompileAll
+    RunJavascript --> RunMigrations
 
-    TestType ..|> RunSolidity
-    TestType ..|> RunJavascript
+    TestType --> RunSolidity
+    TestType --> RunJavascript
 
-    TestInstance ..|> RunSolidity
-    TestInstance ..|> RunJavascript
+    TestInstance --> RunSolidity
+    TestInstance --> RunJavascript
 
-    TestLibrary ..|> RunSolidity
-    TestLibraryInstance ..|> RunSolidity
+    TestLibrary --> RunSolidity
+    TestLibraryInstance --> RunSolidity
   }
 
   Developer -- TestType
@@ -622,23 +641,28 @@ contract instances locally, matching expected behavior on the network itself.
 Run automated tests for contract type
 `````````````````````````````````````
 
-Run migrations to deploy fresh instances locally.
+Users must be able to run the full test suite for a given |ContractType|,
+written in either Solidity or Javascript, starting fresh on a given |Network|
+and running all compilation/migration steps in the process.
 
 Run automated tests for contract instance
 `````````````````````````````````````````
 
-Contract instance may have a historical contract type (old source, etc.)
+Some tests may be written for a specific |ContractInstance| to account for
+historical differences between that instance and the current
+|Source| for the corresponding |ContractType|.
 
-Run migrations assuming historical versions and deploy instances locally.
+Users should be able run tests on a fresh local |Network|, reflecting that
+historical version.
 
 Run automated tests for library type
 ````````````````````````````````````
 
-Run deploy new instance of library and run tests linked to it.
+In order to validate a particular |Library|, users should be able to run
+tests in a fresh local |Network| environment, with given library deployed.
 
 Run automated tests for library instance
 ````````````````````````````````````````
 
-Library instance may represent a historical version of the library type.
-
-Deploy instance of possibly-historical type and run tests linked to it.
+Much like running automated tests for a |ContractInstance|, users should be
+able to validate behavior for outdated instances of a given |Library|.
