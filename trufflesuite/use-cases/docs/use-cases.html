@@ -83,9 +83,19 @@
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Use Cases</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#saving-artifacts">Saving artifacts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#save-contract-type">Save contract type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#save-contract-instance">Save contract instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#save-library-instance">Save library instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#save-interface-instance">Save interface instance</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#compilation">Compilation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#compile-a-single-source-file-as-a-contract-type">Compile a single source file as a contract type</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#compile-primary-and-related-source-files-as-a-contract-type">Compile primary and related source files as a contract type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compile-all-project-sources">Compile all project sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compile-modified-project-sources">Compile modified project sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#determine-modified-sources">Determine modified sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compile-source-file">Compile source file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compile-primary-and-related-source-files">Compile primary and related source files</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#reading-contract-metadata">Reading contract metadata</a><ul>
@@ -107,12 +117,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#call-read-only-method">Call read-only method</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#invoke-method-via-a-transaction">Invoke method via a transaction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#send-eth-to-a-contract-instance">Send ETH to a contract instance</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#saving-externally-deployed-instances">Saving externally-deployed instances</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#save-contract-instance">Save contract instance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#save-library-instance">Save library instance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#save-interface-instance">Save interface instance</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#migrations">Migrations</a><ul>
@@ -201,35 +205,129 @@
             
   <div class="section" id="use-cases">
 <h1>Use Cases<a class="headerlink" href="#use-cases" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="saving-artifacts">
+<h2>Saving artifacts<a class="headerlink" href="#saving-artifacts" title="Permalink to this headline">¶</a></h2>
+<p>Users and tooling (internally) must be able to save <a class="reference internal" href="glossary.html#term-artifact"><span class="xref std std-term">Artifacts</span></a> for
+<a class="reference internal" href="glossary.html#term-contract-type"><span class="xref std std-term">Contract Types</span></a> and <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instances</span></a>.</p>
+<p>Beyond internal use cases that include save operations, developers
+may need to manually generate new artifacts in the course of development.</p>
+<p>Since a smart contract blockchain network is effectively a distributed global
+database, developers may write their applications for the express or implicit
+purpose of accessing other contract instances on that network.</p>
+<p>Developers should be able to leverage tooling to interface with these external
+contracts, either common, public libraries, or contract instances for other
+applications. Tooling should integrate well with code written outside a given
+project.</p>
+<p>Additionally, some applications may not use tooling’s built-in deployment
+systems, and some <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instances</span></a> may deploy others. Tooling should be
+able to account for the record-keeping in all these cases.</p>
+<p class="plantuml">
+<object data="../_images/plantuml-91990d87493f6c7b2dade89df75f00ee324f613f.svg" type="image/svg+xml" style="width:457px;height:350px;">
+<img src="../_images/plantuml-91990d87493f6c7b2dade89df75f00ee324f613f.png" alt="left to right direction
+
+:Smart Contract Developer: as :SmartContractDev:
+
+rectangle Saving {
+  (Save contract type) as (SaveType)
+  (Save contract instance) as (SaveInstance)
+  (Save library instance) as (SaveLibrary)
+  (Save interface instance) as (SaveInterface)
+}
+
+SmartContractDev -- SaveType
+SmartContractDev -- SaveInstance
+SmartContractDev -- SaveLibrary
+SmartContractDev -- SaveInterface" />
+
+</object></p>
+<div class="section" id="save-contract-type">
+<h3>Save contract type<a class="headerlink" href="#save-contract-type" title="Permalink to this headline">¶</a></h3>
+<p>Users must be able to save new <a class="reference internal" href="glossary.html#term-contract-type"><span class="xref std std-term">Contract Types</span></a>, whether or not it has any
+corresponding <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instances</span></a>.</p>
+</div>
+<div class="section" id="save-contract-instance">
+<h3>Save contract instance<a class="headerlink" href="#save-contract-instance" title="Permalink to this headline">¶</a></h3>
+<p>Users must be able to save new <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instances</span></a> on a given network,
+identifying them as a known <a class="reference internal" href="glossary.html#term-contract-type"><span class="xref std std-term">Contract Type</span></a>.</p>
+</div>
+<div class="section" id="save-library-instance">
+<h3>Save library instance<a class="headerlink" href="#save-library-instance" title="Permalink to this headline">¶</a></h3>
+<p>Similarly, users must be able to save records of externally-deployed
+<span class="xref std std-term">Libraries</span>. This is particularly useful, as many commonly-used libraries are
+already deployed on a majority of <a class="reference internal" href="glossary.html#term-network"><span class="xref std std-term">Networks</span></a>, and users should not have to pay
+the extra gas just to accommodate tooling.</p>
+</div>
+<div class="section" id="save-interface-instance">
+<h3>Save interface instance<a class="headerlink" href="#save-interface-instance" title="Permalink to this headline">¶</a></h3>
+<p>In cases where source is not known for an external contract, users may need
+reference that <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instance</span></a> by its interface (i.e. via Solidity’s
+<code class="docutils literal notranslate"><span class="pre">interface</span></code> mechanism).</p>
+</div>
+</div>
 <div class="section" id="compilation">
 <h2>Compilation<a class="headerlink" href="#compilation" title="Permalink to this headline">¶</a></h2>
 <p>At the core of smart contract development and deployment is the compilation
 of high-level languages to the underlying EVM <a class="reference internal" href="glossary.html#term-bytecode"><span class="xref std std-term">Bytecode</span></a>.</p>
-<p>Smart contract developers frequently compile/recompile <a class="reference internal" href="glossary.html#term-source"><span class="xref std std-term">Sources</span></a> many times
-throughout the entire lifecycle of development.</p>
+<p>Smart contract developers compile/recompile <a class="reference internal" href="glossary.html#term-source"><span class="xref std std-term">Sources</span></a> many times throughout
+the entire lifecycle of development.</p>
 <p class="plantuml">
-<object data="../_images/plantuml-1393e31e770dca79af204ab66bba96a05ba6175a.svg" type="image/svg+xml" style="width:687px;height:256px;">
-<img src="../_images/plantuml-1393e31e770dca79af204ab66bba96a05ba6175a.png" alt="left to right direction
+<object data="../_images/plantuml-6e38bb9bcde0f14d1c724a72ff13daae89a62e6a.svg" type="image/svg+xml" style="width:701px;height:348px;">
+<img src="../_images/plantuml-6e38bb9bcde0f14d1c724a72ff13daae89a62e6a.png" alt="scale 0.80
+left to right direction
 
 :Smart Contract Developer: as :Developer:
 
-rectangle Compilation {
-  (Compile single source file) as (Compile)
-  (Compile primary and related source files as a contract type) as (CompileMultiple)
+rectangle Saving &lt;&lt; external &gt;&gt; {
+  (Save contract type) as (SaveType)
 }
 
-Developer -- Compile
-Developer -- CompileMultiple" />
+rectangle Compilation {
+  (Compile all project sources) as (CompileAll)
+
+  (Determine modified sources) as (DetermineModified)
+  (Compile modified project sources) as (CompileModified)
+  CompileModified -&gt; DetermineModified
+
+  (Compile source file) as (Compile)
+  Compile -&gt; SaveType
+
+  (Compile primary and related source files) as (CompileMultiple)
+  CompileMultiple .|&gt; Compile
+
+  CompileAll --&gt; Compile
+  CompileModified --&gt; Compile
+}
+
+Developer -- CompileAll
+Developer -- CompileModified" />
 
 </object></p>
-<div class="section" id="compile-a-single-source-file-as-a-contract-type">
-<h3>Compile a single source file as a contract type<a class="headerlink" href="#compile-a-single-source-file-as-a-contract-type" title="Permalink to this headline">¶</a></h3>
-<p>Resulting in a single <a class="reference internal" href="glossary.html#term-contract-type"><span class="xref std std-term">Contract Type</span></a> with no <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instances</span></a>.</p>
+<div class="section" id="compile-all-project-sources">
+<h3>Compile all project sources<a class="headerlink" href="#compile-all-project-sources" title="Permalink to this headline">¶</a></h3>
+<p>Either as part of the first development iteration, or to reset, developers must
+be able to compile all <a class="reference internal" href="glossary.html#term-source"><span class="xref std std-term">Source</span></a> files in a <a class="reference internal" href="glossary.html#term-project"><span class="xref std std-term">Project</span></a> and obtain saved
+<a class="reference internal" href="glossary.html#term-artifact"><span class="xref std std-term">Artifacts</span></a>.</p>
 </div>
-<div class="section" id="compile-primary-and-related-source-files-as-a-contract-type">
-<h3>Compile primary and related source files as a contract type<a class="headerlink" href="#compile-primary-and-related-source-files-as-a-contract-type" title="Permalink to this headline">¶</a></h3>
-<p>Primary source file and recursively all imports. Primary source declares
-<a class="reference internal" href="glossary.html#term-contract-type"><span class="xref std std-term">Contract Type</span></a>.</p>
+<div class="section" id="compile-modified-project-sources">
+<h3>Compile modified project sources<a class="headerlink" href="#compile-modified-project-sources" title="Permalink to this headline">¶</a></h3>
+<p>For most of development, it’s more commonly useful to compile only <a class="reference internal" href="glossary.html#term-source"><span class="xref std std-term">Source</span></a>
+files that have changed. Users should be able to perform this minimal
+compilation.</p>
+</div>
+<div class="section" id="determine-modified-sources">
+<h3>Determine modified sources<a class="headerlink" href="#determine-modified-sources" title="Permalink to this headline">¶</a></h3>
+<p>To support compilation of changed <a class="reference internal" href="glossary.html#term-source"><span class="xref std std-term">Sources</span></a>, tooling should provide a means to
+identify which files have changed since their last compilation.</p>
+</div>
+<div class="section" id="compile-source-file">
+<h3>Compile source file<a class="headerlink" href="#compile-source-file" title="Permalink to this headline">¶</a></h3>
+<p>Tooling must provide a means to compile a single, standalone <a class="reference internal" href="glossary.html#term-source"><span class="xref std std-term">Source</span></a> file
+(no imports), saving a corresponding <a class="reference internal" href="glossary.html#term-artifact"><span class="xref std std-term">Artifact</span></a> for the <a class="reference internal" href="glossary.html#term-contract-type"><span class="xref std std-term">Contract Type</span></a>.</p>
+</div>
+<div class="section" id="compile-primary-and-related-source-files">
+<h3>Compile primary and related source files<a class="headerlink" href="#compile-primary-and-related-source-files" title="Permalink to this headline">¶</a></h3>
+<p>Tooling must provide a means to compile a single <a class="reference internal" href="glossary.html#term-source"><span class="xref std std-term">Source</span></a> file and all sources
+it imports, recursively.</p>
 </div>
 </div>
 <div class="section" id="reading-contract-metadata">
@@ -433,54 +531,6 @@ and computed data views. These interfaces are specified for each instance’s
 or other tokens.</p>
 <p>Developers must be able to test the receipt of ether; business stakeholders may
 have to provide initial funds, for applications that require it.</p>
-</div>
-</div>
-<div class="section" id="saving-externally-deployed-instances">
-<h2>Saving externally-deployed instances<a class="headerlink" href="#saving-externally-deployed-instances" title="Permalink to this headline">¶</a></h2>
-<p>Since a smart contract blockchain network is effectively a distributed global
-database, developers may write their applications for the express or implicit
-purpose of accessing other contract instances on that network.</p>
-<p>Developers should be able to leverage tooling to interface with these external
-contracts, either common, public libraries, or contract instances for other
-applications. Tooling should integrate well with code written outside a given
-project.</p>
-<p>Additionally, some applications may not use tooling’s built-in deployment
-systems, and some <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instances</span></a> may deploy others. Tooling should be
-able to account for the record-keeping in such cases.</p>
-<p class="plantuml">
-<object data="../_images/plantuml-52d12cee47435f7dd2351863129b9a82a7c8b101.svg" type="image/svg+xml" style="width:457px;height:279px;">
-<img src="../_images/plantuml-52d12cee47435f7dd2351863129b9a82a7c8b101.png" alt="left to right direction
-
-:Smart Contract Developer: as :SmartContractDev:
-
-rectangle saving {
-  (Save contract instance) as (SaveInstance)
-  (Save library instance) as (SaveLibrary)
-  (Save interface instance) as (SaveInterface)
-}
-
-SmartContractDev -- SaveInstance
-SmartContractDev -- SaveLibrary
-SmartContractDev -- SaveInterface" />
-
-</object></p>
-<div class="section" id="save-contract-instance">
-<h3>Save contract instance<a class="headerlink" href="#save-contract-instance" title="Permalink to this headline">¶</a></h3>
-<p>Users must be able to save new <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instances</span></a> on a given network,
-identifying them as a known <a class="reference internal" href="glossary.html#term-contract-type"><span class="xref std std-term">Contract Type</span></a>.</p>
-</div>
-<div class="section" id="save-library-instance">
-<h3>Save library instance<a class="headerlink" href="#save-library-instance" title="Permalink to this headline">¶</a></h3>
-<p>Similarly, users must be able to save records of externally-deployed
-<span class="xref std std-term">Libraries</span>. This is particularly useful, as many commonly-used libraries are
-already deployed on a majority of <a class="reference internal" href="glossary.html#term-network"><span class="xref std std-term">Networks</span></a>, and users should not have to pay
-the extra gas just to accommodate tooling.</p>
-</div>
-<div class="section" id="save-interface-instance">
-<h3>Save interface instance<a class="headerlink" href="#save-interface-instance" title="Permalink to this headline">¶</a></h3>
-<p>In cases where source is not known for an external contract, users may need
-reference that <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instance</span></a> by its interface (i.e. via Solidity’s
-<code class="docutils literal notranslate"><span class="pre">interface</span></code> mechanism).</p>
 </div>
 </div>
 <div class="section" id="migrations">
