@@ -187,6 +187,9 @@ representing a single deployment of a particular <a class="reference internal" h
 <dd><p class="first">By default this is <code class="docutils literal notranslate"><span class="pre">build/contracts/</span></code> in the <a class="reference internal" href="#term-project"><span class="xref std std-term">Project</span></a> directory</p>
 <p class="last">Contains <a class="reference internal" href="#term-artifact"><span class="xref std std-term">Artifacts</span></a> for all of the project’s known <a class="reference internal" href="#term-contract-type"><span class="xref std std-term">Contract Types</span></a>.</p>
 </dd>
+<dt id="term-library">Library</dt>
+<dd>A <a class="reference internal" href="#term-contract-instance"><span class="xref std std-term">Contract Instance</span></a> with composable behavior, for use by other contract
+instances via the EVM’s <code class="docutils literal notranslate"><span class="pre">DELEGATECALL</span></code> mechanism.</dd>
 <dt id="term-link-reference">Link Reference</dt>
 <dd><p class="first">A placeholder representing a runtime or <a class="reference internal" href="#term-network"><span class="xref std std-term">Network</span></a>-specific value, at
 a particular byte offset or offsets. Identified by name.</p>
