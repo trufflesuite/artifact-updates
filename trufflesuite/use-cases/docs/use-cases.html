@@ -634,11 +634,13 @@ Developer -- MultipleInstances" />
 </object></p>
 <div class="section" id="deploy-instance-of-a-type">
 <h3>Deploy instance of a type<a class="headerlink" href="#deploy-instance-of-a-type" title="Permalink to this headline">¶</a></h3>
-<p>On a particular network.</p>
+<p>The base case for deployment: given a <a class="reference internal" href="glossary.html#term-contract-type"><span class="xref std std-term">Contract Type</span></a>, users must be able to
+deploy a new <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instance</span></a> on a particular <a class="reference internal" href="glossary.html#term-network"><span class="xref std std-term">Network</span></a>.</p>
 </div>
 <div class="section" id="deploy-multiple-instances">
 <h3>Deploy multiple instances<a class="headerlink" href="#deploy-multiple-instances" title="Permalink to this headline">¶</a></h3>
-<p>On a particular network, giving each instance a unique name.</p>
+<p>For applications that require multiple <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instances</span></a> per <a class="reference internal" href="glossary.html#term-contract-type"><span class="xref std std-term">Contract Type</span></a>,
+users should be able to deploy instances by role or other identifier.</p>
 </div>
 </div>
 <div class="section" id="migrations">
@@ -699,20 +701,26 @@ Developer -- DetermineLastCompleted" />
 </object></p>
 <div class="section" id="determine-last-completed-migration">
 <h3>Determine last completed migration<a class="headerlink" href="#determine-last-completed-migration" title="Permalink to this headline">¶</a></h3>
-<p>On a particular network.</p>
+<p>Querying and reading the on-chain <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instance</span></a> for the <code class="docutils literal notranslate"><span class="pre">Migrations</span></code>
+contract, users should be able to determine the most recently completed
+migration on that <a class="reference internal" href="glossary.html#term-network"><span class="xref std std-term">Network</span></a>.</p>
 </div>
 <div class="section" id="run-all-migrations">
 <h3>Run all migrations<a class="headerlink" href="#run-all-migrations" title="Permalink to this headline">¶</a></h3>
-<p>On a particular network, resetting from the beginning and running in sequence.</p>
+<p>Either starting at the last completed migration, or resetting from the
+beginning, users should be able to run all migrations for a <a class="reference internal" href="glossary.html#term-project"><span class="xref std std-term">Project</span></a> on
+a particular <a class="reference internal" href="glossary.html#term-network"><span class="xref std std-term">Network</span></a>.</p>
 </div>
 <div class="section" id="run-specific-migration">
 <h3>Run specific migration<a class="headerlink" href="#run-specific-migration" title="Permalink to this headline">¶</a></h3>
-<p>Perform operations in a single migration.</p>
+<p>As part of the larger use case of running all migrations, or as a standalone
+operation. Users and tooling must support running a single migration.</p>
 </div>
 <div class="section" id="run-with-historical-types">
 <h3>Run with historical types<a class="headerlink" href="#run-with-historical-types" title="Permalink to this headline">¶</a></h3>
-<p>Specifying parent network, determine types for instances, and deploy
-instances matching those types instead of current.</p>
+<p>Specifying parent network, users should be able to mimic the state of a given
+network, determining <a class="reference internal" href="glossary.html#term-contract-type"><span class="xref std std-term">Contract Types</span></a> for all known <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instances</span></a>, and
+deploy new instances matching those types instead of current.</p>
 </div>
 </div>
 <div class="section" id="testing">

@@ -477,12 +477,14 @@ one or more |ContractInstances|.
 Deploy instance of a type
 `````````````````````````
 
-On a particular network.
+The base case for deployment: given a |ContractType|, users must be able to
+deploy a new |ContractInstance| on a particular |Network|.
 
 Deploy multiple instances
 `````````````````````````
 
-On a particular network, giving each instance a unique name.
+For applications that require multiple |ContractInstances| per |ContractType|,
+users should be able to deploy instances by role or other identifier.
 
 
 Migrations
@@ -546,25 +548,31 @@ reason about for the user of the tool.
 Determine last completed migration
 ``````````````````````````````````
 
-On a particular network.
+Querying and reading the on-chain |ContractInstance| for the ``Migrations``
+contract, users should be able to determine the most recently completed
+migration on that |Network|.
 
 Run all migrations
 ``````````````````
 
-On a particular network, resetting from the beginning and running in sequence.
+Either starting at the last completed migration, or resetting from the
+beginning, users should be able to run all migrations for a |Project| on
+a particular |Network|.
+
 
 Run specific migration
 ``````````````````````
 
-Perform operations in a single migration.
+As part of the larger use case of running all migrations, or as a standalone
+operation. Users and tooling must support running a single migration.
 
 
 Run with historical types
 ``````````````````````````
 
-Specifying parent network, determine types for instances, and deploy
-instances matching those types instead of current.
-
+Specifying parent network, users should be able to mimic the state of a given
+network, determining |ContractTypes| for all known |ContractInstances|, and
+deploy new instances matching those types instead of current.
 
 
 
