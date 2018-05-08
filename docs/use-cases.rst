@@ -3,15 +3,42 @@ Use Cases
 
 .. include:: _include.rst
 
+The following use cases represent the kinds of interaction users may have with
+Truffle and other tools. These use cases serve to help validate proposals for
+changes to Truffle's artifact format.
+
+These use cases are written primarily for Truffle, as the primary producer
+and consumer of artifacts, but should apply generally for any and all
+tooling for smart contract / decentralized application development.
+
+Since the process to develop and deploy a decentralized applications can
+include many participants, these use cases refer to several different user
+profiles:
+
+- Smart Contract Developer
+- Frontend Developer
+- Business Stakeholder
+- Auditor
+
+Not all of these users interact with development tooling directly, or in the
+same ways. As such, these use cases should specify appropriately.
+
+This list may not be exhaustive, but should cover the vast majority of required
+behaviors.
+
 
 Saving artifacts
 ----------------
 
-Users and tooling (internally) must be able to save |Artifacts| for
-|ContractTypes| and |ContractInstances|.
+Users and tooling must be able to save new and update existing |Artifact|
+files.
 
-Beyond internal use cases that include save operations, developers
-may need to manually generate new artifacts in the course of development.
+As a core behavior, tooling must facilitate the internal record-keeping of all
+known |ContractTypes| and |ContractInstances|, updating them appropriately
+when they change, or when knowledge of them changes.
+
+Beyond that, developers may also need to manually generate new artifacts for
+previously unknown contracts.
 
 Since a smart contract blockchain network is effectively a distributed global
 database, developers may write their applications for the express or implicit
@@ -136,7 +163,6 @@ Compile source file
 
 Tooling must provide a means to compile a single, standalone |Source| file
 (no imports), saving a corresponding |Artifact| for the |ContractType|.
-
 
 Compile primary and related source files
 ````````````````````````````````````````
@@ -312,7 +338,6 @@ As a result, users should be able to use this distinct identifier to query
 for analogous instances across |Networks|, instead of relying solely on the
 type.
 
-
 Interacting with deployed instances
 -----------------------------------
 
@@ -373,23 +398,105 @@ Developers must be able to test the receipt of ether; business stakeholders may
 have to provide initial funds, for applications that require it.
 
 
+Linking
+-------
 
-Migrations
+Smart contract development best practices encourage the separation of code
+into multiple discrete components. As such, developers may write contracts that
+leverage the use of |Libraries| to provide composed behavior.
+
+|Contracts| using libraries are compiled with unresolved |LinkReferences|.
+Libraries are deployed as their own instances and later filled in for the
+|ContractType| as a corresponding |LinkValue|.
+
+.. uml::
+
+  left to right direction
+
+  :Smart Contract Developer: as :Developer:
+
+  rectangle Saving << external >> {
+    (Save contract type) as (SaveType)
+    (Save contract instance) as (SaveInstance)
+  }
+
+  rectangle Linking {
+    (Link contract type to library) as (LinkType)
+    (Link contract instance to library) as (LinkInstance)
+    LinkInstance .left.|> LinkType
+
+    LinkType --> SaveType
+    LinkInstance --> SaveInstance
+  }
+
+  Developer -- LinkType
+  Developer -- LinkInstance
+
+Link contract type to library instance
+``````````````````````````````````````
+
+Developers must be able to link |ContractTypes| to corresponding |Libraries|
+on a particular |Network| or for all networks, so that deployments of that
+type are pre-linked.
+
+Link contract instance to library instance
+``````````````````````````````````````````
+
+In cases where a |ContractInstance| is already deployed, but the
+|LinkReference| for any |Library| is not known, developers should be able to
+save the |LinkValue|.
+
+
+Deployment
 ----------
 
 During and after the process of creating smart contracts, smart contract
 developers need to deploy |ContractTypes| on one or more |Networks|, creating
 one or more |ContractInstances|.
 
-In addition, smart contract developers must be able to track the states of
-different networks separately. For instance, contract instances on different
-networks can be of different versions of the same contract type. This
+.. uml::
+
+  left to right direction
+
+  :Smart Contract Developer: as :Developer:
+
+  rectangle Saving << external >> {
+    (Save contract instance) as (SaveInstance)
+  }
+
+  rectangle Deployment {
+    (Deploy instance of a type) as (DeployInstance)
+    (Deploy multiple instances) as (MultipleInstances)
+    MultipleInstances .|> DeployInstance
+    DeployInstance --> SaveInstance
+  }
+
+  Developer -- DeployInstance
+  Developer -- MultipleInstances
+
+Deploy instance of a type
+`````````````````````````
+
+On a particular network.
+
+Deploy multiple instances
+`````````````````````````
+
+On a particular network, giving each instance a unique name.
+
+
+Migrations
+----------
+
+Smart contract developers should be able to track the states of
+different |Networks| separately. |ContractInstances| on different
+networks can be of different versions of the same |ContractType|. This
 difference should be understood by the underlying tooling, and easy to
 reason about for the user of the tool.
 
 .. uml::
 
-  scale 0.53
+  scale 0.55
   left to right direction
 
   :Smart Contract Developer: as :Developer:
@@ -402,33 +509,32 @@ reason about for the user of the tool.
     (Call read-only method) as (Call)
   }
 
+  rectangle Linking << external >> {
+    (Link contract type to library) as (LinkType)
+  }
+
+  rectangle Deployment << external >> {
+    (Deploy instance of a type) as (DeployInstance)
+  }
+
   rectangle Migrations {
     (Run all migrations) as (RunMigrations)
     (Run specific migration) as (RunSpecific)
     (Run as historical) as (RunHistorical)
     (Determine last completed migration) as (DetermineLastCompleted)
-    (Link contract type to library) as (LinkType)
-    (Link contract instance to library) as (LinkInstance)
-    (Deploy instance of a type) as (DeployInstance)
-    (Deploy multiple instances) as (MultipleInstances)
 
 
-    RunMigrations --> RunSpecific
-    RunHistorical .|> RunMigrations
+    RunHistorical ..|> RunMigrations
+
+    RunMigrations -right-> RunSpecific
+    RunMigrations -left-> DetermineLastCompleted
+
+    DetermineLastCompleted -down-> QueryType : find deployed Migrations
+    DetermineLastCompleted -down-> Call : read instance state
+    RunSpecific -down-> DeployInstance
+    RunSpecific -down-> LinkType
 
 
-    DetermineLastCompleted -up-> QueryType : find deployed Migrations
-    DetermineLastCompleted -up-> Call : read instance state
-
-    RunMigrations -> DetermineLastCompleted
-
-    LinkInstance .left.|> LinkType
-
-
-    MultipleInstances .|> DeployInstance
-
-    RunSpecific --> DeployInstance
-    RunSpecific --> LinkType
   }
 
   Developer -- RunMigrations
@@ -451,27 +557,6 @@ Run specific migration
 ``````````````````````
 
 Perform operations in a single migration.
-
-Link contract type to library instance
-``````````````````````````````````````
-
-On a particular network, so that future deployments of that type are
-pre-linked.
-
-Link contract instance to library instance
-``````````````````````````````````````````
-
-On a particular network, to set specific link value for an instance.
-
-Deploy instance of a type
-`````````````````````````
-
-On a particular network.
-
-Deploy multiple instances
-`````````````````````````
-
-On a particular network, giving each instance a unique name.
 
 
 Run with historical types
