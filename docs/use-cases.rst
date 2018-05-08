@@ -4,40 +4,145 @@ Use Cases
 .. include:: _include.rst
 
 
+Saving artifacts
+----------------
+
+Users and tooling (internally) must be able to save |Artifacts| for
+|ContractTypes| and |ContractInstances|.
+
+Beyond internal use cases that include save operations, developers
+may need to manually generate new artifacts in the course of development.
+
+Since a smart contract blockchain network is effectively a distributed global
+database, developers may write their applications for the express or implicit
+purpose of accessing other contract instances on that network.
+
+Developers should be able to leverage tooling to interface with these external
+contracts, either common, public libraries, or contract instances for other
+applications. Tooling should integrate well with code written outside a given
+project.
+
+Additionally, some applications may not use tooling's built-in deployment
+systems, and some |ContractInstances| may deploy others. Tooling should be
+able to account for the record-keeping in all these cases.
+
+.. uml::
+
+  left to right direction
+
+  :Smart Contract Developer: as :SmartContractDev:
+
+  rectangle Saving {
+    (Save contract type) as (SaveType)
+    (Save contract instance) as (SaveInstance)
+    (Save library instance) as (SaveLibrary)
+    (Save interface instance) as (SaveInterface)
+  }
+
+  SmartContractDev -- SaveType
+  SmartContractDev -- SaveInstance
+  SmartContractDev -- SaveLibrary
+  SmartContractDev -- SaveInterface
+
+Save contract type
+``````````````````
+
+Users must be able to save new |ContractTypes|, whether or not it has any
+corresponding |ContractInstances|.
+
+Save contract instance
+``````````````````````
+
+Users must be able to save new |ContractInstances| on a given network,
+identifying them as a known |ContractType|.
+
+Save library instance
+`````````````````````
+Similarly, users must be able to save records of externally-deployed
+|Libraries|. This is particularly useful, as many commonly-used libraries are
+already deployed on a majority of |Networks|, and users should not have to pay
+the extra gas just to accommodate tooling.
+
+Save interface instance
+```````````````````````
+
+In cases where source is not known for an external contract, users may need
+reference that |ContractInstance| by its interface (i.e. via Solidity's
+``interface`` mechanism).
+
+
 Compilation
 -----------
 
 At the core of smart contract development and deployment is the compilation
 of high-level languages to the underlying EVM |Bytecode|.
 
-Smart contract developers frequently compile/recompile |Sources| many times
-throughout the entire lifecycle of development.
+Smart contract developers compile/recompile |Sources| many times throughout
+the entire lifecycle of development.
 
 .. uml::
 
+  scale 0.80
   left to right direction
 
   :Smart Contract Developer: as :Developer:
 
-  rectangle Compilation {
-    (Compile single source file) as (Compile)
-    (Compile primary and related source files as a contract type) as (CompileMultiple)
+  rectangle Saving << external >> {
+    (Save contract type) as (SaveType)
   }
 
-  Developer -- Compile
-  Developer -- CompileMultiple
+  rectangle Compilation {
+    (Compile all project sources) as (CompileAll)
+
+    (Determine modified sources) as (DetermineModified)
+    (Compile modified project sources) as (CompileModified)
+    CompileModified -> DetermineModified
+
+    (Compile source file) as (Compile)
+    Compile -> SaveType
+
+    (Compile primary and related source files) as (CompileMultiple)
+    CompileMultiple .|> Compile
+
+    CompileAll --> Compile
+    CompileModified --> Compile
+  }
+
+  Developer -- CompileAll
+  Developer -- CompileModified
+
+Compile all project sources
+```````````````````````````
+
+Either as part of the first development iteration, or to reset, developers must
+be able to compile all |Source| files in a |Project| and obtain saved
+|Artifacts|.
+
+Compile modified project sources
+````````````````````````````````
+
+For most of development, it's more commonly useful to compile only |Source|
+files that have changed. Users should be able to perform this minimal
+compilation.
+
+Determine modified sources
+``````````````````````````
+
+To support compilation of changed |Sources|, tooling should provide a means to
+identify which files have changed since their last compilation.
+
+Compile source file
+```````````````````
+
+Tooling must provide a means to compile a single, standalone |Source| file
+(no imports), saving a corresponding |Artifact| for the |ContractType|.
 
 
-Compile a single source file as a contract type
-```````````````````````````````````````````````
+Compile primary and related source files
+````````````````````````````````````````
 
-Resulting in a single |ContractType| with no |ContractInstances|.
-
-Compile primary and related source files as a contract type
-```````````````````````````````````````````````````````````
-
-Primary source file and recursively all imports. Primary source declares
-|ContractType|.
+Tooling must provide a means to compile a single |Source| file and all sources
+it imports, recursively.
 
 
 Reading contract metadata
@@ -267,61 +372,6 @@ or other tokens.
 Developers must be able to test the receipt of ether; business stakeholders may
 have to provide initial funds, for applications that require it.
 
-
-Saving externally-deployed instances
-------------------------------------
-
-Since a smart contract blockchain network is effectively a distributed global
-database, developers may write their applications for the express or implicit
-purpose of accessing other contract instances on that network.
-
-Developers should be able to leverage tooling to interface with these external
-contracts, either common, public libraries, or contract instances for other
-applications. Tooling should integrate well with code written outside a given
-project.
-
-Additionally, some applications may not use tooling's built-in deployment
-systems, and some |ContractInstances| may deploy others. Tooling should be
-able to account for the record-keeping in such cases.
-
-.. uml::
-
-  left to right direction
-
-  :Smart Contract Developer: as :SmartContractDev:
-
-  rectangle saving {
-    (Save contract instance) as (SaveInstance)
-    (Save library instance) as (SaveLibrary)
-    (Save interface instance) as (SaveInterface)
-  }
-
-  SmartContractDev -- SaveInstance
-  SmartContractDev -- SaveLibrary
-  SmartContractDev -- SaveInterface
-
-Save contract instance
-``````````````````````
-
-Users must be able to save new |ContractInstances| on a given network,
-identifying them as a known |ContractType|.
-
-
-Save library instance
-`````````````````````
-
-Similarly, users must be able to save records of externally-deployed
-|Libraries|. This is particularly useful, as many commonly-used libraries are
-already deployed on a majority of |Networks|, and users should not have to pay
-the extra gas just to accommodate tooling.
-
-
-Save interface instance
-```````````````````````
-
-In cases where source is not known for an external contract, users may need
-reference that |ContractInstance| by its interface (i.e. via Solidity's
-``interface`` mechanism).
 
 
 Migrations
