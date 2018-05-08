@@ -35,7 +35,7 @@ files.
 
 As a core behavior, tooling must facilitate the internal record-keeping of all
 known |ContractTypes| and |ContractInstances|, updating them appropriately
-when they change, or when knowledge of them changes.
+when they change.
 
 Beyond that, developers may also need to manually generate new artifacts for
 previously unknown contracts.
@@ -45,7 +45,7 @@ database, developers may write their applications for the express or implicit
 purpose of accessing other contract instances on that network.
 
 Developers should be able to leverage tooling to interface with these external
-contracts, either common, public libraries, or contract instances for other
+contracts, including public libraries and contract instances for other
 applications. Tooling should integrate well with code written outside a given
 project.
 
@@ -74,7 +74,7 @@ able to account for the record-keeping in all these cases.
 Save contract type
 ``````````````````
 
-Users must be able to save new |ContractTypes|, whether or not it has any
+Users must be able to save a new |ContractType|, whether or not it has any
 corresponding |ContractInstances|.
 
 Save contract instance
@@ -93,7 +93,7 @@ the extra gas just to accommodate tooling.
 Save interface instance
 ```````````````````````
 
-In cases where source is not known for an external contract, users may need
+In cases where source is not known for an external contract, users may need to
 reference that |ContractInstance| by its interface (i.e. via Solidity's
 ``interface`` mechanism).
 
@@ -105,7 +105,7 @@ At the core of smart contract development and deployment is the compilation
 of high-level languages to the underlying EVM |Bytecode|.
 
 Smart contract developers compile/recompile |Sources| many times throughout
-the entire lifecycle of development.
+the lifecycle of development.
 
 .. uml::
 
