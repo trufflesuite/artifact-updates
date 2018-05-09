@@ -7,7 +7,7 @@
 .. |Artifacts| replace:: :term:`Artifacts<Artifact>`
 
 .. |AST| replace:: :term:`AST`
-.. |AST| replace:: :term:`ASTs<AST>`
+.. |ASTs| replace:: :term:`ASTs<AST>`
 
 .. |Bytecode| replace:: :term:`Bytecode`
 

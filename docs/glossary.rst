@@ -40,7 +40,7 @@ Glossary
       May contain unresolved |LinkReferences|.
 
       .. toggle-header::
-         :header: **Schema Description**
+         :header: **JSON Schema**
 
          .. jsonschema:: ../schema/spec/contract-object.spec.json#/definitions/Bytecode
 
