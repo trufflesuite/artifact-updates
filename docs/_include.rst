@@ -50,4 +50,3 @@
 
 .. |Project| replace:: :term:`Project`
 
-

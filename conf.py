@@ -39,7 +39,9 @@ release = ''
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinxcontrib.plantuml'
+    'sphinxcontrib.plantuml',
+    'sphinx-jsonschema',
+    'sphinxcontrib.contentui',
 ]
 
 import os

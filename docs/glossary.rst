@@ -10,9 +10,21 @@ Glossary
       or for the description of common interface of all instances of a
       |ContractType|
 
+      .. toggle-header::
+         :header: **JSON Schema**
+
+         .. jsonschema::
+
+            {"type": "array"}
+
    Address
       0x-prefixed hexadecimal string representing an account's public
       identifier
+
+      .. toggle-header::
+         :header: **JSON Schema**
+
+         .. jsonschema:: ../schema/spec/network-object.spec.json#/definitions/Address
 
    Artifact
       A JSON file describing a single :term:`Contract`.
@@ -26,6 +38,11 @@ Glossary
       instruction data.
 
       May contain unresolved |LinkReferences|.
+
+      .. toggle-header::
+         :header: **Schema Description**
+
+         .. jsonschema:: ../schema/spec/contract-object.spec.json#/definitions/Bytecode
 
    Compiler
       A description of the compiler name, version, and any and all settings,
