@@ -7,7 +7,7 @@ Proposal: Improved Artifacts Format
 
    docs/overview
    docs/glossary
-   docs/use-cases
+   docs/requirements/index
 
 
 
