@@ -27,8 +27,8 @@ This list may not be exhaustive, but should cover the vast majority of required
 behaviors.
 
 
-Saving artifacts
-----------------
+Saving new artifacts and updating existing
+------------------------------------------
 
 Users and tooling must be able to save new and update existing |Artifact|
 files.
@@ -98,8 +98,8 @@ reference that |ContractInstance| by its interface (i.e. via Solidity's
 ``interface`` mechanism).
 
 
-Compilation
------------
+Compiling smart contracts
+-------------------------
 
 At the core of smart contract development and deployment is the compilation
 of high-level languages to the underlying EVM |Bytecode|.
@@ -398,8 +398,8 @@ Developers must be able to test the receipt of ether; business stakeholders may
 have to provide initial funds, for applications that require it.
 
 
-Linking
--------
+Linking contracts to libraries
+------------------------------
 
 Smart contract development best practices encourage the separation of code
 into multiple discrete components. As such, developers may write contracts that
@@ -447,8 +447,8 @@ In cases where a |ContractInstance| is already deployed, but the
 save the |LinkValue|.
 
 
-Deployment
-----------
+Deploying new instances
+-----------------------
 
 During and after the process of creating smart contracts, smart contract
 developers need to deploy |ContractTypes| on one or more |Networks|, creating
@@ -575,9 +575,8 @@ network, determining |ContractTypes| for all known |ContractInstances|, and
 deploy new instances matching those types instead of current.
 
 
-
-Testing
--------
+Testing smart contracts
+-----------------------
 
 Being able to validate that smart contracts behave as expected is of paramount
 importance.
