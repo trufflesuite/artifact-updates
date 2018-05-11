@@ -1,6 +1,9 @@
 Use Cases
 =========
 
+Use cases overview
+------------------
+
 .. include:: _include.rst
 
 The following use cases represent the kinds of interaction users may have with
@@ -25,6 +28,35 @@ same ways. As such, these use cases should specify appropriately.
 
 This list may not be exhaustive, but should cover the vast majority of required
 behaviors.
+
+Diagram Legend
+``````````````
+
+This document uses :abbr:`UML (Unified Modeling Language)` Use Case Diagrams
+rendered with `PlantUML <http://plantuml.com>`_.
+
+The following conventions are used throughout:
+
+.. uml::
+
+  left to right direction
+
+  :User:
+
+  (Use case) as (UseCase)
+  (Base case) as (BaseCase)
+  (Dependent use case) as (Dependent)
+
+  User -- UseCase : << interaction >>
+  UseCase ..|> BaseCase : << extends >>
+  UseCase --> Dependent : << includes >>
+
+Use cases may include others, in that in order to achieve one type of behavior,
+another is required.
+
+Use cases may extend others, indicating that one use case is a specific form
+of another. Where it is not indicated, user interactions with base use cases
+also imply user interaction with extensions.
 
 
 Saving new artifacts and updating existing
