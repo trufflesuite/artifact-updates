@@ -5,6 +5,15 @@ Glossary
 
 .. glossary::
 
+   ABI
+      A JSON description of the external interface for a |ContractInstance|,
+      or for the description of common interface of all instances of a
+      |ContractType|
+
+   Address
+      0x-prefixed hexadecimal string representing an account's public
+      identifier
+
    Artifact
       A JSON file describing a single :term:`Contract`.
 
@@ -38,6 +47,10 @@ Glossary
       By default this is ``build/contracts/`` in the |Project| directory
 
       Contains |Artifacts| for all of the project's known |ContractTypes|.
+
+   Library
+      A |ContractInstance| with composable behavior, for use by other contract
+      instances via the EVM's ``DELEGATECALL`` mechanism.
 
    Link Reference
       A placeholder representing a runtime or |Network|-specific value, at

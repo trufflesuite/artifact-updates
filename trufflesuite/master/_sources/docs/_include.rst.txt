@@ -1,3 +1,8 @@
+.. |ABI| replace:: :term:`ABI`
+
+.. |Address| replace:: :term:`Address`
+.. |Addresses| replace:: :term:`Addresses<Address>`
+
 .. |Artifact| replace:: :term:`Artifact<Artifact>`
 .. |Artifacts| replace:: :term:`Artifacts<Artifact>`
 
@@ -9,6 +14,7 @@
 .. |Compiler| replace:: :term:`Compiler`
 
 .. |Contract| replace:: :term:`Contract`
+.. |Contracts| replace:: :term:`Contracts<Contract>`
 
 .. |ContractInstance| replace:: :term:`Contract Instance`
 .. |ContractInstances| replace:: :term:`Contract Instances<Contract Instance>`
@@ -18,6 +24,9 @@
 
 .. |ContractsDirectory| replace:: :term:`Contracts Directory`
 
+.. |Library| replace:: :term:`Library`
+.. |Libraries| replace:: :term:`Libraries<Library>`
+
 .. |LinkReference| replace:: :term:`Link Reference`
 .. |LinkReferences| replace:: :term:`Link References<Link Reference>`
 
@@ -25,6 +34,7 @@
 .. |LinkValues| replace:: :term:`Link Values<Link Value>`
 
 .. |Network| replace:: :term:`Network`
+.. |Networks| replace:: :term:`Networks<Network>`
 
 .. |NetworkDirectory| replace:: :term:`Network Directory`
 .. |NetworkDirectories| replace:: :term:`Network Directories<Network Directory>`
