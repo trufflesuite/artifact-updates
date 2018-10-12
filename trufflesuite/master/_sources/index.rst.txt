@@ -7,8 +7,8 @@ Proposal: Improved Artifacts Format
 
    docs/overview
    docs/glossary
-   docs/requirements/index
-
+   docs/concepts
+   docs/use-cases
 
 
 Indices and tables
