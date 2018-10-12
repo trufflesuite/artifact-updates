@@ -48,6 +48,10 @@ Glossary
 
       Contains |Artifacts| for all of the project's known |ContractTypes|.
 
+   Library
+      A |ContractInstance| with composable behavior, for use by other contract
+      instances via the EVM's ``DELEGATECALL`` mechanism.
+
    Link Reference
       A placeholder representing a runtime or |Network|-specific value, at
       a particular byte offset or offsets. Identified by name.

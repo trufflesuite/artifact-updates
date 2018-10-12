@@ -11,7 +11,6 @@ Proposal: Improved Artifacts Format
    docs/use-cases
 
 
-
 Indices and tables
 ~~~~~~~~~~~~~~~~~~
 
