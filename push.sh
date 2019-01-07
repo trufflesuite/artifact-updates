@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
-# Push HTML files to gh-pages automatically.
+#
 
-# Fill this out with the correct org/repo
-ORG=trufflesuite
-REPO=artifact-updates
-# This probably should match an email for one of your users.
 NAME="Travis Deployer"
 EMAIL="no-reply@trufflesuite.com"
 
+DEPLOY_BRANCH=gh-pages
+REPO_URL="git@github.com:trufflesuite/artifact-updates.git"
+
+SOURCE_DIR="$( pwd )"
+DEPLOY_DIR="$( dirname $SOURCE_DIR )/${DEPLOY_BRANCH}"  # separate checkout
+
 set -e
 
+configure-git () {
+  # configure ssh to use travis-encrypted deploy-key,
+  # set git user config
 
-###############################################################################
-# authenticate deployment
-###############################################################################
-
-setup_gh () {
-  echo "Decrypting deploy key..."
+  echo "Configuring ssh..."
   openssl aes-256-cbc \
     -K $encrypted_ed68d7c9ebd1_key \
     -iv $encrypted_ed68d7c9ebd1_iv \
@@ -24,43 +24,35 @@ setup_gh () {
     -out deploy-key -d
 
   chmod 600 deploy-key
-
-  echo "Configuring git..."
   eval `ssh-agent -s`
   ssh-add deploy-key
+
+  echo "Configuring git..."
   git config user.name "${NAME}"
   git config user.email "${GIT_EMAIL}"
 }
 
+clone-deploy-branch () {
+  # clone repo's deployment branch in a separate directory
 
-###############################################################################
-# clone gh-pages branch
-###############################################################################
-
-clone_gh_pages () {
-  echo "Cloning gh-pages branch..."
-
-  # Clone the gh-pages branch outside of the repo and cd into it.
-  cd ..
-  git clone -b gh-pages "git@github.com:$ORG/$REPO.git" gh-pages
-  cd gh-pages
+  echo "Cloning repo, deployment branch..."
+  git clone -b $DEPLOY_BRANCH $REPO_URL $DEPLOY_DIR
 }
 
+copy-docs () {
+  # copy built docs into destination directory:
+  # for builds on master, use main deploy directory
+  # for builds from PRs, etc., use prefix directories for remote and branch
 
-###############################################################################
-# copy docs build
-###############################################################################
-
-copy_docs () {
-  local author
+  local remote
   local branch
-  local directory
+  local destination
 
   if [ "${TRAVIS_PULL_REQUEST_SLUG}" != "" ];
   then
-    author=$( dirname "${TRAVIS_PULL_REQUEST_SLUG}" )
+    remote=$( dirname "${TRAVIS_PULL_REQUEST_SLUG}" )
   else
-    author=$( dirname "${TRAVIS_REPO_SLUG}" )
+    remote=$( dirname "${TRAVIS_REPO_SLUG}" )
   fi
 
   if [ "${TRAVIS_PULL_REQUEST_BRANCH}" != "" ];
@@ -70,42 +62,38 @@ copy_docs () {
     branch="${TRAVIS_BRANCH}"
   fi
 
-  # nested directories for authors and branches
-  directory="${author}/${branch}/"
+  if [ "${remote}" = "trufflesuite" -a "${branch}" = "master" ];
+  then
+    destination="${DEPLOY_DIR}/"
+  else
+    destination="${DEPLOY_DIR}/contrib/${remote}/${branch}/"
+  fi
 
-  echo "Making gh-pages directory ${directory}..."
+  echo "Preparing directory for build artifacts: ${destination}..."
   # ensure output directory exists
-  mkdir -p "${directory}"
+  mkdir -p "${destination}"
 
-  echo "Copying build output to ${directory}..."
+  echo "Copying build output..."
   # copy gh-pages output
-  cp -R ../${REPO}/_build/html/* ${directory}
+  cp -R ${SOURCE_DIR}/_build/html/* ${destination}
 }
 
-
-###############################################################################
-# add / commit / push
-###############################################################################
-
 publish () {
-  echo "Committing..."
-  # Add and commit changes.
+  # commit and push to git
+
+  echo "Committing changes..."
+  cd ${DEPLOY_DIR}
   git add -A .
   git commit -m "Update docs"
 
   echo "Pushing..."
-  git push origin gh-pages
+  git push origin ${DEPLOY_BRANCH}
 }
 
-
-###############################################################################
-# main
-###############################################################################
-
 main () {
-  setup_gh
-  clone_gh_pages
-  copy_docs
+  configure-git
+  clone-deploy-branch
+  copy-docs
   publish
 }
 
