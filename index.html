@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Proposal: Improved Artifacts Format &mdash; Proposal: New Truffle Artifacts Format  documentation</title>
+  <title>Truffle DB - Proposal &mdash; Truffle DB - Proposal  documentation</title>
   
 
   
@@ -48,7 +48,7 @@
           
 
           
-            <a href="#" class="icon icon-home"> Proposal: New Truffle Artifacts Format
+            <a href="#" class="icon icon-home"> Truffle DB - Proposal
           
 
           
@@ -81,10 +81,11 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="background.html">Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="use-cases.html">Use Cases</a></li>
-<li class="toctree-l1"><a class="reference internal" href="background.html">Architecture Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data-model.html">Data Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="design.html">Software Design</a></li>
 </ul>
 
             
@@ -99,7 +100,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">Proposal: New Truffle Artifacts Format</a>
+          <a href="#">Truffle DB - Proposal</a>
         
       </nav>
 
@@ -130,7 +131,7 @@
     
       <li><a href="#">Docs</a> &raquo;</li>
         
-      <li>Proposal: Improved Artifacts Format</li>
+      <li>Truffle DB - Proposal</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -149,8 +150,22 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="proposal-improved-artifacts-format">
-<h1>Proposal: Improved Artifacts Format<a class="headerlink" href="#proposal-improved-artifacts-format" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="truffle-db-proposal">
+<h1>Truffle DB - Proposal<a class="headerlink" href="#truffle-db-proposal" title="Permalink to this headline">¶</a></h1>
+<p>This document serves to aid in discussion towards the goal of improving
+Truffle’s record-keeping of smart contracts. More specifically, this document
+presents a proposal for a new core component to manage a Truffle project’s
+persisted artifact files and to enable intuitive and robust querying thereof.</p>
+<p>The primary goals for this component are:</p>
+<ol class="arabic simple" start="0">
+<li>Don’t lose any relevant data about a project’s smart contracts or their
+deployed instances.</li>
+<li>Provide a flexible interface for reading and writing persisted information
+about smart contracts.</li>
+<li>Maintain backwards compatibility with Truffle’s existing record-keeping.</li>
+</ol>
+<p>At its core, <strong>Truffle DB</strong> seeks to provide a <a class="reference external" href="https://graphql.org">GraphQL</a>
+interface for accessing project smart contract information.</p>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
@@ -158,6 +173,13 @@
 <li class="toctree-l2"><a class="reference internal" href="overview.html#background">Background</a></li>
 <li class="toctree-l2"><a class="reference internal" href="overview.html#purpose-of-this-document">Purpose of this Document</a></li>
 <li class="toctree-l2"><a class="reference internal" href="overview.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="background.html">Background</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="background.html#what-are-artifacts">What are “Artifacts”?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="background.html#truffle-artifactor">Truffle Artifactor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="background.html#truffle-resolver">Truffle Resolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="background.html#truffle-config">Truffle Config</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a><ul>
@@ -174,13 +196,12 @@
 <li class="toctree-l2"><a class="reference internal" href="use-cases.html#testing">Testing</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="background.html">Architecture Background</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="background.html#truffle-artifactor">Truffle Artifactor</a></li>
-<li class="toctree-l2"><a class="reference internal" href="background.html#truffle-resolver">Truffle Resolver</a></li>
-<li class="toctree-l2"><a class="reference internal" href="background.html#truffle-config">Truffle Config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data-model.html">Data Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="design.html">Software Design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="design.html#interface-compatibility">Interface Compatibility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design.html#artifact-compatibility">Artifact Compatibility</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="data-model.html">Data Model</a></li>
 </ul>
 </div>
 </div>

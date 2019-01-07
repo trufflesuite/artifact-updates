@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Architecture Background &mdash; Proposal: New Truffle Artifacts Format  documentation</title>
+  <title>Background &mdash; Truffle DB - Proposal  documentation</title>
   
 
   
@@ -29,8 +29,8 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Data Model" href="data-model.html" />
-    <link rel="prev" title="Use Cases" href="use-cases.html" /> 
+    <link rel="next" title="Glossary" href="glossary.html" />
+    <link rel="prev" title="Overview" href="overview.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -49,7 +49,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Proposal: New Truffle Artifacts Format
+            <a href="index.html" class="icon icon-home"> Truffle DB - Proposal
           
 
           
@@ -82,15 +82,20 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="use-cases.html">Use Cases</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Architecture Background</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Background</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-are-artifacts">What are “Artifacts”?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#truffle-s-architecture">Truffle’s Architecture</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#truffle-artifactor">Truffle Artifactor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#truffle-resolver">Truffle Resolver</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#truffle-config">Truffle Config</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use-cases.html">Use Cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data-model.html">Data Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="design.html">Software Design</a></li>
 </ul>
 
             
@@ -105,7 +110,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Proposal: New Truffle Artifacts Format</a>
+          <a href="index.html">Truffle DB - Proposal</a>
         
       </nav>
 
@@ -136,7 +141,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Architecture Background</li>
+      <li>Background</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -155,9 +160,27 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="architecture-background">
-<h1>Architecture Background<a class="headerlink" href="#architecture-background" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="background">
+<h1>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="what-are-artifacts">
+<h2>What are “Artifacts”?<a class="headerlink" href="#what-are-artifacts" title="Permalink to this headline">¶</a></h2>
+<p>Currently, Truffle artifacts are stored as JSON files in a project’s
+<code class="docutils literal notranslate"><span class="pre">build/contracts/</span></code> directory.</p>
+<p>Artifact files follow a formally-specified JSON-Schema <a class="footnote-reference" href="#jsonschema" id="id1">[1]</a>,
+available in the <a class="reference external" href="https://github.com/trufflesuite/truffle-contract-schema">trufflesuite/truffle-contract-schema</a>
+repository. This schema’s latest version is v3.0.1.</p>
+<table class="docutils footnote" frame="void" id="jsonschema" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td><a class="reference external" href="http://json-schema.org">JSON Schema</a> is a vocabulary that
+allows you to annotate and validate JSON documents.</td></tr>
+</tbody>
+</table>
+<div class="section" id="truffle-s-architecture">
+<h3>Truffle’s Architecture<a class="headerlink" href="#truffle-s-architecture" title="Permalink to this headline">¶</a></h3>
 <p>For background, there are a number of relevant existing components.</p>
+</div>
+</div>
 <div class="section" id="truffle-artifactor">
 <h2>Truffle Artifactor<a class="headerlink" href="#truffle-artifactor" title="Permalink to this headline">¶</a></h2>
 <p>Provided by the <strong>truffle-artifactor</strong> package.</p>
@@ -243,10 +266,10 @@ BaseResolver -up- Resolver" />
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="data-model.html" class="btn btn-neutral float-right" title="Data Model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="glossary.html" class="btn btn-neutral float-right" title="Glossary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="use-cases.html" class="btn btn-neutral" title="Use Cases" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="overview.html" class="btn btn-neutral" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
