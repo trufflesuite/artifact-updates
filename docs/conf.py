@@ -44,7 +44,7 @@ extensions = [
 
 import os
 plantuml = 'java -Djava.awt.headless=true -jar {}/plantuml.jar'.format(
-    os.path.dirname(os.path.abspath(__file__))
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 )
 
 plantuml_output_format = "svg"

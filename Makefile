@@ -3,14 +3,17 @@
 
 # You can set these variables from the command line.
 SPHINXOPTS    =
-SPHINXBUILD   = python $(shell which sphinx-build)
+SPHINXBUILD   = $(shell which python) $(shell which sphinx-build)
 SPHINXPROJ    = TruffleArtifactsFormatProposal
-SOURCEDIR     = .
+SOURCEDIR     = docs
 BUILDDIR      = _build
 
 # Put it first so that "make" without argument is like "make help".
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+
+livehtml:
+	$(shell which python) $(shell which sphinx-autobuild) -b html $(SPHINXOPTS) $(SOURCEDIR) $(BUILDDIR)/html
 
 .PHONY: help Makefile
 
