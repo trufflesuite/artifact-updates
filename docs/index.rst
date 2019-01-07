@@ -7,7 +7,7 @@ Proposal: Improved Artifacts Format
 
    overview
    glossary
-   concepts
+   data-model
    use-cases
 
 
