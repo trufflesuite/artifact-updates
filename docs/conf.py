@@ -19,7 +19,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'Proposal: New Truffle Artifacts Format'
+project = 'Truffle DB - Proposal'
 copyright = '2018, Truffle Suite'
 author = 'Truffle Suite'
 
@@ -138,7 +138,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'TruffleArtifactsFormatProposal.tex', 'Truffle Artifacts Format Proposal Documentation',
+    (master_doc, 'truffle-db-proposal.tex', 'Truffle DB - Proposal',
      'Truffle Suite', 'manual'),
 ]
 
@@ -148,7 +148,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'truffleartifactsformatproposal', 'Truffle Artifacts Format Proposal Documentation',
+    (master_doc, 'truffle-db-proposal', 'Truffle DB - Proposal',
      [author], 1)
 ]
 
@@ -159,7 +159,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'TruffleArtifactsFormatProposal', 'Truffle Artifacts Format Proposal Documentation',
-     author, 'TruffleArtifactsFormatProposal', 'One line description of project.',
+    (master_doc, 'truffle-db-proposal', 'Truffle DB – Proposal',
+     author, 'truffle-db-proposal', 'One line description of project.',
      'Miscellaneous'),
 ]

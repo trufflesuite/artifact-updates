@@ -1,10 +1,28 @@
-Architecture Background
-=======================
+Background
+==========
+
+What are "Artifacts"?
+`````````````````````
+
+Currently, Truffle artifacts are stored as JSON files in a project's
+``build/contracts/`` directory.
+
+Artifact files follow a formally-specified JSON-Schema [#jsonschema]_,
+available in the `trufflesuite/truffle-contract-schema <https://github.com/trufflesuite/truffle-contract-schema>`_
+repository. This schema's latest version is v3.0.1.
+
+
+.. [#jsonschema] `JSON Schema <http://json-schema.org>`_ is a vocabulary that
+   allows you to annotate and validate JSON documents.
+
+
+Truffle's Architecture
+----------------------
 
 For background, there are a number of relevant existing components.
 
 Truffle Artifactor
-------------------
+``````````````````
 
 Provided by the **truffle-artifactor** package.
 
@@ -25,7 +43,7 @@ to the configured ``contracts_build_directory``.
 
 
 Truffle Resolver
-----------------
+````````````````
 
 Provided by the **truffle-resolver** package.
 
@@ -47,7 +65,7 @@ instantiating a contract abstraction from the artifact automatically.
    Resolver -up- Resolve
 
 Truffle Config
---------------
+``````````````
 
 Provided by the **truffle-config** package.
 

@@ -1,20 +1,9 @@
-Introducing Truffle DB
-======================
+Software Design
+===============
 
-Herein, this document proposes the introduction of a new core Truffle
-component: **Truffle DB**.
-
-Truffle DB aims to provide a repository to represent and persist all
-information according to the described data model.
-
-The primary goals for this component are two-fold:
-
-1. Provide a flexible interface for reading and writing persisted information
-   about smart contracts.
-2. Maintain backwards compatibility with Truffle's existing data strategy.
-
-At its core, Truffle DB seeks to implement support for querying and mutating
-a project's collection of smart contracts via the GraphQL query language.
+Truffle DB defines a schema for this smart contract data model, but seeks to
+remain agnostic to resolver. This provides the desired flexibility while
+affording options for compatibility.
 
 .. uml::
 
@@ -29,11 +18,6 @@ a project's collection of smart contracts via the GraphQL query language.
    () "GraphQL Resolver" as Resolver
 
    DB .down. Resolver
-
-Truffle DB defines a schema for this smart contract data model, but seeks to
-remain agnostic to resolver. This provides the desired flexibility while
-affording options for compatibility.
-
 
 Interface Compatibility
 -----------------------
