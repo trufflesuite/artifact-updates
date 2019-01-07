@@ -6,59 +6,30 @@ Data Model
 This section serves to describe the relationships between the various
 components in an |Artifact|.
 
-Directory Structure
--------------------
-
-In addition to the existing |ContractsDirectory|, this document
-proposes the addition of a new |NetworkDirectories|, containing |Artifact|
-files for that network.
 
 .. uml::
 
    !include uml/macros.iuml
 
-   directory(Project) {
-    + resolve(name : String) : Artifact
-    + resolve(name : String, network : String) : Artifact
+   object(ContractInstance) {
+    + address : Address
+    + network : Network
+    + transactionHash : TransactionHash
+    + constructorArgs : Array<Value>
+    + contractType : ContractType
+    + callBytecode : Bytecode
+    + linkValues : Set<LinkValue>
    }
 
-
-   directory(Network) {
+   object(ContractType) {
     + name : String
+    + abi : ABI
+    + compilation : Compilation
+    + createBytecode : Bytecode
    }
 
-   file(Artifact) {
-    + JSON
-   }
-
-   abstract class Contract {
-    + name : String
-    + snapshots : Snapshots
-    + links : Map<String => LinkValue>
-    + abi()
-   }
-
-
-   Project *-- "n" Artifact : build/contracts/
-   Project *-right- "n" Network : build/networks/
-   Network *-- "n" Artifact
-
-   Artifact *-down- "1" Contract
-
-
-Artifact Components
--------------------
-
-
-.. uml::
-
-   !include uml/macros.iuml
-
-   collection(Snapshots) {
-    + snapshots : Map<String => Snapshot>
-    + currentId : String
-    + getById(id : String) : Snapshot
-    + getByBytecode(bytecode : String) : Snapshot
+   collection(ContractTypes) {
+    + contractTypes : Set<ContractType>
    }
 
    object(Source) {
@@ -67,41 +38,19 @@ Artifact Components
     + ast : AST
    }
 
-   abstract class Contract {
+   collection(Sources) {
+    + sources : Map<FileIndex => Source>
+   }
+
+   object(Network) {
     + name : String
-    + snapshots : Snapshots
-    + links : Map<String => LinkValue>
-    + abi()
+    + networkId : NetworkID
    }
 
-   class "Contract Instance" as Instance {
-    + address
-    + transactionHash
-    + constructorArgs
-    __
-    + methods() : MethodsInterface
-    + events() : EventsInterface
-    + sendTransaction() : TransactionInterface
-    + send()
-    ..
-    + type() : Type
-   }
-
-   class "Contract Type" as Type {
-    __
-    + link(name : String, value : String)
-    ..
-    + new() : Promise<Instance>
-    + at(address : String) : Instance
-   }
-
-   object(Snapshot) {
-    + {field} id
-    + abi : ABI
-    + callBytecode : Bytecode
-    + createBytecode : Bytecode
+   object(Compilation) {
     + compiler : Compiler
-    + sources : Array<Source>
+    + sources : Sources
+    + contractTypes: ContractTypes
    }
 
    object(Compiler) {
@@ -113,46 +62,55 @@ Artifact Components
    object(Bytecode) {
     + unlinkedBinary : String
     + sourceMap : SourceMap
-    + linkReferences : Map<String => LinkReference>
+    + linkReferences : Set<LinkReference>
    }
 
    object(SourceMap) {
-    + sourceMap : String
+    + sourceMap : Map<ByteOffset => SourceRange>
+    + sources: Sources
    }
 
-   object(LinkReference) {
-    + name : String
-    + offsets : Array<Integer>
-    + length : Integer
+   object(SourceRange) {
+    + source : Source
+    + start : ByteOffset
+    + length : Length
+    + meta : Object
    }
 
    object(LinkValue) {
-    + value : String
+    + linkReference : LinkReference
+    + value : Bytes
    }
 
-   object(AST) {
-    + root : ASTNode
+   object(LinkReference) {
+    + offsets : Array<ByteOffset>
+    + length : Integer
    }
 
-   Instance ..|> Contract
-   Type ..|> Contract
+   Network "1" o-- "n" ContractInstance
 
-   Contract *-down- "1" Snapshots
-   Contract *-right- "n" LinkValue : maps by name
+   ContractInstance o-- "1" ContractType
+   ContractInstance *-- "1" Bytecode
+   ContractInstance *-- "n" LinkValue
+
+   ContractType "n" --o "1" ContractTypes
+   ContractType *-- "1" Bytecode
 
 
-   Snapshots o-- "1" Snapshot : current
-   Snapshots *-down- "n" Snapshot : all
+   ContractTypes "n" --* Compilation
 
+   Compilation *-down- "1" Compiler
+   Compilation *-right- "1" Sources
 
-   Snapshot *-right- "2" Bytecode
-   Snapshot *-- "1" Compiler
-   Snapshot *-left- "n" Source
-
-   Source *-- "1" AST
+   Sources *-- "n" Source
 
    Bytecode *-- "1" SourceMap
-   Bytecode *-up- "n" LinkReference : missing by name
 
+   SourceMap o-left- "1" Sources
+   SourceMap *-- "n" SourceRange
+   SourceRange o-left- "1" Source
 
-   LinkValue ..> LinkReference : <<resolves>>
+   LinkReference "n" --* Bytecode
+
+   LinkValue ..> "1" LinkReference
+
