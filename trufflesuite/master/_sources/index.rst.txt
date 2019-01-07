@@ -5,10 +5,10 @@ Proposal: Improved Artifacts Format
    :maxdepth: 2
    :caption: Contents:
 
-   docs/overview
-   docs/glossary
-   docs/concepts
-   docs/use-cases
+   overview
+   glossary
+   concepts
+   use-cases
 
 
 Indices and tables
