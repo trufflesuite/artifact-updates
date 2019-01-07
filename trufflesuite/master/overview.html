@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
@@ -9,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; Proposal: New Truffle Artifacts Format  documentation</title>
+  <title>Overview &mdash; Proposal: New Truffle Artifacts Format  documentation</title>
   
 
   
@@ -28,7 +27,7 @@
   
     <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="index" title="Index" href="#" />
+    <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
 
   
@@ -79,7 +78,15 @@
             
             
               <!-- Local TOC -->
-              <div class="local-toc"></div>
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Overview</a><ul>
+<li><a class="reference internal" href="#background">Background</a></li>
+<li><a class="reference internal" href="#purpose-of-this-document">Purpose of this Document</a></li>
+<li><a class="reference internal" href="#notes">Notes</a></li>
+</ul>
+</li>
+</ul>
+</div>
             
           
         </div>
@@ -123,12 +130,14 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Index</li>
+      <li>Overview</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
+            <a href="_sources/overview.rst.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
     
@@ -140,109 +149,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-
-<h1 id="index">Index</h1>
-
-<div class="genindex-jumpbox">
- <a href="#A"><strong>A</strong></a>
- | <a href="#B"><strong>B</strong></a>
- | <a href="#C"><strong>C</strong></a>
- | <a href="#L"><strong>L</strong></a>
- | <a href="#N"><strong>N</strong></a>
- | <a href="#P"><strong>P</strong></a>
- | <a href="#S"><strong>S</strong></a>
- 
+  <div class="section" id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
+<p>Currently, Truffle artifacts are stored as JSON files in a project’s
+<code class="docutils literal notranslate"><span class="pre">build/contracts/</span></code> directory.</p>
+<p>Artifact files currently follow a formally-specified JSON-Schema <a class="footnote-reference" href="#jsonschema" id="id1">[1]</a>,
+available in the <a class="reference external" href="https://github.com/trufflesuite/truffle-contract-schema">trufflesuite/truffle-contract-schema</a>
+repository. This schema’s latest version is v2.0.0.</p>
 </div>
-<h2 id="A">A</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="glossary.html#term-abi"><strong>ABI</strong></a>
-</li>
-      <li><a href="glossary.html#term-address"><strong>Address</strong></a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="glossary.html#term-artifact"><strong>Artifact</strong></a>
-</li>
-      <li><a href="glossary.html#term-ast"><strong>AST</strong></a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="B">B</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="glossary.html#term-bytecode"><strong>Bytecode</strong></a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="C">C</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="glossary.html#term-compiler"><strong>Compiler</strong></a>
-</li>
-      <li><a href="glossary.html#term-contract"><strong>Contract</strong></a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="glossary.html#term-contract-instance"><strong>Contract Instance</strong></a>
-</li>
-      <li><a href="glossary.html#term-contract-type"><strong>Contract Type</strong></a>
-</li>
-      <li><a href="glossary.html#term-contracts-directory"><strong>Contracts Directory</strong></a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="L">L</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="glossary.html#term-library"><strong>Library</strong></a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="glossary.html#term-link-reference"><strong>Link Reference</strong></a>
-</li>
-      <li><a href="glossary.html#term-link-value"><strong>Link Value</strong></a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="N">N</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="glossary.html#term-network"><strong>Network</strong></a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="glossary.html#term-network-directory"><strong>Network Directory</strong></a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="P">P</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="glossary.html#term-project"><strong>Project</strong></a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="S">S</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="glossary.html#term-snapshot"><strong>Snapshot</strong></a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="glossary.html#term-source"><strong>Source</strong></a>
-</li>
-      <li><a href="glossary.html#term-source-map"><strong>Source Map</strong></a>
-</li>
-  </ul></td>
-</tr></table>
-
+<div class="section" id="purpose-of-this-document">
+<h2>Purpose of this Document<a class="headerlink" href="#purpose-of-this-document" title="Permalink to this headline">¶</a></h2>
+<p>This document serves to aid in discussion around improvement to Truffle’s
+artifacts format, to facilitate additional use cases by users and tools.</p>
+<p>The goal of this effort is to guide direction for <em>truffle-contract-schema</em>
+towards its next major release, v3.0.0.</p>
+</div>
+<div class="section" id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
+<table class="docutils footnote" frame="void" id="jsonschema" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td><a class="reference external" href="http://json-schema.org">JSON Schema</a> is a vocabulary that
+allows you to annotate and validate JSON documents.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
 
 
            </div>
