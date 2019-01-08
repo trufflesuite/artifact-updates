@@ -4,7 +4,13 @@ Data Model
 .. include:: _include.rst
 
 This section serves to describe the relationships between the various
-components in an |Artifact|.
+components in an |Artifact|. It seeks to present an explicit set of named
+resource types and how they relate to one another.
+
+This data model seeks to identify explicitly any implicit relationships and to
+add semantic color to these. It is a work in progress and likely to be
+incomplete and/or wrong.
+
 
 Data Model Breakdown
 --------------------
