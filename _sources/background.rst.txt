@@ -2,7 +2,7 @@ Background
 ==========
 
 What are "Artifacts"?
-`````````````````````
+---------------------
 
 Currently, Truffle artifacts are stored as JSON files in a project's
 ``build/contracts/`` directory.
