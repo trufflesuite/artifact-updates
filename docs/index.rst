@@ -23,7 +23,6 @@ interface for accessing project smart contract information.
    :maxdepth: 2
    :caption: Contents:
 
-   overview
    background
    glossary
    use-cases
