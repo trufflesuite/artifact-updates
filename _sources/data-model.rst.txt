@@ -412,7 +412,7 @@ the data model.
 
 Resources of these types are related as follows.
 
-   * Each **A** optionally owns a single **B**
+   * Each *[resource of type]* **A** optionally owns a single *[resource of type]* **B**
 
    * Each **B** refers to any whole number of **D**\ s
 
