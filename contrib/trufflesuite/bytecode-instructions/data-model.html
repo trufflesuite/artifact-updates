@@ -261,8 +261,8 @@ parameters (<code class="docutils literal notranslate"><span class="pre">linkVal
 (<code class="docutils literal notranslate"><span class="pre">offsets</span></code>)</li>
 </ul>
 <p class="plantuml">
-<object data="_images/plantuml-7076c1a296388bbc7ff554683c539628c516ac55.svg" type="image/svg+xml" style="width:714px;height:468px;">
-<img src="_images/plantuml-7076c1a296388bbc7ff554683c539628c516ac55.png" alt=" !include uml/macros.iuml
+<object data="_images/plantuml-cd509297bc7482f3425b7cdc0047fb0c523276ef.svg" type="image/svg+xml" style="width:714px;height:468px;">
+<img src="_images/plantuml-cd509297bc7482f3425b7cdc0047fb0c523276ef.png" alt=" !include uml/macros.iuml
 
  object(Bytecode) {
   + bytes: Array&lt;Byte&gt;
@@ -296,8 +296,8 @@ object(Meta) {
   + dynamic: Integer
  }
 
- Bytecode *-- &quot;0..1&quot; Instructions
- Instructions *-- &quot;0..1&quot; Meta
+ Bytecode *-- &quot;1&quot; Instructions
+ Instructions *-- &quot;1&quot; Meta
  Bytecode *-- &quot;n&quot; LinkReference
  Bytecode *-- &quot;0..1&quot; SourceMap" />
 
@@ -464,8 +464,8 @@ LinkValue ..&gt; &quot;1&quot; LinkReference" />
 <div class="section" id="combined-data-model">
 <h2>Combined Data Model<a class="headerlink" href="#combined-data-model" title="Permalink to this headline">¶</a></h2>
 <p class="plantuml">
-<object data="_images/plantuml-2ebfcc3c7ca4b541400d8dbf06b8cfdc3a2976ce.svg" type="image/svg+xml" style="width:1033px;height:964px;">
-<img src="_images/plantuml-2ebfcc3c7ca4b541400d8dbf06b8cfdc3a2976ce.png" alt=" !include uml/macros.iuml
+<object data="_images/plantuml-8542458d57317857fab5ec027a40c283a8b9640a.svg" type="image/svg+xml" style="width:1033px;height:964px;">
+<img src="_images/plantuml-8542458d57317857fab5ec027a40c283a8b9640a.png" alt=" !include uml/macros.iuml
 
  object(ContractInstance) {
   + address : Address
@@ -576,8 +576,8 @@ object(Meta) {
  Sources *-- &quot;n&quot; Source
 
  Bytecode *-- &quot;0..1&quot; SourceMap
- Bytecode *-- &quot;0..1&quot; Instructions
- Instructions *-- &quot;0..1&quot; Meta
+ Bytecode *-- &quot;1&quot; Instructions
+ Instructions *-- &quot;1&quot; Meta
 
  SourceMap o-left- &quot;1&quot; Sources
  SourceMap *-- &quot;n&quot; SourceRange
