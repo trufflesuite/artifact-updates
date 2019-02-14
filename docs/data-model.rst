@@ -54,6 +54,7 @@ This data model distinguishes between |ContractTypes| and |ContractInstances|:
 
    object(Bytecode) {
     + bytes: Array<Byte>
+    + instructions: Instructions
     + sourceMap : SourceMap
     + linkReferences : Set<LinkReference>
    }
@@ -96,6 +97,7 @@ Bytecode is represented by an object that contains:
 * An unlinked bytes array (``bytes``)
 * A list of any known link references (``linkReferences``)
 * Possibly a mapping to known source ranges (``sourceMap``)
+* An instructions object containing information derived from the bytecode and sourcemap (``instructions``)
 
 Each link reference is represented by an object that specifies:
 
@@ -110,6 +112,7 @@ Each link reference is represented by an object that specifies:
    object(Bytecode) {
     + bytes: Array<Byte>
     + sourceMap : SourceMap
+    + instructions: Instructions
     + linkReferences : Set<LinkReference>
    }
 
@@ -123,7 +126,23 @@ Each link reference is represented by an object that specifies:
     + sources: Sources
    }
 
+   object(Instructions) {
+    + programCounter: String
+    + opcode: Integer
+    + pushData: String
+    + sourceRanges: String
+    + meta: Object
+   }
 
+  object(Meta) {
+    + cost: Integer
+    + pops: Integer
+    + pushes: Integer
+    + dynamic: Integer
+   }   
+
+   Bytecode *-- "0..1" Instructions
+   Instructions *-- "0..1" Meta
    Bytecode *-- "n" LinkReference
    Bytecode *-- "0..1" SourceMap
 
@@ -190,8 +209,24 @@ of |SourceMaps|.
    object(Bytecode) {
     + bytes: Array<Byte>
     + sourceMap : SourceMap
+    + instructions: Instructions
     + linkReferences : Set<LinkReference>
    }
+
+   object(Instructions) {
+    + programCounter: String
+    + opcode: Integer
+    + pushData: String
+    + sourceRanges: String
+    + meta: Object
+   }
+
+  object(Meta) {
+    + cost: Integer
+    + pops: Integer
+    + pushes: Integer
+    + dynamic: Integer
+   }   
 
    object(Source) {
     + contents : String
@@ -216,7 +251,8 @@ of |SourceMaps|.
    }
 
    Bytecode *-- "1" SourceMap
-
+   Bytecode *-- "1" Instructions
+   Instructions *-- "1" Meta
    SourceMap o-left- "1" Sources
    SourceMap *-- "n" SourceRange
    SourceRange o-left- "1" Source
@@ -332,6 +368,21 @@ Combined Data Model
     + linkReferences : Set<LinkReference>
    }
 
+   object(Instructions) {
+    + programCounter: String
+    + opcode: Integer
+    + pushData: String
+    + sourceRanges: String
+    + meta: Object
+   }
+
+  object(Meta) {
+    + cost: Integer
+    + pops: Integer
+    + pushes: Integer
+    + dynamic: Integer
+   }   
+
    object(SourceMap) {
     + sourceMap : Map<ByteOffset => SourceRange>
     + sources: Sources
@@ -372,7 +423,9 @@ Combined Data Model
    Sources *-- "n" Source
 
    Bytecode *-- "0..1" SourceMap
-
+   Bytecode *-- "0..1" Instructions
+   Instructions *-- "0..1" Meta
+   
    SourceMap o-left- "1" Sources
    SourceMap *-- "n" SourceRange
    SourceRange o-left- "1" Source
