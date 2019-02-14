@@ -141,8 +141,8 @@ Each link reference is represented by an object that specifies:
     + dynamic: Integer
    }   
 
-   Bytecode *-- "0..1" Instructions
-   Instructions *-- "0..1" Meta
+   Bytecode *-- "1" Instructions
+   Instructions *-- "1" Meta
    Bytecode *-- "n" LinkReference
    Bytecode *-- "0..1" SourceMap
 
@@ -423,8 +423,8 @@ Combined Data Model
    Sources *-- "n" Source
 
    Bytecode *-- "0..1" SourceMap
-   Bytecode *-- "0..1" Instructions
-   Instructions *-- "0..1" Meta
+   Bytecode *-- "1" Instructions
+   Instructions *-- "1" Meta
    
    SourceMap o-left- "1" Sources
    SourceMap *-- "n" SourceRange
