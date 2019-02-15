@@ -54,7 +54,7 @@ This data model distinguishes between |ContractTypes| and |ContractInstances|:
 
    object(Bytecode) {
     + bytes: Array<Byte>
-    + instructions: Instructions
+    + instructions: Instruction
     + sourceMap : SourceMap
     + linkReferences : Set<LinkReference>
    }
@@ -97,7 +97,7 @@ Bytecode is represented by an object that contains:
 * An unlinked bytes array (``bytes``)
 * A list of any known link references (``linkReferences``)
 * Possibly a mapping to known source ranges (``sourceMap``)
-* An instructions object containing information derived from the bytecode and sourcemap (``instructions``)
+* An instruction object containing information derived from the bytecode and sourcemap (``instruction``)
 
 Each link reference is represented by an object that specifies:
 
@@ -112,7 +112,7 @@ Each link reference is represented by an object that specifies:
    object(Bytecode) {
     + bytes: Array<Byte>
     + sourceMap : SourceMap
-    + instructions: Instructions
+    + instructions: Instruction
     + linkReferences : Set<LinkReference>
    }
 
@@ -126,7 +126,7 @@ Each link reference is represented by an object that specifies:
     + sources: Sources
    }
 
-   object(Instructions) {
+   object(Instruction) {
     + programCounter: String
     + opcode: Integer
     + pushData: String
@@ -141,8 +141,8 @@ Each link reference is represented by an object that specifies:
     + dynamic: Integer
    }   
 
-   Bytecode *-- "1" Instructions
-   Instructions *-- "1" Meta
+   Bytecode *-- "n" Instruction
+   Instruction *-- "1" Meta
    Bytecode *-- "n" LinkReference
    Bytecode *-- "0..1" SourceMap
 
@@ -209,11 +209,11 @@ of |SourceMaps|.
    object(Bytecode) {
     + bytes: Array<Byte>
     + sourceMap : SourceMap
-    + instructions: Instructions
+    + instructions: Instruction
     + linkReferences : Set<LinkReference>
    }
 
-   object(Instructions) {
+   object(Instruction) {
     + programCounter: String
     + opcode: Integer
     + pushData: String
@@ -251,8 +251,8 @@ of |SourceMaps|.
    }
 
    Bytecode *-- "1" SourceMap
-   Bytecode *-- "1" Instructions
-   Instructions *-- "1" Meta
+   Bytecode *-- "n" Instruction
+   Instruction *-- "1" Meta
    SourceMap o-left- "1" Sources
    SourceMap *-- "n" SourceRange
    SourceRange o-left- "1" Source
@@ -285,6 +285,7 @@ Bytecode may contain gaps to be filled in. These gaps are identified via
    object(Bytecode) {
     + bytes: Array<Byte>
     + sourceMap : SourceMap
+    + instructions: Instruction
     + linkReferences : Set<LinkReference>
    }
 
@@ -365,10 +366,11 @@ Combined Data Model
    object(Bytecode) {
     + bytes: Array<Byte>
     + sourceMap : SourceMap
+    + instructions: Instruction
     + linkReferences : Set<LinkReference>
    }
 
-   object(Instructions) {
+   object(Instruction) {
     + programCounter: String
     + opcode: Integer
     + pushData: String
@@ -423,8 +425,8 @@ Combined Data Model
    Sources *-- "n" Source
 
    Bytecode *-- "0..1" SourceMap
-   Bytecode *-- "1" Instructions
-   Instructions *-- "1" Meta
+   Bytecode *-- "n" Instruction
+   Instruction *-- "1" Meta
    
    SourceMap o-left- "1" Sources
    SourceMap *-- "n" SourceRange
