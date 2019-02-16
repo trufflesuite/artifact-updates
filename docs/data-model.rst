@@ -54,7 +54,7 @@ This data model distinguishes between |ContractTypes| and |ContractInstances|:
 
    object(Bytecode) {
     + bytes: Array<Byte>
-    + instructions: Instruction
+    + instructions: Array<Instruction>
     + sourceMap : SourceMap
     + linkReferences : Set<LinkReference>
    }
@@ -112,7 +112,7 @@ Each link reference is represented by an object that specifies:
    object(Bytecode) {
     + bytes: Array<Byte>
     + sourceMap : SourceMap
-    + instructions: Instruction
+    + instructions: Array<Instruction>
     + linkReferences : Set<LinkReference>
    }
 
@@ -209,7 +209,7 @@ of |SourceMaps|.
    object(Bytecode) {
     + bytes: Array<Byte>
     + sourceMap : SourceMap
-    + instructions: Instruction
+    + instructions: Array<Instruction>
     + linkReferences : Set<LinkReference>
    }
 
@@ -285,7 +285,7 @@ Bytecode may contain gaps to be filled in. These gaps are identified via
    object(Bytecode) {
     + bytes: Array<Byte>
     + sourceMap : SourceMap
-    + instructions: Instruction
+    + instructions: Array<Instruction>
     + linkReferences : Set<LinkReference>
    }
 
@@ -366,7 +366,7 @@ Combined Data Model
    object(Bytecode) {
     + bytes: Array<Byte>
     + sourceMap : SourceMap
-    + instructions: Instruction
+    + instructions: Array<Instruction>
     + linkReferences : Set<LinkReference>
    }
 
