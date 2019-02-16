@@ -176,8 +176,8 @@ incomplete and/or wrong.</p>
 <h3>What is a Smart Contract?<a class="headerlink" href="#what-is-a-smart-contract" title="Permalink to this headline">¶</a></h3>
 <p>This data model distinguishes between <a class="reference internal" href="glossary.html#term-contract-type"><span class="xref std std-term">Contract Types</span></a> and <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instances</span></a>:</p>
 <p class="plantuml">
-<object data="_images/plantuml-41e6a13c92e7466e7a21facd1fcfa35efd13fc14.svg" type="image/svg+xml" style="width:666px;height:481px;">
-<img src="_images/plantuml-41e6a13c92e7466e7a21facd1fcfa35efd13fc14.png" alt="!include uml/macros.iuml
+<object data="_images/plantuml-bdf826d1a305856e272239a177e42a41db65aa37.svg" type="image/svg+xml" style="width:666px;height:494px;">
+<img src="_images/plantuml-bdf826d1a305856e272239a177e42a41db65aa37.png" alt="!include uml/macros.iuml
 
 object(ContractInstance) {
  + address : Address
@@ -209,6 +209,7 @@ object(Compilation) {
 
 object(Bytecode) {
  + bytes: Array&lt;Byte&gt;
+ + instructions: Array&lt;Instruction&gt;
  + sourceMap : SourceMap
  + linkReferences : Set&lt;LinkReference&gt;
 }
@@ -251,6 +252,7 @@ parameters (<code class="docutils literal notranslate"><span class="pre">linkVal
 <li>An unlinked bytes array (<code class="docutils literal notranslate"><span class="pre">bytes</span></code>)</li>
 <li>A list of any known link references (<code class="docutils literal notranslate"><span class="pre">linkReferences</span></code>)</li>
 <li>Possibly a mapping to known source ranges (<code class="docutils literal notranslate"><span class="pre">sourceMap</span></code>)</li>
+<li>An array of instruction objects containing information derived from the bytecode and sourcemap (<code class="docutils literal notranslate"><span class="pre">instructions</span></code>)</li>
 </ul>
 <p>Each link reference is represented by an object that specifies:</p>
 <ul class="simple">
@@ -259,28 +261,45 @@ parameters (<code class="docutils literal notranslate"><span class="pre">linkVal
 (<code class="docutils literal notranslate"><span class="pre">offsets</span></code>)</li>
 </ul>
 <p class="plantuml">
-<object data="_images/plantuml-1d4f0eaee0b7b5c86c00da46cb751dff347bd8d0.svg" type="image/svg+xml" style="width:518px;height:250px;">
-<img src="_images/plantuml-1d4f0eaee0b7b5c86c00da46cb751dff347bd8d0.png" alt="!include uml/macros.iuml
+<object data="_images/plantuml-eb8853eac9dae24b621a75719da290496fcfbcee.svg" type="image/svg+xml" style="width:714px;height:468px;">
+<img src="_images/plantuml-eb8853eac9dae24b621a75719da290496fcfbcee.png" alt=" !include uml/macros.iuml
 
-object(Bytecode) {
- + bytes: Array&lt;Byte&gt;
- + sourceMap : SourceMap
- + linkReferences : Set&lt;LinkReference&gt;
-}
+ object(Bytecode) {
+  + bytes: Array&lt;Byte&gt;
+  + sourceMap : SourceMap
+  + instructions: Array&lt;Instruction&gt;
+  + linkReferences : Set&lt;LinkReference&gt;
+ }
 
-object(LinkReference) {
- + offsets : Array&lt;ByteOffset&gt;
- + length : Integer
-}
+ object(LinkReference) {
+  + offsets : Array&lt;ByteOffset&gt;
+  + length : Integer
+ }
 
-object(SourceMap) {
- + ranges : Map&lt;ByteOffset =&gt; SourceRange&gt;
- + sources: Sources
-}
+ object(SourceMap) {
+  + ranges : Map&lt;ByteOffset =&gt; SourceRange&gt;
+  + sources: Sources
+ }
 
+ object(Instruction) {
+  + programCounter: String
+  + opcode: Integer
+  + pushData: String
+  + sourceRanges: String
+  + meta: Object
+ }
 
-Bytecode *-- &quot;n&quot; LinkReference
-Bytecode *-- &quot;0..1&quot; SourceMap" />
+object(Meta) {
+  + cost: Integer
+  + pops: Integer
+  + pushes: Integer
+  + dynamic: Integer
+ }
+
+ Bytecode *-- &quot;n&quot; Instruction
+ Instruction *-- &quot;1&quot; Meta
+ Bytecode *-- &quot;n&quot; LinkReference
+ Bytecode *-- &quot;0..1&quot; SourceMap" />
 
 </object></p>
 </div>
@@ -338,44 +357,61 @@ Sources *-- &quot;n&quot; Source" />
 <p>As part of compilation, bytecode can reference underlying source ranges by way
 of <a class="reference internal" href="glossary.html#term-source-map"><span class="xref std std-term">Source Maps</span></a>.</p>
 <p class="plantuml">
-<object data="_images/plantuml-23288add9e42e0ec25339d9bc6d2026c7b312de1.svg" type="image/svg+xml" style="width:572px;height:416px;">
-<img src="_images/plantuml-23288add9e42e0ec25339d9bc6d2026c7b312de1.png" alt="!include uml/macros.iuml
+<object data="_images/plantuml-c096b5f4a665dbd150bb194a77b25d058ffccfa4.svg" type="image/svg+xml" style="width:769px;height:468px;">
+<img src="_images/plantuml-c096b5f4a665dbd150bb194a77b25d058ffccfa4.png" alt=" !include uml/macros.iuml
 
-object(Bytecode) {
- + bytes: Array&lt;Byte&gt;
- + sourceMap : SourceMap
- + linkReferences : Set&lt;LinkReference&gt;
-}
+ object(Bytecode) {
+  + bytes: Array&lt;Byte&gt;
+  + sourceMap : SourceMap
+  + instructions: Array&lt;Instruction&gt;
+  + linkReferences : Set&lt;LinkReference&gt;
+ }
 
-object(Source) {
- + contents : String
- + sourcePath : String
- + ast : AST
-}
+ object(Instruction) {
+  + programCounter: String
+  + opcode: Integer
+  + pushData: String
+  + sourceRanges: String
+  + meta: Object
+ }
 
-collection(Sources) {
- + sources : Map&lt;FileIndex =&gt; Source&gt;
-}
+object(Meta) {
+  + cost: Integer
+  + pops: Integer
+  + pushes: Integer
+  + dynamic: Integer
+ }
 
-object(SourceMap) {
- + ranges : Map&lt;ByteOffset =&gt; SourceRange&gt;
- + sources: Sources
-}
+ object(Source) {
+  + contents : String
+  + sourcePath : String
+  + ast : AST
+ }
 
-object(SourceRange) {
- + source : Source
- + start : ByteOffset
- + length : Length
- + meta : Object
-}
+ collection(Sources) {
+  + sources : Map&lt;FileIndex =&gt; Source&gt;
+ }
 
-Bytecode *-- &quot;1&quot; SourceMap
+ object(SourceMap) {
+  + ranges : Map&lt;ByteOffset =&gt; SourceRange&gt;
+  + sources: Sources
+ }
 
-SourceMap o-left- &quot;1&quot; Sources
-SourceMap *-- &quot;n&quot; SourceRange
-SourceRange o-left- &quot;1&quot; Source
+ object(SourceRange) {
+  + source : Source
+  + start : ByteOffset
+  + length : Length
+  + meta : Object
+ }
 
-Sources *-- &quot;n&quot; Source" />
+ Bytecode *-- &quot;1&quot; SourceMap
+ Bytecode *-- &quot;n&quot; Instruction
+ Instruction *-- &quot;1&quot; Meta
+ SourceMap o-left- &quot;1&quot; Sources
+ SourceMap *-- &quot;n&quot; SourceRange
+ SourceRange o-left- &quot;1&quot; Source
+
+ Sources *-- &quot;n&quot; Source" />
 
 </object></p>
 </div>
@@ -385,8 +421,8 @@ Sources *-- &quot;n&quot; Source" />
 <a class="reference internal" href="glossary.html#term-link-reference"><span class="xref std std-term">Link References</span></a>. Corresponding <a class="reference internal" href="glossary.html#term-link-value"><span class="xref std std-term">Link Values</span></a> are contained within
 <a class="reference internal" href="glossary.html#term-contract-instance"><span class="xref std std-term">Contract Instances</span></a>.</p>
 <p class="plantuml">
-<object data="_images/plantuml-0019899cc5a42103b17143a5994cceda77d4ae78.svg" type="image/svg+xml" style="width:308px;height:595px;">
-<img src="_images/plantuml-0019899cc5a42103b17143a5994cceda77d4ae78.png" alt="!include uml/macros.iuml
+<object data="_images/plantuml-a6e610796a2e602f044650cd608d1af2ebbea3dc.svg" type="image/svg+xml" style="width:308px;height:608px;">
+<img src="_images/plantuml-a6e610796a2e602f044650cd608d1af2ebbea3dc.png" alt="!include uml/macros.iuml
 
 object(ContractInstance) {
  + address : Address
@@ -401,6 +437,7 @@ object(ContractInstance) {
 object(Bytecode) {
  + bytes: Array&lt;Byte&gt;
  + sourceMap : SourceMap
+ + instructions: Array&lt;Instruction&gt;
  + linkReferences : Set&lt;LinkReference&gt;
 }
 
@@ -428,111 +465,129 @@ LinkValue ..&gt; &quot;1&quot; LinkReference" />
 <div class="section" id="combined-data-model">
 <h2>Combined Data Model<a class="headerlink" href="#combined-data-model" title="Permalink to this headline">¶</a></h2>
 <p class="plantuml">
-<object data="_images/plantuml-a2562eb69a07e7a86f416c489747d7eb579b9afa.svg" type="image/svg+xml" style="width:842px;height:938px;">
-<img src="_images/plantuml-a2562eb69a07e7a86f416c489747d7eb579b9afa.png" alt="!include uml/macros.iuml
+<object data="_images/plantuml-3d0b61a423dfc6d4580f0609ff623f3b710891c3.svg" type="image/svg+xml" style="width:1033px;height:978px;">
+<img src="_images/plantuml-3d0b61a423dfc6d4580f0609ff623f3b710891c3.png" alt=" !include uml/macros.iuml
 
-object(ContractInstance) {
- + address : Address
- + network : Network
- + transactionHash : TransactionHash
- + constructorArgs : Array&lt;Value&gt;
- + contractType : ContractType
- + callBytecode : Bytecode
- + linkValues : Set&lt;LinkValue&gt;
-}
+ object(ContractInstance) {
+  + address : Address
+  + network : Network
+  + transactionHash : TransactionHash
+  + constructorArgs : Array&lt;Value&gt;
+  + contractType : ContractType
+  + callBytecode : Bytecode
+  + linkValues : Set&lt;LinkValue&gt;
+ }
 
-object(ContractType) {
- + name : String
- + abi : ABI
- + compilation : Compilation
- + createBytecode : Bytecode
-}
+ object(ContractType) {
+  + name : String
+  + abi : ABI
+  + compilation : Compilation
+  + createBytecode : Bytecode
+ }
 
-collection(ContractTypes) {
- + contractTypes : Set&lt;ContractType&gt;
-}
+ collection(ContractTypes) {
+  + contractTypes : Set&lt;ContractType&gt;
+ }
 
-object(Source) {
- + contents : String
- + sourcePath : String
- + ast : AST
-}
+ object(Source) {
+  + contents : String
+  + sourcePath : String
+  + ast : AST
+ }
 
-collection(Sources) {
- + sources : Map&lt;FileIndex =&gt; Source&gt;
-}
+ collection(Sources) {
+  + sources : Map&lt;FileIndex =&gt; Source&gt;
+ }
 
-object(Network) {
- + name : String
- + networkId : NetworkID
-}
+ object(Network) {
+  + name : String
+  + networkId : NetworkID
+ }
 
-object(Compilation) {
- + compiler : Compiler
- + sources : Sources
- + contractTypes: ContractTypes
-}
+ object(Compilation) {
+  + compiler : Compiler
+  + sources : Sources
+  + contractTypes: ContractTypes
+ }
 
-object(Compiler) {
- + name : String
- + version : String
- + settings : Object
-}
+ object(Compiler) {
+  + name : String
+  + version : String
+  + settings : Object
+ }
 
-object(Bytecode) {
- + bytes: Array&lt;Byte&gt;
- + sourceMap : SourceMap
- + linkReferences : Set&lt;LinkReference&gt;
-}
+ object(Bytecode) {
+  + bytes: Array&lt;Byte&gt;
+  + sourceMap : SourceMap
+  + instructions: Array&lt;Instruction&gt;
+  + linkReferences : Set&lt;LinkReference&gt;
+ }
 
-object(SourceMap) {
- + sourceMap : Map&lt;ByteOffset =&gt; SourceRange&gt;
- + sources: Sources
-}
+ object(Instruction) {
+  + programCounter: String
+  + opcode: Integer
+  + pushData: String
+  + sourceRanges: String
+  + meta: Object
+ }
 
-object(SourceRange) {
- + source : Source
- + start : ByteOffset
- + length : Length
- + meta : Object
-}
+object(Meta) {
+  + cost: Integer
+  + pops: Integer
+  + pushes: Integer
+  + dynamic: Integer
+ }
 
-object(LinkValue) {
- + linkReference : LinkReference
- + value : Bytes
-}
+ object(SourceMap) {
+  + sourceMap : Map&lt;ByteOffset =&gt; SourceRange&gt;
+  + sources: Sources
+ }
 
-object(LinkReference) {
- + offsets : Array&lt;ByteOffset&gt;
- + length : Integer
-}
+ object(SourceRange) {
+  + source : Source
+  + start : ByteOffset
+  + length : Length
+  + meta : Object
+ }
+
+ object(LinkValue) {
+  + linkReference : LinkReference
+  + value : Bytes
+ }
+
+ object(LinkReference) {
+  + offsets : Array&lt;ByteOffset&gt;
+  + length : Integer
+ }
 
 
-ContractInstance o-- &quot;1&quot; ContractType
-ContractInstance *-- &quot;1&quot; Bytecode
-ContractInstance *-- &quot;n&quot; LinkValue
-ContractInstance o-right- &quot;1&quot; Network
+ ContractInstance o-- &quot;1&quot; ContractType
+ ContractInstance *-- &quot;1&quot; Bytecode
+ ContractInstance *-- &quot;n&quot; LinkValue
+ ContractInstance o-right- &quot;1&quot; Network
 
-ContractType &quot;n&quot; --* ContractTypes
-ContractType *-- &quot;1&quot; Bytecode
-ContractType o-- &quot;0..1&quot; Compilation
+ ContractType &quot;n&quot; --* ContractTypes
+ ContractType *-- &quot;1&quot; Bytecode
+ ContractType o-- &quot;0..1&quot; Compilation
 
-ContractTypes &quot;n&quot; --* Compilation
+ ContractTypes &quot;n&quot; --* Compilation
 
-Compilation *-down- &quot;1&quot; Compiler
-Compilation *-right- &quot;1&quot; Sources
+ Compilation *-down- &quot;1&quot; Compiler
+ Compilation *-right- &quot;1&quot; Sources
 
-Sources *-- &quot;n&quot; Source
+ Sources *-- &quot;n&quot; Source
 
-Bytecode *-- &quot;0..1&quot; SourceMap
+ Bytecode *-- &quot;0..1&quot; SourceMap
+ Bytecode *-- &quot;n&quot; Instruction
+ Instruction *-- &quot;1&quot; Meta
 
-SourceMap o-left- &quot;1&quot; Sources
-SourceMap *-- &quot;n&quot; SourceRange
-SourceRange o-left- &quot;1&quot; Source
+ SourceMap o-left- &quot;1&quot; Sources
+ SourceMap *-- &quot;n&quot; SourceRange
+ SourceRange o-left- &quot;1&quot; Source
 
-LinkReference &quot;n&quot; --* Bytecode
+ LinkReference &quot;n&quot; --* Bytecode
 
-LinkValue ..&gt; &quot;1&quot; LinkReference" />
+ LinkValue ..&gt; &quot;1&quot; LinkReference" />
 
 </object></p>
 </div>
