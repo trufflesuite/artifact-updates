@@ -97,7 +97,7 @@ Bytecode is represented by an object that contains:
 * An unlinked bytes array (``bytes``)
 * A list of any known link references (``linkReferences``)
 * Possibly a mapping to known source ranges (``sourceMap``)
-* An instruction object containing information derived from the bytecode and sourcemap (``instruction``)
+* An array of instruction objects containing information derived from the bytecode and sourcemap (``instructions``)
 
 Each link reference is represented by an object that specifies:
 
