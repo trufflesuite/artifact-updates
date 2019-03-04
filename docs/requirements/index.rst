@@ -65,5 +65,5 @@ Use Cases
    :maxdepth: 2
    :numbered:
 
-   use-cases
+   truffle
 
