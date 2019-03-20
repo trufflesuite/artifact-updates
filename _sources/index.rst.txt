@@ -25,7 +25,7 @@ interface for accessing project smart contract information.
 
    background
    glossary
-   use-cases
+   requirements/index
    data-model
    design
 
