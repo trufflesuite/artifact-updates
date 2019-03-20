@@ -1,4 +1,275 @@
 !define directory(name) class name << (D,cyan) Directory >>
 !define file(name) class name << (F,turquoise) File >>
-!define object(name) class name << (O,orchid) Object >>
+
+!define object(name) class name << (O,lawngreen) Data Object >>
+!define resource(name) class name << (R,orchid) Resource >>
 !define collection(name) class name << (C,deeppink) Collection >>
+
+'
+' Resources
+'
+
+!ifdef SHOW_BYTECODE
+!define SHOW_LINK_REFERENCE
+
+resource(Bytecode) {
+  + bytes: Array<Byte>
+  + instructions: Array<Instruction>
+  + linkReferences : Set<LinkReference>
+}
+
+object(Instruction) {
+  + programCounter: String
+  + opcode: Integer
+  + pushData: String
+  + meta: InstructionMeta
+}
+
+object(InstructionMeta) {
+  + cost: Integer
+  + pops: Integer
+  + pushes: Integer
+  + dynamic: Integer
+}
+
+Instruction *-- "1" InstructionMeta
+Bytecode *-- "n" Instruction
+!endif
+
+!ifdef SHOW_SOURCE
+resource(Source) {
+  + contents : String
+  + sourcePath : String
+}
+!endif
+
+
+!ifdef SHOW_CONTRACT
+resource(Contract) {
+  + name : String
+  + source : Source
+}
+!endif
+
+!ifdef SHOW_COMPILATION
+resource(Compilation) {
+  + compiler : Compiler
+  + sources : Array<Maybe<Source>>
+}
+
+object(Compiler) {
+  + name : String
+  + version : String
+  + settings : Object
+}
+
+Compilation *-left- "1" Compiler
+!endif
+
+!ifdef SHOW_SOURCE_MAP
+resource(SourceMap) {
+  + rawSourceMap : String
+  + sources : Array<Maybe<Source>>
+  + bytecode : Bytecode
+}
+
+object(SourceRange) {
+  + source : Source
+  + start : ByteOffset
+  + length : Length
+  + meta : Object
+}
+
+SourceMap *-- "n" SourceRange
+!endif
+
+
+!ifdef SHOW_INSTANCE
+!define SHOW_LINK_VALUE
+!define SHOW_TYPE
+resource(ContractInstance) {
+  + address : Address
+  + network : Network
+  + transactionHash : TransactionHash
+  + constructorArgs : Array<Value>
+  + contractType : ContractType
+  + callBytecode : Bytecode
+  + linkValues : Set<LinkValue>
+}
+!endif
+
+!ifdef SHOW_INTERFACE
+resource(ContractInterface) {
+}
+!endif
+
+!ifdef SHOW_CONSTRUCTOR
+!define SHOW_LINK_VALUE
+!define SHOW_TYPE
+resource(ContractConstructor) {
+  + name : String
+  + compilation : Compilation
+  + createBytecode : Bytecode
+  + contractType : ContractType
+  + linkValues : Set<LinkValue>
+}
+!endif
+
+!ifdef SHOW_NETWORK
+resource(Network) {
+  + name : String
+  + networkId : NetworkID
+}
+!endif
+
+
+
+'
+' Shared Data Objects
+'
+
+!ifdef SHOW_LINK_VALUE
+!define SHOW_LINK_REFERENCE
+object(LinkValue) {
+  + linkReference : LinkReference
+  + value : Bytes
+}
+!endif
+
+!ifdef SHOW_LINK_REFERENCE
+object(LinkReference) {
+  + offsets : Array<ByteOffset>
+  + length : Integer
+}
+!endif
+
+!ifdef SHOW_TYPE
+object(ContractType) {
+  + contract : Contract
+  + abi : ABI
+  + compilation : Compilation
+}
+!endif
+
+
+!ifdef SHOW_ABI
+object(ABI) {
+  + json : String
+}
+!endif
+
+!ifdef SHOW_AST
+object(AST) {
+  + json : String
+}
+!endif
+
+'
+' Relations
+'
+
+!ifdef SHOW_BYTECODE && SHOW_LINK_REFERENCE
+Bytecode *-- "n" LinkReference
+!endif
+
+!ifdef SHOW_TYPE && SHOW_CONTRACT
+ContractType o-- "1" Contract
+!endif
+
+!ifdef SHOW_TYPE && SHOW_COMPILATION
+ContractType o-- "1" Compilation
+!endif
+
+!ifdef SHOW_TYPE && SHOW_ABI
+ContractType o-- ABI
+!endif
+
+!ifdef SHOW_CONTRACT && SHOW_SOURCE
+Contract o-- "1" Source
+!endif
+
+!ifdef SHOW_INSTANCE && SHOW_NETWORK
+ContractInstance o-left- "1" Network
+!endif
+
+!ifdef SHOW_INSTANCE && SHOW_BYTECODE
+ContractInstance o-- "1" Bytecode
+!endif
+
+!ifdef SHOW_INSTANCE && SHOW_TYPE
+ContractInstance *-- "1" ContractType
+!endif
+
+!ifdef SHOW_CONSTRUCTOR && SHOW_TYPE
+ContractConstructor *-- "1" ContractType
+!endif
+
+!ifdef SHOW_INSTANCE && SHOW_CONSTRUCTOR
+ContractInstance o-- "1" ContractConstructor
+!endif
+
+!ifdef SHOW_INSTANCE && SHOW_LINK_VALUE
+ContractInstance *-- "n" LinkValue
+!endif
+
+
+!ifdef SHOW_CONSTRUCTOR && SHOW_BYTECODE
+ContractConstructor o-- "1" Bytecode
+!endif
+
+!ifdef SHOW_CONSTRUCTOR && SHOW_COMPILATION
+ContractConstructor "n" o-- "0..1" Compilation
+!endif
+
+!ifdef SHOW_CONSTRUCTOR && SHOW_LINK_VALUE
+ContractConstructor *-right- "n" LinkValue
+!endif
+
+!ifdef SHOW_COMPILATION && SHOW_SOURCE
+Compilation o-- "n" Source
+!endif
+
+!ifdef SHOW_COMPILATION
+' compilation outputs
+
+!ifdef SHOW_CONTRACT
+Compilation ..|> Contract : <<effects>>
+!endif
+
+!ifdef SHOW_AST
+Compilation ..|> AST : <<effects>>
+!endif
+
+!ifdef SHOW_BYTECODE
+Compilation ..|> Bytecode : <<effects>>
+!endif
+
+
+!ifdef SHOW_SOURCE_MAP
+Compilation ..|> SourceMap : <<effects>>
+!endif
+
+!endif
+
+
+
+
+!ifdef SHOW_SOURCE && SHOW_SOURCE_MAP
+Source "n" --o SourceMap
+!endif
+
+!ifdef SHOW_SOURCE && SHOW_AST
+Source *-- "0..1" AST
+!endif
+
+!ifdef SHOW_SOURCE_MAP && SHOW_BYTECODE
+SourceMap .right.> "n" Instruction
+!endif
+
+!ifdef SHOW_SOURCE_MAP && SHOW_SOURCE
+Source "1" --o SourceRange
+!endif
+
+!ifdef SHOW_LINK_VALUE && SHOW_LINK_REFERENCE
+LinkValue ..> "1" LinkReference
+!endif
