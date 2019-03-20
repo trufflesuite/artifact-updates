@@ -364,11 +364,11 @@ Similarly to calls, most contracts provide interface methods for modifying
 Send ETH to a contract instance
 ```````````````````````````````
 
-Many smart contracts expose methods for receiving payment in the form or ether
+Many smart contracts expose methods for receiving payment in the form of ether
 or other tokens.
 
 Developers must be able to test the receipt of ether; business stakeholders may
-have to provide initial funds, for applications that require it.
+have to provide initial funds for applications that require it.
 
 
 Linking contracts to libraries
