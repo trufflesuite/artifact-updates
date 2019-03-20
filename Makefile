@@ -13,7 +13,7 @@ help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 livehtml:
-	$(shell which python) $(shell which sphinx-autobuild) -b html $(SPHINXOPTS) $(SOURCEDIR) $(BUILDDIR)/html
+	$(shell which python) $(shell which sphinx-autobuild) -H 0.0.0.0 -b html $(SPHINXOPTS) $(SOURCEDIR) $(BUILDDIR)/html
 
 .PHONY: help Makefile
 
