@@ -58,8 +58,17 @@ Use cases may extend others, indicating that one use case is a specific form
 of another. Where it is not indicated, user interactions with base use cases
 also imply user interaction with extensions.
 
-Use Cases
----------
+Truffle DB Use Cases
+--------------------
+
+.. toctree::
+   :maxdepth: 2
+   :numbered:
+
+   use-cases
+
+Tooling Use Cases
+-----------------
 
 .. toctree::
    :maxdepth: 2
