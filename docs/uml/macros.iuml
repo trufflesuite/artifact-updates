@@ -119,17 +119,7 @@ resource(ContractConstructor) {
 resource(Network) {
   + name : String
   + networkId : NetworkID
-  + fork : Maybe<Network>
-  + historicBlock: Block
 }
-
-object(Block) {
-  + height : Integer
-  + hash : BlockHash
-}
-
-Network o-- "0..1" Network : <<refines>>
-Network *-- "1" Block
 !endif
 
 
@@ -199,7 +189,7 @@ Contract o-- "1" Source
 !endif
 
 !ifdef SHOW_INSTANCE && SHOW_NETWORK
-ContractInstance o-- "1" Network
+ContractInstance o-left- "1" Network
 !endif
 
 !ifdef SHOW_INSTANCE && SHOW_BYTECODE
