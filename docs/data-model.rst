@@ -89,11 +89,18 @@ Network
   !include uml/macros.iuml
 
 
+A network resource comprises a friendly name, a network ID, a known historic
+block, and possibly an originating fork.
+
+Networks that specify a ``fork`` value must specify a ``historicBlock`` whose
+``height`` is larger than the fork network's historic block height.
+
 Combined Data Model
 -------------------
 
 .. uml::
 
+   !define SHOW_NETWORK
    !define SHOW_BYTECODE
    !define SHOW_COMPILATION
    !define SHOW_SOURCE
