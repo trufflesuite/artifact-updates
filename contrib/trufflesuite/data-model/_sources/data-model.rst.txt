@@ -108,7 +108,6 @@ Combined Data Model
    !define SHOW_INSTANCE
    !define SHOW_TYPE
    !define SHOW_ABI
-
    !define SHOW_AST
    !define SHOW_INSTRUCTION
    !define SHOW_SOURCE_MAP
