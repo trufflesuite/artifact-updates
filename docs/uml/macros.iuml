@@ -9,127 +9,133 @@
 ' Resources
 '
 
-!ifdef SHOW_BYTECODE
-!define SHOW_LINK_REFERENCE
-
-resource(Bytecode) {
-  + bytes: Array<Byte>
-  + instructions: Array<Instruction>
-  + linkReferences : Set<LinkReference>
-}
-
-object(Instruction) {
-  + programCounter: String
-  + opcode: Integer
-  + pushData: String
-  + meta: InstructionMeta
-}
-
-object(InstructionMeta) {
-  + cost: Integer
-  + pops: Integer
-  + pushes: Integer
-  + dynamic: Integer
-}
-
-Instruction *-- "1" InstructionMeta
-Bytecode *-- "n" Instruction
-!endif
-
-!ifdef SHOW_SOURCE
-resource(Source) {
-  + contents : String
-  + sourcePath : String
-}
-!endif
-
-
 !ifdef SHOW_CONTRACT
-resource(Contract) {
-  + name : String
-  + source : Source
-}
+  resource(Contract) {
+    + abi : ABI
+    + name : String
+  }
 !endif
-
-!ifdef SHOW_COMPILATION
-resource(Compilation) {
-  + compiler : Compiler
-  + sources : Array<Maybe<Source>>
-}
-
-object(Compiler) {
-  + name : String
-  + version : String
-  + settings : Object
-}
-
-Compilation *-left- "1" Compiler
-!endif
-
-!ifdef SHOW_SOURCE_MAP
-resource(SourceMap) {
-  + rawSourceMap : String
-  + sources : Array<Maybe<Source>>
-  + bytecode : Bytecode
-}
-
-object(SourceRange) {
-  + source : Source
-  + start : ByteOffset
-  + length : Length
-  + meta : Object
-}
-
-SourceMap *-- "n" SourceRange
-!endif
-
 
 !ifdef SHOW_INSTANCE
-!define SHOW_LINK_VALUE
-!define SHOW_TYPE
-resource(ContractInstance) {
-  + address : Address
-  + network : Network
-  + transactionHash : TransactionHash
-  + constructorArgs : Array<Value>
-  + contractType : ContractType
-  + callBytecode : Bytecode
-  + linkValues : Set<LinkValue>
-}
+  !define SHOW_LINK_VALUE
+  !define SHOW_INSTANCE_CREATION
+
+  resource(ContractInstance) {
+    + address : Address
+    + network : Network
+    + creation : ContractInstanceCreation
+    + contract : Contract
+    + callBytecode : LinkedBytecode
+    + linkValues : Set<LinkValue>
+  }
+
+  ContractInstance *-right- "0..1" ContractInstanceCreation
 !endif
 
 !ifdef SHOW_INTERFACE
-resource(ContractInterface) {
-}
+  resource(ContractInterface) {
+  }
 !endif
 
 !ifdef SHOW_CONSTRUCTOR
-!define SHOW_LINK_VALUE
-!define SHOW_TYPE
-resource(ContractConstructor) {
-  + name : String
-  + compilation : Compilation
-  + createBytecode : Bytecode
-  + contractType : ContractType
-  + linkValues : Set<LinkValue>
-}
+  !define SHOW_LINK_VALUE
+
+  resource(ContractConstructor) {
+    + name : String
+    + compilation : Compilation
+    + createBytecode : LinkedBytecode
+  }
 !endif
 
+
+!ifdef SHOW_BYTECODE
+  !define SHOW_LINK_REFERENCE
+
+  resource(Bytecode) {
+    + bytes: Array<Byte>
+    + instructions: Array<Instruction>
+    + linkReferences : Set<LinkReference>
+  }
+
+  object(Instruction) {
+    + programCounter: String
+    + opcode: Integer
+    + pushData: String
+    + meta: InstructionMeta
+  }
+
+  object(InstructionMeta) {
+    + cost: Integer
+    + pops: Integer
+    + pushes: Integer
+    + dynamic: Integer
+  }
+
+  Instruction *-- "1" InstructionMeta
+  Bytecode *-- "n" Instruction
+!endif
+
+!ifdef SHOW_SOURCE
+  resource(Source) {
+    + contents : String
+    + sourcePath : String
+  }
+!endif
+
+
+
+!ifdef SHOW_COMPILATION
+  !define SHOW_SOURCE_CONTRACT
+
+  resource(Compilation) {
+    + compiler : Compiler
+    + sources : Array<Maybe<Source>>
+  }
+
+  object(Compiler) {
+    + name : String
+    + version : String
+    + settings : Object
+  }
+
+  Compiler "1" --* Compilation
+  SourceContract "n" -right-* Compilation
+!endif
+
+!ifdef SHOW_SOURCE_MAP
+  resource(SourceMap) {
+    + rawSourceMap : String
+    + sources : Array<Maybe<Source>>
+    + bytecode : Bytecode
+  }
+
+  object(SourceRange) {
+    + source : Source
+    + start : ByteOffset
+    + length : Length
+    + meta : Object
+  }
+
+  SourceMap *-- "n" SourceRange
+!endif
+
+
+
 !ifdef SHOW_NETWORK
-resource(Network) {
-  + name : String
-  + networkId : NetworkID
-  + fork : Maybe<Network>
-  + historicBlock: Block
-}
+  resource(Network) {
+    + name : String
+    + networkId : NetworkID
+    + fork : Maybe<Network>
+    + historicBlock: Block
+  }
 
-object(Block) {
-  + height : Integer
-  + hash : BlockHash
-}
+  object(Block) {
+    + height : Integer
+    + hash : BlockHash
+  }
 
-Network o-- "0..1" Network : <<refines>>
-Network *-- "1" Block
+  Network o-- "0..1" Network : <<refines>>
+  Network *-right- "1" Block
 !endif
 
 
@@ -138,126 +144,137 @@ Network *-- "1" Block
 ' Shared Data Objects
 '
 
+!ifdef (SHOW_BYTECODE && SHOW_INSTANCE) || (SHOW_BYTECODE && SHOW_CONSTRUCTOR)
+  !define SHOW_LINKED_BYTECODE
+!endif
+
+!ifdef SHOW_LINKED_BYTECODE
+  object(LinkedBytecode) {
+    + bytecode : Bytecode
+    + linkValues : Set<LinkValue>
+  }
+!endif
+
+!ifdef SHOW_INSTANCE_CREATION
+  object(ContractInstanceCreation) {
+    + transactionHash : TransactionHash
+    + contractConstructor : ContractConstructor
+    + constructorArgs : Array<Value>
+  }
+!endif
+
 !ifdef SHOW_LINK_VALUE
-!define SHOW_LINK_REFERENCE
-object(LinkValue) {
-  + linkReference : LinkReference
-  + value : Bytes
-}
+  !define SHOW_LINK_REFERENCE
+  object(LinkValue) {
+    + linkReference : LinkReference
+    + value : Bytes
+  }
 !endif
 
 !ifdef SHOW_LINK_REFERENCE
-object(LinkReference) {
-  + offsets : Array<ByteOffset>
-  + length : Integer
-}
+  object(LinkReference) {
+    + offsets : Array<ByteOffset>
+    + length : Integer
+  }
 !endif
 
-!ifdef SHOW_TYPE
-object(ContractType) {
-  + contract : Contract
-  + abi : ABI
-  + compilation : Compilation
-}
+!ifdef SHOW_SOURCE_CONTRACT
+  object(SourceContract) {
+    + name : String
+    + compilation : Compilation
+  }
 !endif
-
 
 !ifdef SHOW_ABI
-object(ABI) {
-  + json : String
-}
+  object(ABI) {
+    + json : String
+  }
 !endif
 
 !ifdef SHOW_AST
-object(AST) {
-  + json : String
-}
+  object(AST) {
+    + json : String
+  }
 !endif
 
 '
 ' Relations
 '
 
+!ifdef SHOW_CONTRACT && SHOW_ABI
+  Contract *-left- "1" ABI
+!endif
+
+!ifdef SHOW_CONTRACT && SHOW_INSTANCE
+  ContractInstance "n" o-- "1" Contract
+!endif
+
+!ifdef SHOW_CONTRACT && SHOW_CONSTRUCTOR
+  ContractConstructor "1" o-- "1" Contract
+!endif
+
+!ifdef SHOW_CONTRACT && SHOW_SOURCE_CONTRACT
+  Contract o-- "0..1" SourceContract
+!endif
+
 !ifdef SHOW_BYTECODE && SHOW_LINK_REFERENCE
-Bytecode *-- "n" LinkReference
+  LinkReference "n" --* Bytecode
 !endif
 
-!ifdef SHOW_TYPE && SHOW_CONTRACT
-ContractType o-- "1" Contract
+!ifdef SHOW_LINKED_BYTECODE && SHOW_BYTECODE
+  LinkedBytecode o-- "1" Bytecode
 !endif
 
-!ifdef SHOW_TYPE && SHOW_COMPILATION
-ContractType o-- "1" Compilation
+!ifdef SHOW_LINKED_BYTECODE && SHOW_LINK_VALUE
+  LinkedBytecode *-- "n" LinkValue
 !endif
 
-!ifdef SHOW_TYPE && SHOW_ABI
-ContractType o-- ABI
-!endif
 
-!ifdef SHOW_CONTRACT && SHOW_SOURCE
-Contract o-- "1" Source
+!ifdef SHOW_SOURCE_CONTRACT && SHOW_SOURCE
+  SourceContract o-- "1" Source
 !endif
 
 !ifdef SHOW_INSTANCE && SHOW_NETWORK
-ContractInstance o-- "1" Network
+  Network "1" --o ContractInstance
 !endif
 
-!ifdef SHOW_INSTANCE && SHOW_BYTECODE
-ContractInstance o-- "1" Bytecode
+!ifdef SHOW_INSTANCE_CREATION && SHOW_CONSTRUCTOR
+  ContractInstanceCreation o-right- "1" ContractConstructor
 !endif
 
-!ifdef SHOW_INSTANCE && SHOW_TYPE
-ContractInstance *-- "1" ContractType
+!ifdef SHOW_INSTANCE && SHOW_LINKED_BYTECODE
+  ContractInstance *-- "1" LinkedBytecode
 !endif
 
-!ifdef SHOW_CONSTRUCTOR && SHOW_TYPE
-ContractConstructor *-- "1" ContractType
-!endif
-
-!ifdef SHOW_INSTANCE && SHOW_CONSTRUCTOR
-ContractInstance o-- "1" ContractConstructor
-!endif
-
-!ifdef SHOW_INSTANCE && SHOW_LINK_VALUE
-ContractInstance *-- "n" LinkValue
-!endif
-
-
-!ifdef SHOW_CONSTRUCTOR && SHOW_BYTECODE
-ContractConstructor o-- "1" Bytecode
-!endif
-
-!ifdef SHOW_CONSTRUCTOR && SHOW_COMPILATION
-ContractConstructor "n" o-- "0..1" Compilation
-!endif
-
-!ifdef SHOW_CONSTRUCTOR && SHOW_LINK_VALUE
-ContractConstructor *-right- "n" LinkValue
+!ifdef SHOW_CONSTRUCTOR && SHOW_LINKED_BYTECODE
+  ContractConstructor *-- "1" LinkedBytecode
 !endif
 
 !ifdef SHOW_COMPILATION && SHOW_SOURCE
-Compilation o-- "n" Source
+  Compilation o-- "n" Source
 !endif
 
 !ifdef SHOW_COMPILATION
-' compilation outputs
+  ' compilation outputs
 
-!ifdef SHOW_CONTRACT
-Compilation ..|> Contract : <<effects>>
-!endif
+  !ifdef SHOW_EFFECTS
+    !ifdef SHOW_CONTRACT
+    Compilation ..|> Contract : <<effects>>
+    !endif
 
-!ifdef SHOW_AST
-Compilation ..|> AST : <<effects>>
-!endif
+    !ifdef SHOW_AST
+    Compilation ..|> AST : <<effects>>
+    !endif
 
-!ifdef SHOW_BYTECODE
-Compilation ..|> Bytecode : <<effects>>
-!endif
+    !ifdef SHOW_BYTECODE
+    Compilation ..|> Bytecode : <<effects>>
+    !endif
 
 
-!ifdef SHOW_SOURCE_MAP
-Compilation ..|> SourceMap : <<effects>>
-!endif
+    !ifdef SHOW_SOURCE_MAP
+    Compilation ..|> SourceMap : <<effects>>
+    !endif
+  !endif
 
 !endif
 
@@ -265,21 +282,21 @@ Compilation ..|> SourceMap : <<effects>>
 
 
 !ifdef SHOW_SOURCE && SHOW_SOURCE_MAP
-Source "n" --o SourceMap
+  Source "n" --o SourceMap
 !endif
 
 !ifdef SHOW_SOURCE && SHOW_AST
-Source *-- "0..1" AST
+  Source *-- "0..1" AST
 !endif
 
 !ifdef SHOW_SOURCE_MAP && SHOW_BYTECODE
-SourceMap .right.> "n" Instruction
+  SourceMap .right.> "n" Instruction
 !endif
 
 !ifdef SHOW_SOURCE_MAP && SHOW_SOURCE
-Source "1" --o SourceRange
+  Source "1" --o SourceRange
 !endif
 
 !ifdef SHOW_LINK_VALUE && SHOW_LINK_REFERENCE
-LinkValue ..> "1" LinkReference
+  LinkValue ..> "1" LinkReference
 !endif
