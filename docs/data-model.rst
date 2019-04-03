@@ -15,70 +15,44 @@ incomplete and/or wrong.
 Data Model Resources
 --------------------
 
-Bytecode
-````````
-
-.. uml::
-
-   !define SHOW_BYTECODE
-   !include uml/macros.iuml
-
-Source
-``````
-
-.. uml::
-
-  !define SHOW_SOURCE
-  !include uml/macros.iuml
-
-
-Contract
-````````
+Contracts, Constructors, and Instances
+```````````````````````````````````````
 
 .. uml::
 
   !define SHOW_CONTRACT
-  !include uml/macros.iuml
-
-Compilation
-```````````
-
-.. uml::
-
-  !define SHOW_COMPILATION
-  !include uml/macros.iuml
-
-Source Map
-``````````
-
-.. uml::
-
-  !define SHOW_SOURCE_MAP
-  !include uml/macros.iuml
-
-Contract Instance
-`````````````````
-
-.. uml::
-
   !define SHOW_INSTANCE
+  !define SHOW_CONSTRUCTOR
+  !define SHOW_BYTECODE
+  !define SHOW_INTERFACE
+  !define SHOW_SOURCE_CONTRACT
+  !define SHOW_NETWORK
+
   !include uml/macros.iuml
 
-Contract Interface
-``````````````````
+Sources, Bytecodes, and Compilations
+````````````````````````````````````
+
+.. uml::
+
+  !define SHOW_BYTECODE
+  !define SHOW_SOURCE
+  !define SHOW_COMPILATION
+  !define SHOW_SOURCE_MAP
+
+  !include uml/macros.iuml
+
+
+Contract Interfaces
+```````````````````
 
 .. uml::
 
   !define SHOW_INTERFACE
+  !define SHOW_INTERFACE_INTERNAL
+
   !include uml/macros.iuml
 
-Contract Constructor
-````````````````````
-
-.. uml::
-
-  !define SHOW_CONSTRUCTOR
-  !include uml/macros.iuml
 
 Network
 ```````
@@ -86,6 +60,8 @@ Network
 .. uml::
 
   !define SHOW_NETWORK
+  !define SHOW_NETWORK_INTERNAL
+
   !include uml/macros.iuml
 
 
@@ -101,12 +77,13 @@ Combined Data Model
 .. uml::
 
    !define SHOW_NETWORK
+   !define SHOW_NETWORK_INTERNAL
    !define SHOW_BYTECODE
    !define SHOW_COMPILATION
    !define SHOW_SOURCE
    !define SHOW_CONTRACT
+   !define SHOW_INTERFACE
    !define SHOW_INSTANCE
-   !define SHOW_TYPE
    !define SHOW_ABI
    !define SHOW_AST
    !define SHOW_INSTRUCTION

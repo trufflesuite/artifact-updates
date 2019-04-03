@@ -2,6 +2,7 @@
 !define file(name) class name << (F,turquoise) File >>
 
 !define object(name) class name << (O,lawngreen) Data Object >>
+!define enum(name) class name << (E,yellow) Enum >>
 !define resource(name) class name << (R,orchid) Resource >>
 !define collection(name) class name << (C,deeppink) Collection >>
 
@@ -11,22 +12,23 @@
 
 !ifdef SHOW_CONTRACT
   resource(Contract) {
-    + abi : ABI
     + name : String
+    + abi : ABI
+    + interface : ContractInterface
+    + sourceContract : Maybe<SourceContract>
   }
 !endif
 
 !ifdef SHOW_INSTANCE
-  !define SHOW_LINK_VALUE
   !define SHOW_INSTANCE_CREATION
+  !define SHOW_LINKED_BYTECODE
 
   resource(ContractInstance) {
     + address : Address
     + network : Network
-    + creation : ContractInstanceCreation
-    + contract : Contract
+    + creation : Maybe<ContractInstanceCreation>
+    + contract : Maybe<Contract>
     + callBytecode : LinkedBytecode
-    + linkValues : Set<LinkValue>
   }
 
   ContractInstance *-right- "0..1" ContractInstanceCreation
@@ -34,15 +36,77 @@
 
 !ifdef SHOW_INTERFACE
   resource(ContractInterface) {
+    + constructor : Maybe<ConstructorInterface>
+    + fallback : Maybe<FallbackInterface>
+    + functions : Set<FunctionInterface>
+    + events : Set<EventInterface>
   }
+
+  ContractInterface o-- "n" ContractInterface
+
+  !ifdef SHOW_INTERFACE_INTERNAL
+    object(ConstructorInterface) {
+      + inputs : Array<Parameter>
+      + stateMutability : StateMutability
+    }
+
+    object(FallbackInterface) {
+      + stateMutability : StateMutability
+    }
+
+    object(FunctionInterface) {
+      + name : String
+      + inputs : Array<Parameter>
+      + outputs : Array<Parameter>
+      + stateMutability : StateMutability
+    }
+
+    object(EventInterface) {
+      + name : String
+      + inputs : Array<EventParameter>
+      + anonymous : Boolean
+    }
+
+    ContractInterface *-- "0..1" ConstructorInterface
+    ContractInterface *-- "0..1" FallbackInterface
+    ContractInterface *-- "n" FunctionInterface
+    ContractInterface *-- "n" EventInterface
+
+    object(Parameter) {
+      + name : String
+      + type : Type
+    }
+
+    object(EventParameter) {
+      + name : String
+      + type : Type
+      + indexed : Boolean
+    }
+
+    enum(StateMutability) {
+      + pure
+      + view
+      + nonpayable
+      + payable
+    }
+
+    ConstructorInterface *-- "n" Parameter
+    ConstructorInterface *-- "1" StateMutability
+
+    FallbackInterface *-- "1" StateMutability
+
+    FunctionInterface *-- "n" Parameter
+    FunctionInterface *-- "1" StateMutability
+
+    EventInterface *-- "n" EventParameter
+  !endif
 !endif
 
 !ifdef SHOW_CONSTRUCTOR
-  !define SHOW_LINK_VALUE
+  !define SHOW_LINKED_BYTECODE
 
   resource(ContractConstructor) {
-    + name : String
-    + compilation : Compilation
+    + contract : Maybe<Contract>
     + createBytecode : LinkedBytecode
   }
 !endif
@@ -57,22 +121,24 @@
     + linkReferences : Set<LinkReference>
   }
 
-  object(Instruction) {
-    + programCounter: String
-    + opcode: Integer
-    + pushData: String
-    + meta: InstructionMeta
-  }
+  !ifdef SHOW_SOURCE_MAP || SHOW_BYTECODE_INTERNAL
+    object(Instruction) {
+      + programCounter: String
+      + opcode: Integer
+      + pushData: String
+      + meta: InstructionMeta
+    }
 
-  object(InstructionMeta) {
-    + cost: Integer
-    + pops: Integer
-    + pushes: Integer
-    + dynamic: Integer
-  }
+    object(InstructionMeta) {
+      + cost: Integer
+      + pops: Integer
+      + pushes: Integer
+      + dynamic: Integer
+    }
 
-  Instruction *-- "1" InstructionMeta
-  Bytecode *-- "n" Instruction
+    Instruction *-- "1" InstructionMeta
+    Bytecode *-- "n" Instruction
+  !endif
 !endif
 
 !ifdef SHOW_SOURCE
@@ -90,6 +156,7 @@
   resource(Compilation) {
     + compiler : Compiler
     + sources : Array<Maybe<Source>>
+    + contracts : Array<SourceContract>
   }
 
   object(Compiler) {
@@ -98,28 +165,9 @@
     + settings : Object
   }
 
-  Compiler "1" --* Compilation
-  SourceContract "n" -right-* Compilation
+  Compilation *-- "1" Compiler
+  SourceContract "n" --* Compilation
 !endif
-
-!ifdef SHOW_SOURCE_MAP
-  resource(SourceMap) {
-    + rawSourceMap : String
-    + sources : Array<Maybe<Source>>
-    + bytecode : Bytecode
-  }
-
-  object(SourceRange) {
-    + source : Source
-    + start : ByteOffset
-    + length : Length
-    + meta : Object
-  }
-
-  SourceMap *-- "n" SourceRange
-!endif
-
-
 
 !ifdef SHOW_NETWORK
   resource(Network) {
@@ -129,13 +177,16 @@
     + historicBlock: Block
   }
 
-  object(Block) {
-    + height : Integer
-    + hash : BlockHash
-  }
 
-  Network o-- "0..1" Network : <<refines>>
-  Network *-right- "1" Block
+  !ifdef SHOW_NETWORK_INTERNAL
+    object(Block) {
+      + height : Integer
+      + hash : BlockHash
+    }
+
+    Network o-- "0..1" Network : <<refines>>
+    Network *-left- "1" Block
+  !endif
 !endif
 
 
@@ -149,6 +200,8 @@
 !endif
 
 !ifdef SHOW_LINKED_BYTECODE
+  !define SHOW_LINK_VALUE
+
   object(LinkedBytecode) {
     + bytecode : Bytecode
     + linkValues : Set<LinkValue>
@@ -158,7 +211,7 @@
 !ifdef SHOW_INSTANCE_CREATION
   object(ContractInstanceCreation) {
     + transactionHash : TransactionHash
-    + contractConstructor : ContractConstructor
+    + constructor : ContractConstructor
     + constructorArgs : Array<Value>
   }
 !endif
@@ -178,10 +231,29 @@
   }
 !endif
 
+!ifdef SHOW_SOURCE_MAP
+  object(SourceMap) {
+    + rawSourceMap : String
+    + sources : Array<Maybe<Source>>
+    + bytecode : Bytecode
+  }
+
+  object(SourceRange) {
+    + source : Source
+    + start : ByteOffset
+    + length : Length
+    + meta : Object
+  }
+
+  SourceMap *-- "n" SourceRange
+!endif
+
+
 !ifdef SHOW_SOURCE_CONTRACT
   object(SourceContract) {
     + name : String
-    + compilation : Compilation
+    + source : Source
+    + ast : AST
   }
 !endif
 
@@ -202,15 +274,19 @@
 '
 
 !ifdef SHOW_CONTRACT && SHOW_ABI
-  Contract *-left- "1" ABI
+  Contract *-right- "1" ABI
 !endif
 
 !ifdef SHOW_CONTRACT && SHOW_INSTANCE
-  ContractInstance "n" o-- "1" Contract
+  ContractInstance "n" o-- "0..1" Contract
 !endif
 
 !ifdef SHOW_CONTRACT && SHOW_CONSTRUCTOR
-  ContractConstructor "1" o-- "1" Contract
+  ContractConstructor "1" o-- "0..1" Contract
+!endif
+
+!ifdef SHOW_CONTRACT && SHOW_INTERFACE
+  Contract o-- "1" ContractInterface
 !endif
 
 !ifdef SHOW_CONTRACT && SHOW_SOURCE_CONTRACT
@@ -251,7 +327,7 @@
 !endif
 
 !ifdef SHOW_COMPILATION && SHOW_SOURCE
-  Compilation o-- "n" Source
+  Compilation o-right- "n" Source
 !endif
 
 !ifdef SHOW_COMPILATION
@@ -279,18 +355,18 @@
 !endif
 
 
-
-
-!ifdef SHOW_SOURCE && SHOW_SOURCE_MAP
-  Source "n" --o SourceMap
+!ifdef SHOW_COMPILATION && SHOW_SOURCE_MAP
+  Compilation *-- "n" SourceMap
 !endif
 
-!ifdef SHOW_SOURCE && SHOW_AST
-  Source *-- "0..1" AST
+
+!ifdef SHOW_SOURCE_CONTRACT && SHOW_AST
+  SourceContract *-right- "0..1" AST
 !endif
 
 !ifdef SHOW_SOURCE_MAP && SHOW_BYTECODE
-  SourceMap .right.> "n" Instruction
+  SourceMap o-right- "1" Bytecode
+  SourceRange o-right- "1" Instruction
 !endif
 
 !ifdef SHOW_SOURCE_MAP && SHOW_SOURCE
