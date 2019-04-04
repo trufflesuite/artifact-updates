@@ -20,13 +20,21 @@ Contracts, Constructors, and Instances
 
 .. uml::
 
+  scale 0.75
+
   !define SHOW_CONTRACT
   !define SHOW_INSTANCE
   !define SHOW_CONSTRUCTOR
-  !define SHOW_BYTECODE
   !define SHOW_INTERFACE
-  !define SHOW_SOURCE_CONTRACT
+
+  !define SHOW_COMPILATION
+  !define EXTERN_COMPILATION
+
+  !define SHOW_BYTECODE
+  !define EXTERN_BYTECODE
+
   !define SHOW_NETWORK
+  !define EXTERN_NETWORK
 
   !include uml/macros.iuml
 
@@ -35,9 +43,15 @@ Sources, Bytecodes, and Compilations
 
 .. uml::
 
+  scale 0.75
+
+  !define SHOW_CONTRACT
+  !define EXTERN_CONTRACT
+
   !define SHOW_BYTECODE
   !define SHOW_SOURCE
   !define SHOW_COMPILATION
+  !define SHOW_COMPILER
   !define SHOW_SOURCE_MAP
 
   !include uml/macros.iuml
@@ -47,6 +61,8 @@ Contract Interfaces
 ```````````````````
 
 .. uml::
+
+  scale 0.75
 
   !define SHOW_INTERFACE
   !define SHOW_INTERFACE_INTERNAL
@@ -58,6 +74,8 @@ Network
 ```````
 
 .. uml::
+
+  scale 0.75
 
   !define SHOW_NETWORK
   !define SHOW_NETWORK_INTERNAL
@@ -76,11 +94,18 @@ Combined Data Model
 
 .. uml::
 
+   scale 0.75
+
    !define SHOW_NETWORK
    !define SHOW_NETWORK_INTERNAL
+
    !define SHOW_BYTECODE
+
    !define SHOW_COMPILATION
+   !define SHOW_COMPILER
+
    !define SHOW_SOURCE
+
    !define SHOW_CONTRACT
    !define SHOW_INTERFACE
    !define SHOW_INSTANCE
