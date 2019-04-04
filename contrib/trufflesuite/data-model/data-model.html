@@ -173,14 +173,22 @@ incomplete and/or wrong.</p>
 <div class="section" id="contracts-constructors-and-instances">
 <h3>Contracts, Constructors, and Instances<a class="headerlink" href="#contracts-constructors-and-instances" title="Permalink to this headline">¶</a></h3>
 <p class="plantuml">
-<object data="_images/plantuml-018637f52160fa75d77b6afe547d4673a9658d51.svg" type="image/svg+xml" style="width:846px;height:927px;">
-<img src="_images/plantuml-018637f52160fa75d77b6afe547d4673a9658d51.png" alt="!define SHOW_CONTRACT
+<object data="_images/plantuml-e73463bf56cf53955e1b6b8449712d7e1e6c756b.svg" type="image/svg+xml" style="width:698px;height:893px;">
+<img src="_images/plantuml-e73463bf56cf53955e1b6b8449712d7e1e6c756b.png" alt="scale 0.75
+
+!define SHOW_CONTRACT
 !define SHOW_INSTANCE
 !define SHOW_CONSTRUCTOR
-!define SHOW_BYTECODE
 !define SHOW_INTERFACE
-!define SHOW_SOURCE_CONTRACT
+
+!define SHOW_COMPILATION
+!define EXTERN_COMPILATION
+
+!define SHOW_BYTECODE
+!define EXTERN_BYTECODE
+
 !define SHOW_NETWORK
+!define EXTERN_NETWORK
 
 !include uml/macros.iuml" />
 
@@ -189,10 +197,16 @@ incomplete and/or wrong.</p>
 <div class="section" id="sources-bytecodes-and-compilations">
 <h3>Sources, Bytecodes, and Compilations<a class="headerlink" href="#sources-bytecodes-and-compilations" title="Permalink to this headline">¶</a></h3>
 <p class="plantuml">
-<object data="_images/plantuml-7e368790bdd469613bbdaaa25f812f1b6e8219af.svg" type="image/svg+xml" style="width:744px;height:746px;">
-<img src="_images/plantuml-7e368790bdd469613bbdaaa25f812f1b6e8219af.png" alt="!define SHOW_BYTECODE
+<object data="_images/plantuml-e9147eb3f2fd48370e6ec239004ba66ea4d7f91a.svg" type="image/svg+xml" style="width:582px;height:799px;">
+<img src="_images/plantuml-e9147eb3f2fd48370e6ec239004ba66ea4d7f91a.png" alt="scale 0.75
+
+!define SHOW_CONTRACT
+!define EXTERN_CONTRACT
+
+!define SHOW_BYTECODE
 !define SHOW_SOURCE
 !define SHOW_COMPILATION
+!define SHOW_COMPILER
 !define SHOW_SOURCE_MAP
 
 !include uml/macros.iuml" />
@@ -202,8 +216,10 @@ incomplete and/or wrong.</p>
 <div class="section" id="contract-interfaces">
 <h3>Contract Interfaces<a class="headerlink" href="#contract-interfaces" title="Permalink to this headline">¶</a></h3>
 <p class="plantuml">
-<object data="_images/plantuml-9b10494b0ccaf4bfdea3783117f8e8841bdfe506.svg" type="image/svg+xml" style="width:942px;height:456px;">
-<img src="_images/plantuml-9b10494b0ccaf4bfdea3783117f8e8841bdfe506.png" alt="!define SHOW_INTERFACE
+<object data="_images/plantuml-59db39335fa7b7b64cb08dcb9b2fcbc2d3765994.svg" type="image/svg+xml" style="width:706px;height:351px;">
+<img src="_images/plantuml-59db39335fa7b7b64cb08dcb9b2fcbc2d3765994.png" alt="scale 0.75
+
+!define SHOW_INTERFACE
 !define SHOW_INTERFACE_INTERNAL
 
 !include uml/macros.iuml" />
@@ -213,8 +229,10 @@ incomplete and/or wrong.</p>
 <div class="section" id="network">
 <h3>Network<a class="headerlink" href="#network" title="Permalink to this headline">¶</a></h3>
 <p class="plantuml">
-<object data="_images/plantuml-996747426e19b848e3e8899c249b82fceeb58676.svg" type="image/svg+xml" style="width:438px;height:124px;">
-<img src="_images/plantuml-996747426e19b848e3e8899c249b82fceeb58676.png" alt="!define SHOW_NETWORK
+<object data="_images/plantuml-4a5fd22b5e8fe51e67d7d35534497242f44d383e.svg" type="image/svg+xml" style="width:343px;height:112px;">
+<img src="_images/plantuml-4a5fd22b5e8fe51e67d7d35534497242f44d383e.png" alt="scale 0.75
+
+!define SHOW_NETWORK
 !define SHOW_NETWORK_INTERNAL
 
 !include uml/macros.iuml" />
@@ -229,12 +247,19 @@ block, and possibly an originating fork.</p>
 <div class="section" id="combined-data-model">
 <h2>Combined Data Model<a class="headerlink" href="#combined-data-model" title="Permalink to this headline">¶</a></h2>
 <p class="plantuml">
-<object data="_images/plantuml-197c4203ce6449300598360b7426e851fcdcc7bd.svg" type="image/svg+xml" style="width:1027px;height:1284px;">
-<img src="_images/plantuml-197c4203ce6449300598360b7426e851fcdcc7bd.png" alt="!define SHOW_NETWORK
+<object data="_images/plantuml-6a7e6c70ea4c8042eec172cf9cbb8c24cc2aff44.svg" type="image/svg+xml" style="width:738px;height:1417px;">
+<img src="_images/plantuml-6a7e6c70ea4c8042eec172cf9cbb8c24cc2aff44.png" alt="scale 0.75
+
+!define SHOW_NETWORK
 !define SHOW_NETWORK_INTERNAL
+
 !define SHOW_BYTECODE
+
 !define SHOW_COMPILATION
+!define SHOW_COMPILER
+
 !define SHOW_SOURCE
+
 !define SHOW_CONTRACT
 !define SHOW_INTERFACE
 !define SHOW_INSTANCE
