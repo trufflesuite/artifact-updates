@@ -1,4 +1,460 @@
+skinparam defaultMonospacedFontName Andale Mono
+!define TBD [//to be completed <&warning>//]
 !define directory(name) class name << (D,cyan) Directory >>
 !define file(name) class name << (F,turquoise) File >>
-!define object(name) class name << (O,orchid) Object >>
+!define hashIdField(h1) - {field} <&key> ID //= hash(// ""h1"" //)//
+!define hashIdField(h1,h2) - {field} <&key> ID //= hash(// ""h1""//,// ""h2"" //)//
+!define hashIdField(h1,h2,h3) - {field} <&key> ID //= hash(// ""h1""//,// ""h2""//,// ""h3"" //)//
+!define UNKNOWN_ID - {field} <&key> ID = TBD
+
+!define object(name) class name << (O,lawngreen) Data Object >>
+!define enum(name) class name << (E,yellow) Enum >>
+!define resource(name) class name << (R,orchid) Resource >>
+!define extern(name) class name << (R,darkorange) External Resource >>
+!define externObject(name) class name << (O,khaki) External Object >>
 !define collection(name) class name << (C,deeppink) Collection >>
+
+'
+' Resources
+'
+
+!ifdef SHOW_CONTRACT
+  !ifdef EXTERN_CONTRACT
+    extern(Contract) {
+      + name: String
+      + abi: ABI
+      + {method} compilation: Maybe<Compilation>
+      + {method} sourceContract: Maybe<SourceContract>
+      + {method} interface: ContractInterface
+    }
+  !else
+    resource(Contract) {
+      + name: String
+      + abi: ABI
+      + {method} compilation: Maybe<Compilation>
+      + {method} sourceContract: Maybe<SourceContract>
+      + {method} interface: ContractInterface
+      ..
+      UNKNOWN_ID
+      - sourceContractId: TBD
+    }
+  !endif
+!endif
+
+!ifdef SHOW_INSTANCE
+  !define SHOW_INSTANCE_CREATION
+  !define SHOW_LINKED_BYTECODE
+
+  resource(ContractInstance) {
+    + address : Address
+    + network : Network
+    + creation : Maybe<ContractInstanceCreation>
+    + callBytecode : LinkedBytecode
+    + {method} contract : Maybe<Contract>
+    ..
+    UNKNOWN_ID
+    - contractId: ID
+  }
+
+  ContractInstanceCreation "0..1" ---* ContractInstance
+!endif
+
+!ifdef SHOW_INTERFACE
+  resource(ContractInterface) {
+    + constructor : Maybe<Constructor>
+    + fallback : Maybe<Fallback>
+    + functions : Set<Function>
+    + events : Set<Event>
+    ..
+    UNKNOWN_ID
+  }
+
+  ContractInterface o-- "n" ContractInterface
+
+  !ifdef SHOW_INTERFACE_INTERNAL
+    object(ConstructorInterface) {
+      + inputs : Array<Parameter>
+      + stateMutability : StateMutability
+    }
+
+    object(FallbackInterface) {
+      + stateMutability : StateMutability
+    }
+
+    object(FunctionInterface) {
+      + name : String
+      + inputs : Array<Parameter>
+      + outputs : Array<Parameter>
+      + stateMutability : StateMutability
+    }
+
+    object(EventInterface) {
+      + name : String
+      + inputs : Array<EventParameter>
+      + anonymous : Boolean
+    }
+
+    ContractInterface *-- "0..1" ConstructorInterface
+    ContractInterface *-- "0..1" FallbackInterface
+    ContractInterface *-- "n" FunctionInterface
+    ContractInterface *-- "n" EventInterface
+
+    object(Parameter) {
+      + name : String
+      + type : Type
+    }
+
+    object(EventParameter) {
+      + name : String
+      + type : Type
+      + indexed : Boolean
+    }
+
+    enum(StateMutability) {
+      + pure
+      + view
+      + nonpayable
+      + payable
+    }
+
+    ConstructorInterface *-- "n" Parameter
+    ConstructorInterface *-- "1" StateMutability
+
+    FallbackInterface *-- "1" StateMutability
+
+    FunctionInterface *-- "n" Parameter
+    FunctionInterface *-- "1" StateMutability
+
+    EventInterface *-- "n" EventParameter
+  !endif
+!endif
+
+!ifdef SHOW_CONSTRUCTOR
+  !define SHOW_LINKED_BYTECODE
+
+  resource(ContractConstructor) {
+    + createBytecode: LinkedBytecode
+    + {method} contract: Maybe<Contract>
+    ..
+    UNKNOWN_ID
+    - contractId: Maybe<ID>
+  }
+!endif
+
+
+!ifdef SHOW_BYTECODE
+  !define SHOW_LINK_REFERENCE
+
+  !ifdef EXTERN_BYTECODE
+    extern(Bytecode) {
+      + bytes: Array<Byte>
+      + linkReferences : Set<LinkReference>
+      + {method} instructions: Array<Instruction>
+      ..
+    }
+  !else
+    resource(Bytecode) {
+      + bytes: Array<Byte>
+      + linkReferences : Set<LinkReference>
+      + {method} instructions: Array<Instruction>
+      ..
+      hashIdField(bytes)
+    }
+  !endif
+
+  !ifdef SHOW_SOURCE_MAP || SHOW_BYTECODE_INTERNAL
+    object(Instruction) {
+      + programCounter: String
+      + opcode: Integer
+      + pushData: String
+      + meta: InstructionMeta
+    }
+
+    object(InstructionMeta) {
+      + cost: Integer
+      + pops: Integer
+      + pushes: Integer
+      + dynamic: Integer
+    }
+
+    Instruction *-right- "1" InstructionMeta
+    Instruction "n" --* Bytecode
+  !endif
+!endif
+
+!ifdef SHOW_SOURCE
+    resource(Source) {
+      + contents: String
+      + sourcePath: Maybe<String>
+      ..
+      hashIdField(contents,sourcePath)
+    }
+!endif
+
+
+
+!ifdef SHOW_COMPILATION
+  !define SHOW_SOURCE_CONTRACT
+
+  !ifdef EXTERN_COMPILATION
+    extern(Compilation) {
+      + compiler : Compiler
+      + {method} sources : Array<Maybe<Source>>
+      + {method} contracts : Array<SourceContract>
+      ..
+    }
+  !else
+    resource(Compilation) {
+      + compiler : Compiler
+      + {method} sources : Array<Maybe<Source>>
+      + {method} contracts : Array<SourceContract>
+      ..
+      hashIdField(compiler,sourceIds)
+      - sourceIds: Array<Maybe<ID>>
+      - contractIds : Array<Maybe<ID>>
+    }
+  !endif
+
+  SourceContract "n" --* Compilation
+!endif
+
+!ifdef SHOW_NETWORK
+  !ifdef EXTERN_NETWORK
+    extern(Network) {
+      + name : String
+      + networkId : NetworkID
+      + historicBlock: Block
+      + {method} fork: Maybe<Network>
+      ..
+    }
+  !else
+    resource(Network) {
+      + name : String
+      + networkId : NetworkID
+      + historicBlock: Block
+      + {method} fork: Maybe<Network>
+      ..
+      UNKNOWN_ID
+      - forkId: Maybe<ID>
+    }
+  !endif
+
+
+    !ifdef SHOW_NETWORK_INTERNAL
+      object(Block) {
+        + height : Integer
+        + hash : BlockHash
+      }
+
+      Network o-- "0..1" Network : <<refines>>
+      Network *-left- "1" Block
+    !endif
+!endif
+
+
+
+'
+' Shared Data Objects
+'
+
+!ifdef (SHOW_BYTECODE && SHOW_INSTANCE) || (SHOW_BYTECODE && SHOW_CONSTRUCTOR)
+  !define SHOW_LINKED_BYTECODE
+!endif
+
+!ifdef SHOW_LINKED_BYTECODE
+  !define SHOW_LINK_VALUE
+
+    object(LinkedBytecode) {
+      + bytecode : Bytecode
+      + linkValues : Set<LinkValue>
+    }
+!endif
+
+!ifdef SHOW_COMPILER
+  object(Compiler) {
+    + name : String
+    + version : String
+    + settings : Object
+  }
+
+!endif
+
+!ifdef SHOW_INSTANCE_CREATION
+    object(ContractInstanceCreation) {
+      + transactionHash: TransactionHash
+      + constructorArgs: Array<Value>
+      + {method} contractConstructor: ContractConstructor
+      ..
+      - contractConstructorId: ID
+    }
+!endif
+
+!ifdef SHOW_LINK_VALUE
+  !define SHOW_LINK_REFERENCE
+    object(LinkValue) {
+      + value: Bytes
+      + {method} linkReference: LinkReference
+      ..
+      - _linkReference: TBD
+    }
+!endif
+
+!ifdef SHOW_LINK_REFERENCE
+  !ifdef EXTERN_BYTECODE
+    externObject(LinkReference) {
+      + offsets: Array<ByteOffset>
+      + name: Maybe<String>
+      + length: Integer
+    }
+  !else
+    object(LinkReference) {
+      + offsets: Array<ByteOffset>
+      + name: Maybe<String>
+      + length: Integer
+    }
+  !endif
+!endif
+
+!ifdef SHOW_SOURCE_MAP
+    object(SourceMap) {
+      + {method} bytecode: Bytecode
+      + instructionSourceRanges(index: Integer): Maybe<SourceRange>
+      ..
+      - rawSourceMap: String
+      - bytecodeId: ID
+    }
+
+    object(SourceRange) {
+      + start: ByteOffset
+      + length: Length
+      + meta: Object
+      + {method} source: Source
+      ..
+      - sourceId: ID
+    }
+
+    SourceMap *-right- "n" SourceRange
+!endif
+
+
+!ifdef SHOW_SOURCE_CONTRACT
+  !ifdef EXTERN_COMPILATION
+    externObject(SourceContract) {
+      + name: String
+      + ast: AST
+      + {method} source: Source
+      ..
+    }
+  !else
+    object(SourceContract) {
+      + name: String
+      + ast: AST
+      + {method} source: Source
+      ..
+      - sourceId: ID
+    }
+  !endif
+!endif
+
+!ifdef SHOW_ABI
+    object(ABI) {
+      + json: String
+    }
+!endif
+
+!ifdef SHOW_AST
+  object(AST) {
+    + json: String
+  }
+!endif
+
+'
+' Relations
+'
+
+!ifdef SHOW_CONTRACT && SHOW_ABI
+  Contract *-right- "1" ABI
+!endif
+
+!ifdef SHOW_CONTRACT && SHOW_INSTANCE
+  ContractInstance "n" o--- "0..1" Contract
+!endif
+
+!ifdef SHOW_CONTRACT && SHOW_CONSTRUCTOR
+  ContractConstructor "1" o--- "0..1" Contract
+!endif
+
+!ifdef SHOW_CONTRACT && SHOW_INTERFACE
+  ContractInterface "1" ---o Contract
+
+!endif
+
+!ifdef SHOW_CONTRACT && SHOW_SOURCE_CONTRACT
+  Contract o-- "0..1" Compilation
+  Contract o.. "1" SourceContract
+!endif
+
+!ifdef SHOW_LINKED_BYTECODE && SHOW_BYTECODE
+  LinkedBytecode o---- "1" Bytecode
+!endif
+
+!ifdef SHOW_LINKED_BYTECODE && SHOW_LINK_VALUE
+  LinkedBytecode *-- "n" LinkValue
+!endif
+
+!ifdef SHOW_BYTECODE && SHOW_LINK_REFERENCE
+  LinkReference "n" -* Bytecode
+!endif
+
+!ifdef SHOW_LINK_VALUE && SHOW_LINK_REFERENCE
+  LinkValue ....> "1" LinkReference
+!endif
+
+
+!ifdef SHOW_SOURCE_CONTRACT && SHOW_SOURCE
+  SourceContract o-- "1" Source
+!endif
+
+!ifdef SHOW_INSTANCE && SHOW_NETWORK
+  Network "1" ---o ContractInstance
+!endif
+
+!ifdef SHOW_INSTANCE_CREATION && SHOW_CONSTRUCTOR
+  ContractInstanceCreation o-- "1" ContractConstructor
+!endif
+
+!ifdef SHOW_INSTANCE && SHOW_LINKED_BYTECODE
+  ContractInstance *-- "1" LinkedBytecode
+!endif
+
+!ifdef SHOW_CONSTRUCTOR && SHOW_LINKED_BYTECODE
+  ContractConstructor *-- "1" LinkedBytecode
+!endif
+
+!ifdef SHOW_COMPILATION && SHOW_COMPILER
+  Compilation *-left- "1" Compiler
+!endif
+
+!ifdef SHOW_COMPILATION && SHOW_SOURCE
+  Compilation o-right- "n" Source
+!endif
+
+
+!ifdef SHOW_COMPILATION && SHOW_SOURCE_MAP
+  Compilation *-- "n" SourceMap
+!endif
+
+
+!ifdef SHOW_SOURCE_CONTRACT && SHOW_AST
+  SourceContract *-left- "0..1" AST
+!endif
+
+!ifdef SHOW_SOURCE_MAP && SHOW_BYTECODE
+  SourceMap o---- "1" Bytecode
+  SourceRange o-- "1" Instruction
+!endif
+
+!ifdef SHOW_SOURCE_MAP && SHOW_SOURCE
+  Source "1" --o SourceRange
+!endif
+
