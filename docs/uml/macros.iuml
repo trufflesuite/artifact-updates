@@ -8,6 +8,7 @@ skinparam defaultMonospacedFontName Andale Mono
 !define UNKNOWN_ID - {field} <&key> id: ID = TBD
 
 !define object(name) class name << (O,lawngreen) Data Object >>
+!define interface(name) class name << (I,blueviolet) Interface >>
 !define enum(name) class name << (E,yellow) Enum >>
 !define resource(name) class name << (R,orchid) Resource >>
 !define extern(name) class name << (R,darkorange) External Resource >>
