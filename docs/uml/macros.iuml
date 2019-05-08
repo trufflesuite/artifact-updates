@@ -42,6 +42,21 @@ skinparam defaultMonospacedFontName Andale Mono
   !endif
 !endif
 
+!define SHOW_DEPLOYMENT
+
+!ifdef SHOW_DEPLOYMENT
+  !define SHOW_INSTANCE
+
+  resource(Deployment) {
+    + network: Network
+    + contractInstances: Array<ContractInstance>
+    ..
+    UNKNOWN_ID
+  }
+
+  ContractInstance "1..n" ---o Deployment
+!endif
+
 !ifdef SHOW_INSTANCE
   !define SHOW_INSTANCE_CREATION
   !define SHOW_LINKED_BYTECODE
