@@ -2,12 +2,13 @@ skinparam defaultMonospacedFontName Andale Mono
 !define TBD [//to be completed <&warning>//]
 !define directory(name) class name << (D,cyan) Directory >>
 !define file(name) class name << (F,turquoise) File >>
-!define hashIdField(h1) - {field} <&key> ID //= hash(// ""h1"" //)//
-!define hashIdField(h1,h2) - {field} <&key> ID //= hash(// ""h1""//,// ""h2"" //)//
-!define hashIdField(h1,h2,h3) - {field} <&key> ID //= hash(// ""h1""//,// ""h2""//,// ""h3"" //)//
-!define UNKNOWN_ID - {field} <&key> ID = TBD
+!define hashIdField(h1) - {field} <&key> id: ID //= hash(// ""h1"" //)//
+!define hashIdField(h1,h2) - {field} <&key> id: ID //= hash(// ""h1""//,// ""h2"" //)//
+!define hashIdField(h1,h2,h3) - {field} <&key> id: ID //= hash(// ""h1""//,// ""h2""//,// ""h3"" //)//
+!define UNKNOWN_ID - {field} <&key> id: ID = TBD
 
 !define object(name) class name << (O,lawngreen) Data Object >>
+!define interface(name) class name << (I,blueviolet) Interface >>
 !define enum(name) class name << (E,yellow) Enum >>
 !define resource(name) class name << (R,orchid) Resource >>
 !define extern(name) class name << (R,darkorange) External Resource >>
