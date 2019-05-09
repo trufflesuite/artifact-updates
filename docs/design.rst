@@ -179,3 +179,38 @@ additional component to instantiate contract abstractions via GraphQL queries.
 Here, Truffle DB performs persistence operations by way of this modified
 abstraction adapter, which interacts with a discrete translation layer for
 converting between GraphQL queries and abstraction objects.
+
+
+Implementation Plan
+--------------------
+
+Completed Work
+``````````````
+The architecture for Truffle DB is largely finished. A defined schema exists, and some resolver functions have been written. It is currently possible to query existing artifacts and transform this information to match the Data Model described here, without transforming the format of the underlying artifact files. It is also possible to add data to an in-memory database (in the format expected by the Data Model) and use GraphQL to query it once added.
+
+Ongoing Work
+````````````
+
+While it is currently possible to query artifacts, not all parts of the Data Model are fully represented. Work is ongoing to finish adding all contract information as represented in the Data Model, to ensure that information portrayed therein may be queried using Truffle DB. Of note, the following still need to be added: 
+   
+   1) The ``LinkedBytecode`` object and its associated relationships
+   2) The objects related to the ``Bytecode`` Resource, namely ``LinkReference``, ``Instruction``, ``InstructionMeta``, ``SourceMap``, and ``SourceRange``
+   3) Contract Interfaces
+   4) ``Network``
+   5) ``Named`` Interface 
+   6) The ``Deployment`` Resource and any associated relationships
+
+Create an ``artifactsLoader`` class through which information about a project can be queried and then saved to an in-memory database. This information will follow the Data Model's specifications and may come from multiple sources in order to fully represent the schema set forth in the Data Model.
+
+Consider the Truffle Teams use case and ensure that data is modeled and served in the most beneficial way for future integration with Truffle Teams. 
+
+Implement persistent data storage of Data Model Resources, initially in the form of JSON files (one for each Resource) saved in parallel to existing artifacts. This will be the initial iteration of a persistent data store connected to Truffle DB. 
+
+Scope out additional options for a persistent data layer for Truffle DB. Consider relational databases and any other useful tools that may allow Truffle DB to fully leverage GraphQL's capabilities.
+
+Future Work
+````````````
+
+Scope out the ways in which Truffle DB can work with the (currently in progress) Truffle Event Manager system in order to maximally buttress the success of both tools. 
+
+Arrive at an architecture for persisting Truffle DB data in the best way for using it in conjunction with GraphQL's capabilities and keeping in mind possible new use cases for Truffle DB.  
