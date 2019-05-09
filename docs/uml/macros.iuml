@@ -42,13 +42,31 @@ skinparam defaultMonospacedFontName Andale Mono
   !endif
 !endif
 
-!define SHOW_DEPLOYMENT
+!ifdef SHOW_DEPLOYMENT_HISTORY
+  !define SHOW_DEPLOYMENT
+
+  resource(DeploymentHistory) {
+    + <u>current</u> (\n\ttype: String,\n\tname: String,\n\trole: Maybe<Object>\n):\n\tMaybe<DeploymentHistory>
+    --
+    + type: String
+    + name: String
+    + role: Maybe<Object>
+    + {method} ref: Deployment
+    + previous: Maybe<DeploymentHistory>
+    ..
+    UNKNOWN_ID
+  }
+
+  DeploymentHistory o-- "1" Deployment
+  DeploymentHistory o-- "0..1" DeploymentHistory
+!endif
 
 !ifdef SHOW_DEPLOYMENT
   !define SHOW_INSTANCE
 
   resource(Deployment) {
-    + network: Network
+    + name: String
+    + role: Maybe<Object>
     + contractInstances: Array<ContractInstance>
     ..
     UNKNOWN_ID
