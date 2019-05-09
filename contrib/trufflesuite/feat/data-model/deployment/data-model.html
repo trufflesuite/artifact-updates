@@ -184,7 +184,7 @@ models names as a linked list of references to immutable entities.</p>
 nullable attribute <code class="docutils literal notranslate"><span class="pre">role</span></code>, any serializable object. The pair
 (<code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">role</span></code>) <strong>together</strong> represent the full semantic name.</p>
 <p class="plantuml">
-<object data="_images/plantuml-cdc9fcb95578c2db44cf671b0730c4bc09d40e49.svg" type="image/svg+xml" style="width:560px;height:959px;">
+<object data="_images/plantuml-cdc9fcb95578c2db44cf671b0730c4bc09d40e49.svg" type="image/svg+xml" style="width:163px;height:98px;">
 <img src="_images/plantuml-cdc9fcb95578c2db44cf671b0730c4bc09d40e49.png" alt="!include uml/macros.iuml
 
 interface(Named) {
@@ -205,7 +205,7 @@ Each Name&lt;T&gt; has the same <code class="docutils literal notranslate"><span
 </div></blockquote>
 <p>Further, Name&lt;T&gt; records are stored statically by <code class="docutils literal notranslate"><span class="pre">current</span></code> values.</p>
 <p class="plantuml">
-<object data="_images/plantuml-44a7f7d97b9a3bba1b14d29854050352b16292d7.svg" type="image/svg+xml" style="width:900px;height:1173px;">
+<object data="_images/plantuml-44a7f7d97b9a3bba1b14d29854050352b16292d7.svg" type="image/svg+xml" style="width:463px;height:389px;">
 <img src="_images/plantuml-44a7f7d97b9a3bba1b14d29854050352b16292d7.png" alt="!include uml/macros.iuml
 
 class Name&lt; T: Resource &gt; &lt;&lt; (R,orchid) Resource &gt;&gt; {
@@ -244,10 +244,11 @@ T .right.|&gt; Named : &lt;&lt; implements &gt;&gt;" />
 <div class="section" id="contracts-constructors-and-instances">
 <h3>Contracts, Constructors, and Instances<a class="headerlink" href="#contracts-constructors-and-instances" title="Permalink to this headline">¶</a></h3>
 <p class="plantuml">
-<object data="_images/plantuml-943e7b9ddef2694a063a9696963c77c4b77dccf9.svg" type="image/svg+xml" style="width:735px;height:893px;">
-<img src="_images/plantuml-943e7b9ddef2694a063a9696963c77c4b77dccf9.png" alt="scale 0.75
+<object data="_images/plantuml-b306e3bb9a637e640de789f080692d6c3a69e4c5.svg" type="image/svg+xml" style="width:802px;height:995px;">
+<img src="_images/plantuml-b306e3bb9a637e640de789f080692d6c3a69e4c5.png" alt="scale 0.75
 
 !define SHOW_CONTRACT
+!define SHOW_DEPLOYMENT_HISTORY
 !define SHOW_DEPLOYMENT
 !define SHOW_INSTANCE
 !define SHOW_CONSTRUCTOR
@@ -269,7 +270,7 @@ T .right.|&gt; Named : &lt;&lt; implements &gt;&gt;" />
 <div class="section" id="sources-bytecodes-and-compilations">
 <h3>Sources, Bytecodes, and Compilations<a class="headerlink" href="#sources-bytecodes-and-compilations" title="Permalink to this headline">¶</a></h3>
 <p class="plantuml">
-<object data="_images/plantuml-e9147eb3f2fd48370e6ec239004ba66ea4d7f91a.svg" type="image/svg+xml" style="width:754px;height:1170px;">
+<object data="_images/plantuml-e9147eb3f2fd48370e6ec239004ba66ea4d7f91a.svg" type="image/svg+xml" style="width:589px;height:799px;">
 <img src="_images/plantuml-e9147eb3f2fd48370e6ec239004ba66ea4d7f91a.png" alt="scale 0.75
 
 !define SHOW_CONTRACT
@@ -288,7 +289,7 @@ T .right.|&gt; Named : &lt;&lt; implements &gt;&gt;" />
 <div class="section" id="contract-interfaces">
 <h3>Contract Interfaces<a class="headerlink" href="#contract-interfaces" title="Permalink to this headline">¶</a></h3>
 <p class="plantuml">
-<object data="_images/plantuml-59db39335fa7b7b64cb08dcb9b2fcbc2d3765994.svg" type="image/svg+xml" style="width:936px;height:806px;">
+<object data="_images/plantuml-59db39335fa7b7b64cb08dcb9b2fcbc2d3765994.svg" type="image/svg+xml" style="width:706px;height:351px;">
 <img src="_images/plantuml-59db39335fa7b7b64cb08dcb9b2fcbc2d3765994.png" alt="scale 0.75
 
 !define SHOW_INTERFACE
@@ -301,7 +302,7 @@ T .right.|&gt; Named : &lt;&lt; implements &gt;&gt;" />
 <div class="section" id="network">
 <h3>Network<a class="headerlink" href="#network" title="Permalink to this headline">¶</a></h3>
 <p class="plantuml">
-<object data="_images/plantuml-4a5fd22b5e8fe51e67d7d35534497242f44d383e.svg" type="image/svg+xml" style="width:681px;height:749px;">
+<object data="_images/plantuml-4a5fd22b5e8fe51e67d7d35534497242f44d383e.svg" type="image/svg+xml" style="width:357px;height:112px;">
 <img src="_images/plantuml-4a5fd22b5e8fe51e67d7d35534497242f44d383e.png" alt="scale 0.75
 
 !define SHOW_NETWORK
@@ -319,8 +320,8 @@ block, and possibly an originating fork.</p>
 <div class="section" id="combined-data-model">
 <h2>Combined Data Model<a class="headerlink" href="#combined-data-model" title="Permalink to this headline">¶</a></h2>
 <p class="plantuml">
-<object data="_images/plantuml-01a1ab66bd81c13988d12b9573f3e75ffa34e9c4.svg" type="image/svg+xml" style="width:894px;height:1438px;">
-<img src="_images/plantuml-01a1ab66bd81c13988d12b9573f3e75ffa34e9c4.png" alt="scale 0.75
+<object data="_images/plantuml-a2cd57ab85300f0000ff77be0dd0dcd204f25b5d.svg" type="image/svg+xml" style="width:945px;height:1599px;">
+<img src="_images/plantuml-a2cd57ab85300f0000ff77be0dd0dcd204f25b5d.png" alt="scale 0.75
 
 !define SHOW_NETWORK
 !define SHOW_NETWORK_INTERNAL
@@ -334,6 +335,7 @@ block, and possibly an originating fork.</p>
 
 !define SHOW_CONTRACT
 !define SHOW_INTERFACE
+!define SHOW_DEPLOYMENT_HISTORY
 !define SHOW_DEPLOYMENT
 !define SHOW_INSTANCE
 !define SHOW_ABI
