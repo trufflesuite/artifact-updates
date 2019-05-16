@@ -5,6 +5,7 @@ skinparam defaultMonospacedFontName Andale Mono
 !define hashIdField(h1) - {field} <&key> id: ID //= hash(// ""h1"" //)//
 !define hashIdField(h1,h2) - {field} <&key> id: ID //= hash(// ""h1""//,// ""h2"" //)//
 !define hashIdField(h1,h2,h3) - {field} <&key> id: ID //= hash(// ""h1""//,// ""h2""//,// ""h3"" //)//
+!define hashIdField(h1,h2,h3,h4) - {field} <&key> id: ID //= hash(// ""h1""//,// ""h2""//,// ""h3"" //,// ""h4"" //)//
 !define UNKNOWN_ID - {field} <&key> id: ID = TBD
 
 !define object(name) class name << (O,lawngreen) Data Object >>
@@ -36,7 +37,7 @@ skinparam defaultMonospacedFontName Andale Mono
       + {method} sourceContract: Maybe<SourceContract>
       + {method} interface: ContractInterface
       ..
-      UNKNOWN_ID
+      hashIdField(name,abi,sourceContract,compilation)
       - sourceContractId: TBD
     }
   !endif
@@ -53,7 +54,7 @@ skinparam defaultMonospacedFontName Andale Mono
     + callBytecode : LinkedBytecode
     + {method} contract : Maybe<Contract>
     ..
-    UNKNOWN_ID
+    hashIdField(network,address)
     - contractId: ID
   }
 
