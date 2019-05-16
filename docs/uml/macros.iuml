@@ -25,6 +25,7 @@ skinparam defaultMonospacedFontName Andale Mono
     extern(Contract) {
       + name: String
       + abi: ABI
+      + constructor: Constructor
       + {method} compilation: Maybe<Compilation>
       + {method} sourceContract: Maybe<SourceContract>
       + {method} interface: ContractInterface
@@ -33,6 +34,7 @@ skinparam defaultMonospacedFontName Andale Mono
     resource(Contract) {
       + name: String
       + abi: ABI
+      + constructor: Constructor
       + {method} compilation: Maybe<Compilation>
       + {method} sourceContract: Maybe<SourceContract>
       + {method} interface: ContractInterface
@@ -134,11 +136,9 @@ skinparam defaultMonospacedFontName Andale Mono
 !ifdef SHOW_CONSTRUCTOR
   !define SHOW_LINKED_BYTECODE
 
-  resource(ContractConstructor) {
+  object(Constructor) {
     + createBytecode: LinkedBytecode
-    + {method} contract: Maybe<Contract>
     ..
-    UNKNOWN_ID
     - contractId: Maybe<ID>
   }
 !endif
@@ -285,9 +285,7 @@ skinparam defaultMonospacedFontName Andale Mono
     object(ContractInstanceCreation) {
       + transactionHash: TransactionHash
       + constructorArgs: Array<Value>
-      + {method} contractConstructor: ContractConstructor
-      ..
-      - contractConstructorId: ID
+      + {method} constructor: Constructor
     }
 !endif
 
@@ -383,7 +381,7 @@ skinparam defaultMonospacedFontName Andale Mono
 !endif
 
 !ifdef SHOW_CONTRACT && SHOW_CONSTRUCTOR
-  ContractConstructor "1" o--- "0..1" Contract
+  Constructor "1" o--- "0..1" Contract
 !endif
 
 !ifdef SHOW_CONTRACT && SHOW_INTERFACE
@@ -422,7 +420,7 @@ skinparam defaultMonospacedFontName Andale Mono
 !endif
 
 !ifdef SHOW_INSTANCE_CREATION && SHOW_CONSTRUCTOR
-  ContractInstanceCreation o-- "1" ContractConstructor
+  ContractInstanceCreation o-- "1" Constructor
 !endif
 
 !ifdef SHOW_INSTANCE && SHOW_LINKED_BYTECODE
@@ -430,7 +428,7 @@ skinparam defaultMonospacedFontName Andale Mono
 !endif
 
 !ifdef SHOW_CONSTRUCTOR && SHOW_LINKED_BYTECODE
-  ContractConstructor *-- "1" LinkedBytecode
+  Constructor *-- "1" LinkedBytecode
 !endif
 
 !ifdef SHOW_COMPILATION && SHOW_COMPILER
