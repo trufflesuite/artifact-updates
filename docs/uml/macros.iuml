@@ -138,8 +138,6 @@ skinparam defaultMonospacedFontName Andale Mono
 
   object(Constructor) {
     + createBytecode: LinkedBytecode
-    ..
-    - contractId: Maybe<ID>
   }
 !endif
 
@@ -381,7 +379,7 @@ skinparam defaultMonospacedFontName Andale Mono
 !endif
 
 !ifdef SHOW_CONTRACT && SHOW_CONSTRUCTOR
-  Constructor "1" o--- "0..1" Contract
+  Constructor "1" ---o "0..1" Contract
 !endif
 
 !ifdef SHOW_CONTRACT && SHOW_INTERFACE
@@ -420,7 +418,7 @@ skinparam defaultMonospacedFontName Andale Mono
 !endif
 
 !ifdef SHOW_INSTANCE_CREATION && SHOW_CONSTRUCTOR
-  ContractInstanceCreation o-- "1" Constructor
+  ContractInstanceCreation --o "1" Constructor
 !endif
 
 !ifdef SHOW_INSTANCE && SHOW_LINKED_BYTECODE
