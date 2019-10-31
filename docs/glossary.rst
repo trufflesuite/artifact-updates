@@ -39,15 +39,15 @@ Glossary
       An abstract entity, representing a single |ContractType| or
       |ContractInstance|.
 
+   Contract Interface
+      Refers to the collection of methods through which one may interact with a contract.
+
    Contract Instance
       A contract account with its own address, storage, and balance,
       representing a single deployment of a particular |ContractType|.
 
    Contract Type
       Refers to a specific contract or library, able to be deployed to a particular |Network|
-
-   Contract Interface
-      Refers to the collection of methods through which one may interact with a contract.
 
    Contracts Directory
       By default this is ``build/contracts/`` in the |Project| directory
@@ -66,6 +66,9 @@ Glossary
 
    Link Value
       The value used to replace |LinkReference| placeholders.
+
+   Name
+      Represents a linked list of current and past resource name references for a given resource type. Each Name has :term:`name` and :term:`role` attributes, as well as a :term:`type` to represent its underlying resource type, a :term:`reference` to point to the entity it represents, and :term:`previous` to point to the previous name.
 
    Network
       A particular Ethereum or Ethereum-flavored blockchain network, supporting
