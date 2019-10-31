@@ -28,8 +28,8 @@ Glossary
       May contain unresolved |LinkReferences|.
 
    Compilation
-      A description of the data generated when a contract is compiled. Includes |compiler|
-      information as well as any |source| and |contract| information used to generate an artifact for a contract.
+      A description of the data generated when a contract is compiled. Includes |Compiler|
+      information as well as any |Source|, |Source Map| and |Contract| information used to generate an artifact for a contract.
 
    Compiler
       A description of the compiler name, version, and any and all settings,
