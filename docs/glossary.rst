@@ -7,7 +7,7 @@ Glossary
 
    ABI
       A JSON description of the external interface for a |ContractInstance|,
-      or for the description of common interface of all instances of a
+      or for the description of a common interface of all instances of a
       |ContractType|
 
    Address
@@ -27,6 +27,10 @@ Glossary
 
       May contain unresolved |LinkReferences|.
 
+   Compilation
+      A description of the data generated when a contract is compiled. Includes |compiler|
+      information as well as any |source| and |contract| information used to generate an artifact for a contract.
+
    Compiler
       A description of the compiler name, version, and any and all settings,
       to compile high-level |Source| code to EVM |Bytecode|.
@@ -40,8 +44,10 @@ Glossary
       representing a single deployment of a particular |ContractType|.
 
    Contract Type
-      Refers to a specific contract or library, able to deployed to a particular
-      |Network|
+      Refers to a specific contract or library, able to be deployed to a particular |Network|
+
+   Contract Interface
+      Refers to the collection of methods through which one may interact with a contract.
 
    Contracts Directory
       By default this is ``build/contracts/`` in the |Project| directory
@@ -56,7 +62,7 @@ Glossary
       A placeholder representing a runtime or |Network|-specific value, at
       a particular byte offset or offsets. Identified by name.
 
-      Filled in by corresponding |LinkValue| by Truffle.
+      Filled in with corresponding |LinkValue| by Truffle.
 
    Link Value
       The value used to replace |LinkReference| placeholders.
