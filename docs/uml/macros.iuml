@@ -147,14 +147,14 @@ skinparam defaultMonospacedFontName Andale Mono
 
   !ifdef EXTERN_BYTECODE
     extern(Bytecode) {
-      + bytes: Array<Byte>
+      + bytes: Bytes
       + linkReferences : Set<LinkReference>
       + {method} instructions: Array<Instruction>
       ..
     }
   !else
     resource(Bytecode) {
-      + bytes: Array<Byte>
+      + bytes: Bytes
       + linkReferences : Set<LinkReference>
       + {method} instructions: Array<Instruction>
       ..
