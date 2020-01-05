@@ -25,7 +25,8 @@ skinparam defaultMonospacedFontName Andale Mono
     extern(Contract) {
       + name: String
       + abi: ABI
-      + constructor: Constructor
+      + {method} createBytecode: Maybe<Bytecode>
+      + {method} callBytecode: Maybe<Bytecode>
       + {method} compilation: Maybe<Compilation>
       + {method} sourceContract: Maybe<SourceContract>
       + {method} interface: ContractInterface
@@ -34,13 +35,16 @@ skinparam defaultMonospacedFontName Andale Mono
     resource(Contract) {
       + name: String
       + abi: ABI
-      + constructor: Constructor
+      + {method} createBytecode: Maybe<Bytecode>
+      + {method} callBytecode: Maybe<Bytecode>
       + {method} compilation: Maybe<Compilation>
       + {method} sourceContract: Maybe<SourceContract>
       + {method} interface: ContractInterface
       ..
       hashIdField(name,abi,sourceContract,compilation)
       - sourceContractId: TBD
+      - createBytecodeId
+      - callBytecodeId
     }
   !endif
 !endif
@@ -378,13 +382,12 @@ skinparam defaultMonospacedFontName Andale Mono
   ContractInstance "n" o--- "0..1" Contract
 !endif
 
-!ifdef SHOW_CONTRACT && SHOW_CONSTRUCTOR
-  Constructor "0..1" ---o Contract
+!ifdef SHOW_CONTRACT && SHOW_BYTECODE
+  Contract o-- "0..2" Bytecode
 !endif
 
 !ifdef SHOW_CONTRACT && SHOW_INTERFACE
   ContractInterface "1" ---o Contract
-
 !endif
 
 !ifdef SHOW_CONTRACT && SHOW_SOURCE_CONTRACT
