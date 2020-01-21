@@ -37,25 +37,25 @@ to index by type.
     + name: String
   }
 
-**Name<T>** can be considered generically to represent a linked list of
+**NameRecoord<T>** can be considered generically to represent a linked list of
 current and past resource name references for a given resource type ``T``.
-Each Name<T> has the same ``name``, plus the following:
+Each NameRecord<T> has the same ``name``, plus the following:
   - ``type`` to represent the underlying named resource type
   - ``ref`` to point to the underlying entity
   - ``previous`` to point to the previous name
-Further, Name<T> records are stored statically by ``current`` values.
+Further, NameRecord<T> records are stored statically by ``current`` values.
 
 .. uml::
 
   !include uml/macros.iuml
 
-  class Name< T: Resource > << (R,orchid) Resource >> {
-    + <u>current</u> (\n\ttype: String,\n\tname: String):\n\tMaybe<Name<T>>
+  class NameRecord< T: Resource > << (R,orchid) Resource >> {
+    + <u>current</u> (\n\ttype: String,\n\tname: String):\n\tMaybe<NameRecord<T>>
     --
     + type: String
     + name: String
     + {method} ref: T
-    + previous: Maybe<Name<T>>
+    + previous: Maybe<NameRecord<T>>
     ..
     - refId: ID
   }
@@ -70,8 +70,8 @@ Further, Name<T> records are stored statically by ``current`` values.
     - <&key> id: ID
   }
 
-  Name o-- "1" T
-  Name o-- "0..1" Name
+  NameRecord o-- "1" T
+  NameRecord o-- "0..1" NameRecord
 
   T .right.|> Named : << implements >>
 
