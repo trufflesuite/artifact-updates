@@ -20,6 +20,62 @@ skinparam defaultMonospacedFontName Andale Mono
 ' Resources
 '
 
+!ifdef SHOW_PROJECT
+  !ifdef EXTERN_PROJECT
+    extern(Project) {
+      + directory: String
+      + {method} resolve (\n\ttype: String,\n\tname: String\n): Array<NameRecord>
+    }
+  !else
+    resource(Project) {
+      + directory: String
+      + {method} resolve (\n\ttype: String,\n\tname: String\n): Array<NameRecord>
+      ..
+      hashIdField(directory)
+    }
+  !endif
+!endif
+
+!ifdef SHOW_NAME_RECORD
+  !ifdef EXTERN_NAME_RECORD
+    extern(NameRecord) {
+      + type: String
+      + name: String
+      + {method} resource: T
+      + {method} previous: Maybe<NameRecord<T>>
+    }
+  !else
+    class NameRecord< T: Resource > << (R,orchid) Resource >> {
+      + type: String
+      + name: String
+      + {method} resource: T
+      + {method} previous: Maybe<NameRecord<T>>
+      ..
+      hashIdField(type,name,resource,previous)
+      - resourceId: ID
+      - previousId: ID
+    }
+
+    interface(Named) {
+      + name: String
+    }
+
+    NameRecord o-- "1" Named
+    NameRecord o-- "0..1" NameRecord
+
+    !ifdef SHOW_NAME_RECORD_INTERNAL
+      class T << (R,motivation) Resource >> {
+        + name: String
+        ..
+        - <&key> id: ID
+      }
+
+      T .right.|> Named : << implements >>
+    !endif
+
+  !endif
+!endif
+
 !ifdef SHOW_CONTRACT
   !ifdef EXTERN_CONTRACT
     extern(Contract) {
@@ -251,7 +307,7 @@ skinparam defaultMonospacedFontName Andale Mono
       }
 
       Network o-- "0..1" Network : <<refines>>
-      Network *-left- "1" Block
+      Network *-- "1" Block
     !endif
 !endif
 
@@ -338,7 +394,6 @@ skinparam defaultMonospacedFontName Andale Mono
     SourceMap *-right- "n" SourceRange
 !endif
 
-
 !ifdef SHOW_SOURCE_CONTRACT
   !ifdef EXTERN_COMPILATION
     externObject(SourceContract) {
@@ -373,6 +428,19 @@ skinparam defaultMonospacedFontName Andale Mono
 '
 ' Relations
 '
+
+!ifdef SHOW_PROJECT && SHOW_NAME_RECORD
+  Project o-- "n" NameRecord
+!endif
+
+!ifdef SHOW_CONTRACT && SHOW_NAME_RECORD
+  Named <|.. Contract : << implements >>
+!endif
+
+!ifdef SHOW_NAME_RECORD && SHOW_NETWORK
+  Named <|.. Network : << implements >>
+!endif
+
 
 !ifdef SHOW_CONTRACT && SHOW_ABI
   Contract *-right- "1" ABI
