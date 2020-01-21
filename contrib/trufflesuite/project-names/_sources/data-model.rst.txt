@@ -12,7 +12,7 @@ add semantic color to these. It is a work in progress and likely to be
 incomplete and/or wrong.
 
 Projects and Named Resources
------------------------------
+----------------------------
 
 Certain resources are *named*, meaning that these entities may be referenced
 by user-defined semantic identifiers. Since Truffle targets the full dev.
