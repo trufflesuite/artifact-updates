@@ -26,9 +26,8 @@ deployment. Development networks reset, and public networks fork.
 To represent these entities across the entire project lifecycle, Truffle DB
 models names as a linked list of references to immutable entities.
 
-Each named resource contains the non-nullable string attribute ``name`` and the
-nullable attribute ``role``, any serializable object. The pair
-(``name``, ``role``) **together** represent the full semantic name.
+Each named resource contains the non-nullable string attribute ``name``, used
+to index by type.
 
 .. uml::
 
@@ -36,12 +35,11 @@ nullable attribute ``role``, any serializable object. The pair
 
   interface(Named) {
     + name: String
-    + role: Maybe<Object>
   }
 
 **Name<T>** can be considered generically to represent a linked list of
 current and past resource name references for a given resource type ``T``.
-Each Name<T> has the same ``name`` and ``role`` attributes, plus the following:
+Each Name<T> has the same ``name``, plus the following:
   - ``type`` to represent the underlying named resource type
   - ``ref`` to point to the underlying entity
   - ``previous`` to point to the previous name
@@ -52,11 +50,10 @@ Further, Name<T> records are stored statically by ``current`` values.
   !include uml/macros.iuml
 
   class Name< T: Resource > << (R,orchid) Resource >> {
-    + <u>current</u> (\n\ttype: String,\n\tname: String,\n\trole: Maybe<Object>\n):\n\tMaybe<Name<T>>
+    + <u>current</u> (\n\ttype: String,\n\tname: String):\n\tMaybe<Name<T>>
     --
     + type: String
     + name: String
-    + role: Maybe<Object>
     + {method} ref: T
     + previous: Maybe<Name<T>>
     ..
@@ -65,12 +62,10 @@ Further, Name<T> records are stored statically by ``current`` values.
 
   interface(Named) {
     + name: String
-    + role: Maybe<Object>
   }
 
   class T << (R,motivation) Resource >> {
     + name: String
-    + role: Maybe<Object>
     ..
     - <&key> id: ID
   }
