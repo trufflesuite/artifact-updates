@@ -41,7 +41,7 @@ to index by type.
 current and past resource name references for a given resource type ``T``.
 Each NameRecord<T> has the same ``name``, plus the following:
   - ``type`` to represent the underlying named resource type
-  - ``ref`` to point to the underlying entity
+  - ``resource`` to point to the underlying resource
   - ``previous`` to point to the previous name
 Further, NameRecord<T> records are stored statically by ``current`` values.
 
@@ -54,10 +54,10 @@ Further, NameRecord<T> records are stored statically by ``current`` values.
     --
     + type: String
     + name: String
-    + {method} ref: T
+    + {method} resource: T
     + previous: Maybe<NameRecord<T>>
     ..
-    - refId: ID
+    - resourceId: ID
   }
 
   interface(Named) {
