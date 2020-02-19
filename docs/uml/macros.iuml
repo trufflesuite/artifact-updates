@@ -5,6 +5,7 @@ skinparam defaultMonospacedFontName Andale Mono
 !define hashIdField(h1) - {field} <&key> id: ID //= hash(// ""h1"" //)//
 !define hashIdField(h1,h2) - {field} <&key> id: ID //= hash(// ""h1""//,// ""h2"" //)//
 !define hashIdField(h1,h2,h3) - {field} <&key> id: ID //= hash(// ""h1""//,// ""h2""//,// ""h3"" //)//
+!define hashIdField(h1,h2,h3,h4) - {field} <&key> id: ID //= hash(// ""h1""//,// ""h2""//,// ""h3"" //,// ""h4"" //)//
 !define UNKNOWN_ID - {field} <&key> id: ID = TBD
 
 !define object(name) class name << (O,lawngreen) Data Object >>
@@ -19,11 +20,69 @@ skinparam defaultMonospacedFontName Andale Mono
 ' Resources
 '
 
+!ifdef SHOW_PROJECT
+  !ifdef EXTERN_PROJECT
+    extern(Project) {
+      + directory: String
+      + {method} resolve (\n\ttype: String,\n\tname: String\n): Array<NameRecord>
+    }
+  !else
+    resource(Project) {
+      + directory: String
+      + {method} resolve (\n\ttype: String,\n\tname: String\n): Array<NameRecord>
+      ..
+      hashIdField(directory)
+    }
+  !endif
+!endif
+
+!ifdef SHOW_NAME_RECORD
+  !ifdef EXTERN_NAME_RECORD
+    extern(NameRecord) {
+      + type: String
+      + name: String
+      + {method} resource: T
+      + {method} previous: Maybe<NameRecord<T>>
+    }
+  !else
+    class NameRecord< T: Resource > << (R,orchid) Resource >> {
+      + type: String
+      + name: String
+      + {method} resource: T
+      + {method} previous: Maybe<NameRecord<T>>
+      ..
+      hashIdField(type,name,resource,previous)
+      - resourceId: ID
+      - previousId: ID
+    }
+
+    interface(Named) {
+      + name: String
+    }
+
+    NameRecord o-- "1" Named
+    NameRecord o-- "0..1" NameRecord
+
+    !ifdef SHOW_NAME_RECORD_INTERNAL
+      class T << (R,motivation) Resource >> {
+        + name: String
+        ..
+        - <&key> id: ID
+      }
+
+      T .right.|> Named : << implements >>
+    !endif
+
+  !endif
+!endif
+
 !ifdef SHOW_CONTRACT
   !ifdef EXTERN_CONTRACT
     extern(Contract) {
       + name: String
       + abi: ABI
+      + {method} createBytecode: Maybe<Bytecode>
+      + {method} callBytecode: Maybe<Bytecode>
       + {method} compilation: Maybe<Compilation>
       + {method} sourceContract: Maybe<SourceContract>
       + {method} interface: ContractInterface
@@ -32,12 +91,16 @@ skinparam defaultMonospacedFontName Andale Mono
     resource(Contract) {
       + name: String
       + abi: ABI
+      + {method} createBytecode: Maybe<Bytecode>
+      + {method} callBytecode: Maybe<Bytecode>
       + {method} compilation: Maybe<Compilation>
       + {method} sourceContract: Maybe<SourceContract>
       + {method} interface: ContractInterface
       ..
-      UNKNOWN_ID
+      hashIdField(name,abi,sourceContract,compilation)
       - sourceContractId: TBD
+      - createBytecodeId
+      - callBytecodeId
     }
   !endif
 !endif
@@ -53,7 +116,7 @@ skinparam defaultMonospacedFontName Andale Mono
     + callBytecode : LinkedBytecode
     + {method} contract : Maybe<Contract>
     ..
-    UNKNOWN_ID
+    hashIdField(network,address)
     - contractId: ID
   }
 
@@ -133,12 +196,8 @@ skinparam defaultMonospacedFontName Andale Mono
 !ifdef SHOW_CONSTRUCTOR
   !define SHOW_LINKED_BYTECODE
 
-  resource(ContractConstructor) {
+  object(Constructor) {
     + createBytecode: LinkedBytecode
-    + {method} contract: Maybe<Contract>
-    ..
-    UNKNOWN_ID
-    - contractId: Maybe<ID>
   }
 !endif
 
@@ -248,7 +307,7 @@ skinparam defaultMonospacedFontName Andale Mono
       }
 
       Network o-- "0..1" Network : <<refines>>
-      Network *-left- "1" Block
+      Network *-- "1" Block
     !endif
 !endif
 
@@ -284,9 +343,7 @@ skinparam defaultMonospacedFontName Andale Mono
     object(ContractInstanceCreation) {
       + transactionHash: TransactionHash
       + constructorArgs: Array<Value>
-      + {method} contractConstructor: ContractConstructor
-      ..
-      - contractConstructorId: ID
+      + {method} constructor: Constructor
     }
 !endif
 
@@ -337,7 +394,6 @@ skinparam defaultMonospacedFontName Andale Mono
     SourceMap *-right- "n" SourceRange
 !endif
 
-
 !ifdef SHOW_SOURCE_CONTRACT
   !ifdef EXTERN_COMPILATION
     externObject(SourceContract) {
@@ -373,6 +429,19 @@ skinparam defaultMonospacedFontName Andale Mono
 ' Relations
 '
 
+!ifdef SHOW_PROJECT && SHOW_NAME_RECORD
+  Project o-- "n" NameRecord
+!endif
+
+!ifdef SHOW_CONTRACT && SHOW_NAME_RECORD
+  Named <|.. Contract : << implements >>
+!endif
+
+!ifdef SHOW_NAME_RECORD && SHOW_NETWORK
+  Named <|.. Network : << implements >>
+!endif
+
+
 !ifdef SHOW_CONTRACT && SHOW_ABI
   Contract *-right- "1" ABI
 !endif
@@ -381,13 +450,12 @@ skinparam defaultMonospacedFontName Andale Mono
   ContractInstance "n" o--- "0..1" Contract
 !endif
 
-!ifdef SHOW_CONTRACT && SHOW_CONSTRUCTOR
-  ContractConstructor "1" o--- "0..1" Contract
+!ifdef SHOW_CONTRACT && SHOW_BYTECODE
+  Contract o-- "0..2" Bytecode
 !endif
 
 !ifdef SHOW_CONTRACT && SHOW_INTERFACE
   ContractInterface "1" ---o Contract
-
 !endif
 
 !ifdef SHOW_CONTRACT && SHOW_SOURCE_CONTRACT
@@ -421,7 +489,7 @@ skinparam defaultMonospacedFontName Andale Mono
 !endif
 
 !ifdef SHOW_INSTANCE_CREATION && SHOW_CONSTRUCTOR
-  ContractInstanceCreation o-- "1" ContractConstructor
+  ContractInstanceCreation o-- "1" Constructor
 !endif
 
 !ifdef SHOW_INSTANCE && SHOW_LINKED_BYTECODE
@@ -429,7 +497,7 @@ skinparam defaultMonospacedFontName Andale Mono
 !endif
 
 !ifdef SHOW_CONSTRUCTOR && SHOW_LINKED_BYTECODE
-  ContractConstructor *-- "1" LinkedBytecode
+  Constructor *-- "1" LinkedBytecode
 !endif
 
 !ifdef SHOW_COMPILATION && SHOW_COMPILER
