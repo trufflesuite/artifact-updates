@@ -7,7 +7,7 @@
 .. |Artifacts| replace:: :term:`Artifacts<Artifact>`
 
 .. |AST| replace:: :term:`AST`
-.. |AST| replace:: :term:`ASTs<AST>`
+.. |ASTs| replace:: :term:`ASTs<AST>`
 
 .. |Bytecode| replace:: :term:`Bytecode`
 
@@ -19,9 +19,6 @@
 .. |ContractInstance| replace:: :term:`Contract Instance`
 .. |ContractInstances| replace:: :term:`Contract Instances<Contract Instance>`
 
-.. |ContractType| replace:: :term:`Contract Type`
-.. |ContractTypes| replace:: :term:`Contract Types<Contract Type>`
-
 .. |ContractsDirectory| replace:: :term:`Contracts Directory`
 
 .. |Library| replace:: :term:`Library`
@@ -32,6 +29,9 @@
 
 .. |LinkValue| replace:: :term:`Link Value`
 .. |LinkValues| replace:: :term:`Link Values<Link Value>`
+
+.. |NameRecord| replace:: :term:`Name Record`
+.. |NameRecords| replace:: :term `Name Records<Name Record>`
 
 .. |Network| replace:: :term:`Network`
 .. |Networks| replace:: :term:`Networks<Network>`
@@ -48,6 +48,7 @@
 .. |SourceMap| replace:: :term:`Source Map`
 .. |SourceMaps| replace:: :term:`Source Maps<Source Map>`
 
+.. |TransactionHash| replace:: term:`Transaction Hash`
 .. |Project| replace:: :term:`Project`
 
 

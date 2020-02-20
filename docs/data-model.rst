@@ -32,9 +32,9 @@ to index by type.
 **NameRecord** can be considered generically to represent a linked list of
 current and past resource name references for a given resource type ``T``.
 Each NameRecord has the same ``name``, plus the following:
-  - ``type`` to represent the underlying named resource type
-  - ``resource`` to point to the underlying resource
-  - ``previous`` to point to the previous name
+- ``type`` to represent the underlying named resource type
+- ``resource`` to point to the underlying resource
+- ``previous`` to point to the previous name
 
 In order to track the current NameRecords for a given type, the **Project**
 resource serves as the aggregation point for the heads of these linked lists.
