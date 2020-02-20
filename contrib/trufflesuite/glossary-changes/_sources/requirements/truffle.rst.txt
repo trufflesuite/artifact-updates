@@ -7,7 +7,7 @@ Users and tooling must be able to save new and update existing |Artifact|
 files.
 
 As a core behavior, tooling must facilitate the internal record-keeping of all
-known |ContractTypes| and |ContractInstances|, updating them appropriately
+known |ContractInstances|, updating them appropriately
 when they change.
 
 Beyond that, developers may also need to manually generate new artifacts for
@@ -33,28 +33,28 @@ able to account for the record-keeping in all these cases.
   :Smart Contract Developer: as :SmartContractDev:
 
   rectangle Saving {
-    (Save contract type) as (SaveType)
+    (Save contract) as (SaveContract)
     (Save contract instance) as (SaveInstance)
     (Save library instance) as (SaveLibrary)
     (Save interface instance) as (SaveInterface)
   }
 
-  SmartContractDev -- SaveType
+  SmartContractDev -- SaveContract
   SmartContractDev -- SaveInstance
   SmartContractDev -- SaveLibrary
   SmartContractDev -- SaveInterface
 
-Save contract type
+Save contract
 ``````````````````
 
-Users must be able to save a new |ContractType|, whether or not it has any
+Users must be able to save a new |Contract|, whether or not it has any
 corresponding |ContractInstances|.
 
 Save contract instance
 ``````````````````````
 
 Users must be able to save new |ContractInstances| on a given network,
-identifying them as a known |ContractType|.
+identifying them as a known |Contract|.
 
 Save library instance
 `````````````````````
@@ -88,7 +88,7 @@ the lifecycle of development.
   :Smart Contract Developer: as :Developer:
 
   rectangle Saving << external >> {
-    (Save contract type) as (SaveType)
+    (Save contract) as (SaveContract)
   }
 
   rectangle Compilation {
@@ -99,7 +99,7 @@ the lifecycle of development.
     CompileModified -> DetermineModified
 
     (Compile source file) as (Compile)
-    Compile -> SaveType
+    Compile -> SaveContract
 
     (Compile primary and related source files) as (CompileMultiple)
     CompileMultiple .|> Compile
@@ -135,7 +135,7 @@ Compile source file
 ```````````````````
 
 Tooling must provide a means to compile a single, standalone |Source| file
-(no imports), saving a corresponding |Artifact| for the |ContractType|.
+(no imports), saving a corresponding |Artifact| for the |Contract|.
 
 Compile primary and related source files
 ````````````````````````````````````````
@@ -148,7 +148,7 @@ Reading contract metadata
 -------------------------
 
 Developers, auditors, business stakeholders, et al., all often need to access
-metadata information about both |ContractTypes| and |ContractInstances|.
+metadata information about both Contracts and |ContractInstances|.
 
 For example, stakeholders often need to view the JSON ABI, auditors need source
 and compiler information, developers need to maintain records of source file
@@ -169,15 +169,15 @@ versions that may be in use.
 
   rectangle Metadata {
     (Read contract instance info) as (ReadContractInstance)
-    (Read contract type info) as (ReadContractType)
-    (Read historical contract instance type info) as (ReadHistoricalInstanceType)
+    (Read contract info) as (ReadContract)
+    (Read historical contract instance contract info) as (ReadHistoricalInstanceContract)
 
     (Read instance) as (ReadInstanceData)
-    (Read type) as (ReadTypeData)
+    (Read contract) as (ReadContractData)
 
     ReadInstanceData <|.up. ReadContractInstance
-    ReadTypeData <|.up.. ReadContractType
-    ReadTypeData <|.up.. ReadHistoricalInstanceType
+    ReadContractData <|.up.. ReadContract
+    ReadContractData <|.up.. ReadHistoricalInstanceContract
 
     ' both
     (Read name) as (ReadName)
@@ -192,41 +192,41 @@ versions that may be in use.
     (Read link references) as (ReadLinkRefs)
     (Read address) as (ReadAddress)
 
-    ReadTypeData --> ReadName
-    ReadTypeData --> ReadABI
-    ReadTypeData --> ReadBytecodes
-    ReadTypeData --> ReadSourceMaps
-    ReadTypeData --> ReadLinkRefs
-    ReadTypeData --> ReadSources
-    ReadTypeData --> ReadASTs
+    ReadContractData --> ReadName
+    ReadContractData --> ReadABI
+    ReadContractData --> ReadBytecodes
+    ReadContractData --> ReadSourceMaps
+    ReadContractData --> ReadLinkRefs
+    ReadContractData --> ReadSources
+    ReadContractData --> ReadASTs
 
-    ReadInstanceData --> ReadTypeData
+    ReadInstanceData --> ReadContractData
     ReadInstanceData --> ReadLinkVals
     ReadInstanceData --> ReadAddress
   }
 
   SmartContractDev -- ReadContractInstance
-  SmartContractDev -- ReadContractType
-  SmartContractDev -- ReadHistoricalInstanceType
+  SmartContractDev -- ReadContract
+  SmartContractDev -- ReadHistoricalInstanceContract
 
 Read contract instance information
 ``````````````````````````````````
 
 Users must be able to read |ContractInstance| metadata, including ABI, any
-link values, and all type-level metadata for that instance.
+link values, and all contract-level metadata for that instance.
 
-Read contract type info
+Read contract info
 ```````````````````````
 
-Users must be able to read metadata about a |ContractType| that has not been
-deployed, as well as type-level metadata for a given |ContractInstance|.
+Users must be able to read metadata about a |Contract| that has not been
+deployed, as well as metadata for a given |ContractInstance|.
 
-Read contract instance historical type info
-````````````````````````````````````````````
+Read contract instance historical contract info
+````````````````````````````````````````````````
 
-If the |ContractInstance| has a type that is no longer the current version
-in source, users should still be able to read that |ContractType| information,
-for the type at deploy-time. This may differ from the current type version
+If the |ContractInstance| has a contract that is no longer the current version
+in source, users should still be able to read that information,
+for the contract at deploy-time. This may differ from the current contract version
 arbitrarily: different source, different ABI, etc.
 
 
@@ -234,7 +234,7 @@ Querying for specific contracts
 -------------------------------
 
 Developers must be able to view all known |ContractInstances| on a given
-network, or a list of networks with known instances of a given |ContractType|.
+network, or a list of networks with known instances of a given |Contract|.
 
 
 .. uml::
@@ -244,18 +244,18 @@ network, or a list of networks with known instances of a given |ContractType|.
 
   rectangle Querying {
     (Query known instances on a given network) as (QueryNetwork)
-    (Query all networks for a given type) as (QueryType)
+    (Query all networks for a given contract) as (QueryContract)
     (Query all networks for instances with a given role) as (QueryInstance)
     (Query for instance by network and address) as (QueryAddress)
     (Query all contracts with a given bytecode) as (QueryBytecode)
     (Query for bytecode ignoring link references) as (QueryBytecodeUnlinked)
 
-    QueryInstance .|> QueryType
+    QueryInstance .|> QueryContract
     QueryBytecodeUnlinked .|> QueryBytecode
   }
 
   Developer -- QueryNetwork
-  Developer -- QueryType
+  Developer -- QueryContract
   Developer -- QueryInstance
   Developer -- QueryAddress
   Developer -- QueryBytecode
@@ -271,7 +271,7 @@ Query all contracts with a given bytecode
 `````````````````````````````````````````
 
 Because it is immutable, contract |Bytecode| serves as a reliable secondary
-index for both |ContractInstances| and |ContractTypes|. Users should be able to
+index for both |ContractInstances| and |Contracts|. Users should be able to
 find all known |Contracts| based on the raw hexadecimal representation of
 EVM machine code.
 
@@ -279,7 +279,7 @@ Query for bytecode ignoring link references
 ```````````````````````````````````````````
 
 Two sets of contract |Bytecode| can differ only by |LinkValues|. Users should
-be able to query for all |ContractTypes| and |ContractInstances| matching
+be able to query for all |Contracts| and |ContractInstances| matching
 a given bytecode, whether or not the |LinkReferences| have values or match.
 
 Query known instances on a given network
@@ -289,27 +289,27 @@ Users should be able to see, at a glance, all |ContractInstances| on a given
 |Network|. This can be useful for validating migration state, or for easy
 listing of address / ABI information, to present/share externally.
 
-Query all networks for a given type
-```````````````````````````````````
+Query all networks for a given contract
+````````````````````````````````````````
 
-Developers often write applications so that each |ContractType| has a singleton
+Developers often write applications so that each |Contract| has a singleton
 deployed |ContractInstance|. Tooling should enable this first-class nature of
-contract types, and users should be able to track the various instances across
+contracts, and users should be able to track the various instances across
 all known |Networks|.
 
 This is particularly useful when creating front-end applications, referencing
-instances across networks with a single type description.
+instances across networks with a single contract description.
 
 Query all networks for instances with a given role
 ``````````````````````````````````````````````````
 
-In cases where a particular |ContractType| is not deployed as a singleton,
+In cases where a particular |Contract| is not deployed as a singleton,
 tooling should provide a mechanism by which users can deploy multiple
-|ContractInstances|, identified in some way distinct from type (i.e., *role*)
+|ContractInstances|.
 
 As a result, users should be able to use this distinct identifier to query
 for analogous instances across |Networks|, instead of relying solely on the
-type.
+contract.
 
 Interacting with deployed instances
 -----------------------------------
@@ -350,7 +350,7 @@ Call read-only method
 Almost every smart contract provides mechanisms for viewing information
 about a |ContractInstance|'s current state, including public storage variables
 and computed data views. These interfaces are specified for each instance's
-|ContractType|, and described in its |ABI|.
+|Contract|, and described in its |ABI|.
 
 Users must be able to call these read-only methods and obtain their results.
 
@@ -380,7 +380,7 @@ leverage the use of |Libraries| to provide composed behavior.
 
 |Contracts| using libraries are compiled with unresolved |LinkReferences|.
 Libraries are deployed as their own instances and later filled in for the
-|ContractType| as a corresponding |LinkValue|.
+|Contract| as a corresponding |LinkValue|.
 
 .. uml::
 
@@ -389,28 +389,28 @@ Libraries are deployed as their own instances and later filled in for the
   :Smart Contract Developer: as :Developer:
 
   rectangle Saving << external >> {
-    (Save contract type) as (SaveType)
+    (Save contract) as (SaveContract)
     (Save contract instance) as (SaveInstance)
   }
 
   rectangle Linking {
-    (Link contract type to library) as (LinkType)
+    (Link contract to library) as (LinkContract)
     (Link contract instance to library) as (LinkInstance)
     LinkInstance .left.|> LinkType
 
-    LinkType --> SaveType
+    LinkContract --> SaveContract
     LinkInstance --> SaveInstance
   }
 
-  Developer -- LinkType
+  Developer -- LinkContract
   Developer -- LinkInstance
 
-Link contract type to library instance
+Link contract to library instance
 ``````````````````````````````````````
 
-Developers must be able to link |ContractTypes| to corresponding |Libraries|
+Developers must be able to link |Contract| to corresponding |Libraries|
 on a particular |Network| or for all networks, so that deployments of that
-type are pre-linked.
+contract are pre-linked.
 
 Link contract instance to library instance
 ``````````````````````````````````````````
@@ -424,7 +424,7 @@ Deploying new instances
 -----------------------
 
 During and after the process of creating smart contracts, smart contract
-developers need to deploy |ContractTypes| on one or more |Networks|, creating
+developers need to deploy |Contracts| on one or more |Networks|, creating
 one or more |ContractInstances|.
 
 .. uml::
@@ -438,7 +438,7 @@ one or more |ContractInstances|.
   }
 
   rectangle Deployment {
-    (Deploy instance of a type) as (DeployInstance)
+    (Deploy instance of a contract) as (DeployInstance)
     (Deploy multiple instances) as (MultipleInstances)
     MultipleInstances .|> DeployInstance
     DeployInstance --> SaveInstance
@@ -447,16 +447,16 @@ one or more |ContractInstances|.
   Developer -- DeployInstance
   Developer -- MultipleInstances
 
-Deploy instance of a type
-`````````````````````````
+Deploy instance of a contract
+``````````````````````````````
 
-The base case for deployment: given a |ContractType|, users must be able to
+The base case for deployment: given a |Contract|, users must be able to
 deploy a new |ContractInstance| on a particular |Network|.
 
 Deploy multiple instances
 `````````````````````````
 
-For applications that require multiple |ContractInstances| per |ContractType|,
+For applications that require multiple |ContractInstances| per |Contract|,
 users should be able to deploy instances by role or other identifier.
 
 
@@ -465,7 +465,7 @@ Migrations
 
 Smart contract developers should be able to track the states of
 different |Networks| separately. |ContractInstances| on different
-networks can be of different versions of the same |ContractType|. This
+networks can be of different versions of the same |Contract|. This
 difference should be understood by the underlying tooling, and easy to
 reason about for the user of the tool.
 
@@ -477,7 +477,7 @@ reason about for the user of the tool.
   :Smart Contract Developer: as :Developer:
 
   rectangle Querying << external >> {
-    (Query for a given type) as (QueryType)
+    (Query for a given contract) as (QueryContract)
   }
 
   rectangle Interacting << external >> {
@@ -485,11 +485,11 @@ reason about for the user of the tool.
   }
 
   rectangle Linking << external >> {
-    (Link contract type to library) as (LinkType)
+    (Link contract to library) as (LinkContract)
   }
 
   rectangle Deployment << external >> {
-    (Deploy instance of a type) as (DeployInstance)
+    (Deploy instance of a contract) as (DeployInstance)
   }
 
   rectangle Migrations {
@@ -504,10 +504,10 @@ reason about for the user of the tool.
     RunMigrations -right-> RunSpecific
     RunMigrations -left-> DetermineLastCompleted
 
-    DetermineLastCompleted -down-> QueryType : find deployed Migrations
+    DetermineLastCompleted -down-> QueryContract : find deployed Migrations
     DetermineLastCompleted -down-> Call : read instance state
     RunSpecific -down-> DeployInstance
-    RunSpecific -down-> LinkType
+    RunSpecific -down-> LinkContract
 
 
   }
@@ -540,12 +540,12 @@ As part of the larger use case of running all migrations, or as a standalone
 operation. Users and tooling must support running a single migration.
 
 
-Run with historical types
-``````````````````````````
+Run with historical contracts
+``````````````````````````````
 
 Specifying parent network, users should be able to mimic the state of a given
-network, determining |ContractTypes| for all known |ContractInstances|, and
-deploy new instances matching those types instead of current.
+network, determining |Contracts| for all known |ContractInstances|, and
+deploy new instances matching those contracts instead of current.
 
 
 Testing smart contracts
@@ -578,7 +578,7 @@ contract instances locally, matching expected behavior on the network itself.
   }
 
   rectangle Testing {
-    (Run automated tests for contract type) as (TestType)
+    (Run automated tests for contract) as (TestContract)
     (Run automated tests for contract instance) as (TestInstance)
     (Run automated tests for library type) as (TestLibrary)
     (Run automated tests for library instance) as (TestLibraryInstance)
@@ -594,8 +594,8 @@ contract instances locally, matching expected behavior on the network itself.
     RunJavascript --> CompileAll
     RunJavascript --> RunMigrations
 
-    TestType --> RunSolidity
-    TestType --> RunJavascript
+    TestContract --> RunSolidity
+    TestContract --> RunJavascript
 
     TestInstance --> RunSolidity
     TestInstance --> RunJavascript
@@ -604,16 +604,16 @@ contract instances locally, matching expected behavior on the network itself.
     TestLibraryInstance --> RunSolidity
   }
 
-  Developer -- TestType
+  Developer -- TestContract
   Developer -- TestInstance
   Developer -- TestLibrary
   Developer -- TestLibraryInstance
 
 
-Run automated tests for contract type
+Run automated tests for contract
 `````````````````````````````````````
 
-Users must be able to run the full test suite for a given |ContractType|,
+Users must be able to run the full test suite for a given |Contract|,
 written in either Solidity or Javascript, starting fresh on a given |Network|
 and running all compilation/migration steps in the process.
 
@@ -622,7 +622,7 @@ Run automated tests for contract instance
 
 Some tests may be written for a specific |ContractInstance| to account for
 historical differences between that instance and the current
-|Source| for the corresponding |ContractType|.
+|Source| for the corresponding |Contract|.
 
 Users should be able run tests on a fresh local |Network|, reflecting that
 historical version.

@@ -85,7 +85,7 @@
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="requirements/index.html">Requirements</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Data Model</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#name-referenced-resources">Name referenced resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#projects-and-named-resources">Projects and Named Resources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#data-model-resources">Data Model Resources</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#contracts-constructors-and-instances">Contracts, Constructors, and Instances</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#sources-bytecodes-and-compilations">Sources, Bytecodes, and Compilations</a></li>
@@ -169,8 +169,8 @@ resource types and how they relate to one another.</p>
 <p>This data model seeks to identify explicitly any implicit relationships and to
 add semantic color to these. It is a work in progress and likely to be
 incomplete and/or wrong.</p>
-<div class="section" id="name-referenced-resources">
-<h2>Name referenced resources<a class="headerlink" href="#name-referenced-resources" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="projects-and-named-resources">
+<h2>Projects and Named Resources<a class="headerlink" href="#projects-and-named-resources" title="Permalink to this headline">¶</a></h2>
 <p>Certain resources are <em>named</em>, meaning that these entities may be referenced
 by user-defined semantic identifiers. Since Truffle targets the full dev.
 lifecycle, this means names refer to different things at different times.</p>
@@ -180,62 +180,23 @@ and/or updated many times between a project’s start and past its production
 deployment. Development networks reset, and public networks fork.</p>
 <p>To represent these entities across the entire project lifecycle, Truffle DB
 models names as a linked list of references to immutable entities.</p>
-<p>Each named resource contains the non-nullable string attribute <code class="docutils literal notranslate"><span class="pre">name</span></code> and the
-nullable attribute <code class="docutils literal notranslate"><span class="pre">role</span></code>, any serializable object. The pair
-(<code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">role</span></code>) <strong>together</strong> represent the full semantic name.</p>
-<p class="plantuml">
-<object data="_images/plantuml-cdc9fcb95578c2db44cf671b0730c4bc09d40e49.svg" type="image/svg+xml" style="width:163px;height:98px;">
-<img src="_images/plantuml-cdc9fcb95578c2db44cf671b0730c4bc09d40e49.png" alt="!include uml/macros.iuml
-
-interface(Named) {
-  + name: String
-  + role: Maybe&lt;Object&gt;
-}" />
-
-</object></p>
-<p><strong>Name&lt;T&gt;</strong> can be considered generically to represent a linked list of
+<p>Each Named resource contains the non-nullable string attribute <code class="docutils literal notranslate"><span class="pre">name</span></code>, used
+to index by type.</p>
+<p><strong>NameRecord</strong> can be considered generically to represent a linked list of
 current and past resource name references for a given resource type <code class="docutils literal notranslate"><span class="pre">T</span></code>.
-Each Name&lt;T&gt; has the same <code class="docutils literal notranslate"><span class="pre">name</span></code> and <code class="docutils literal notranslate"><span class="pre">role</span></code> attributes, plus the following:</p>
-<blockquote>
-<div><ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">type</span></code> to represent the underlying named resource type</li>
-<li><code class="docutils literal notranslate"><span class="pre">ref</span></code> to point to the underlying entity</li>
-<li><code class="docutils literal notranslate"><span class="pre">previous</span></code> to point to the previous name</li>
-</ul>
-</div></blockquote>
-<p>Further, Name&lt;T&gt; records are stored statically by <code class="docutils literal notranslate"><span class="pre">current</span></code> values.</p>
+Each NameRecord has the same <code class="docutils literal notranslate"><span class="pre">name</span></code>, plus the following:
+- <code class="docutils literal notranslate"><span class="pre">type</span></code> to represent the underlying named resource type
+- <code class="docutils literal notranslate"><span class="pre">resource</span></code> to point to the underlying resource
+- <code class="docutils literal notranslate"><span class="pre">previous</span></code> to point to the previous name</p>
+<p>In order to track the current NameRecords for a given type, the <strong>Project</strong>
+resource serves as the aggregation point for the heads of these linked lists.</p>
 <p class="plantuml">
-<object data="_images/plantuml-44a7f7d97b9a3bba1b14d29854050352b16292d7.svg" type="image/svg+xml" style="width:462px;height:388px;">
-<img src="_images/plantuml-44a7f7d97b9a3bba1b14d29854050352b16292d7.png" alt="!include uml/macros.iuml
+<object data="_images/plantuml-226615e33f278249b2e4257bc910399b28b4d3d5.svg" type="image/svg+xml" style="width:489px;height:495px;">
+<img src="_images/plantuml-226615e33f278249b2e4257bc910399b28b4d3d5.png" alt="!define SHOW_PROJECT
+!define SHOW_NAME_RECORD
+!define SHOW_NAME_RECORD_INTERNAL
 
-class Name&lt; T: Resource &gt; &lt;&lt; (R,orchid) Resource &gt;&gt; {
-  + &lt;u&gt;current&lt;/u&gt; (\n\ttype: String,\n\tname: String,\n\trole: Maybe&lt;Object&gt;\n):\n\tMaybe&lt;Name&lt;T&gt;&gt;
-  --
-  + type: String
-  + name: String
-  + role: Maybe&lt;Object&gt;
-  + {method} ref: T
-  + previous: Maybe&lt;Name&lt;T&gt;&gt;
-  ..
-  - refId: ID
-}
-
-interface(Named) {
-  + name: String
-  + role: Maybe&lt;Object&gt;
-}
-
-class T &lt;&lt; (R,motivation) Resource &gt;&gt; {
-  + name: String
-  + role: Maybe&lt;Object&gt;
-  ..
-  - &lt;&amp;key&gt; id: ID
-}
-
-Name o-- &quot;1&quot; T
-Name o-- &quot;0..1&quot; Name
-
-T .right.|&gt; Named : &lt;&lt; implements &gt;&gt;" />
+!include uml/macros.iuml" />
 
 </object></p>
 </div>
@@ -244,7 +205,7 @@ T .right.|&gt; Named : &lt;&lt; implements &gt;&gt;" />
 <div class="section" id="contracts-constructors-and-instances">
 <h3>Contracts, Constructors, and Instances<a class="headerlink" href="#contracts-constructors-and-instances" title="Permalink to this headline">¶</a></h3>
 <p class="plantuml">
-<object data="_images/plantuml-e73463bf56cf53955e1b6b8449712d7e1e6c756b.svg" type="image/svg+xml" style="width:740px;height:900px;">
+<object data="_images/plantuml-e73463bf56cf53955e1b6b8449712d7e1e6c756b.svg" type="image/svg+xml" style="width:603px;height:979px;">
 <img src="_images/plantuml-e73463bf56cf53955e1b6b8449712d7e1e6c756b.png" alt="scale 0.75
 
 !define SHOW_CONTRACT
@@ -268,7 +229,7 @@ T .right.|&gt; Named : &lt;&lt; implements &gt;&gt;" />
 <div class="section" id="sources-bytecodes-and-compilations">
 <h3>Sources, Bytecodes, and Compilations<a class="headerlink" href="#sources-bytecodes-and-compilations" title="Permalink to this headline">¶</a></h3>
 <p class="plantuml">
-<object data="_images/plantuml-e9147eb3f2fd48370e6ec239004ba66ea4d7f91a.svg" type="image/svg+xml" style="width:588px;height:806px;">
+<object data="_images/plantuml-e9147eb3f2fd48370e6ec239004ba66ea4d7f91a.svg" type="image/svg+xml" style="width:608px;height:816px;">
 <img src="_images/plantuml-e9147eb3f2fd48370e6ec239004ba66ea4d7f91a.png" alt="scale 0.75
 
 !define SHOW_CONTRACT
@@ -300,7 +261,7 @@ T .right.|&gt; Named : &lt;&lt; implements &gt;&gt;" />
 <div class="section" id="network">
 <h3>Network<a class="headerlink" href="#network" title="Permalink to this headline">¶</a></h3>
 <p class="plantuml">
-<object data="_images/plantuml-4a5fd22b5e8fe51e67d7d35534497242f44d383e.svg" type="image/svg+xml" style="width:357px;height:111px;">
+<object data="_images/plantuml-4a5fd22b5e8fe51e67d7d35534497242f44d383e.svg" type="image/svg+xml" style="width:237px;height:217px;">
 <img src="_images/plantuml-4a5fd22b5e8fe51e67d7d35534497242f44d383e.png" alt="scale 0.75
 
 !define SHOW_NETWORK
@@ -318,9 +279,11 @@ block, and possibly an originating fork.</p>
 <div class="section" id="combined-data-model">
 <h2>Combined Data Model<a class="headerlink" href="#combined-data-model" title="Permalink to this headline">¶</a></h2>
 <p class="plantuml">
-<object data="_images/plantuml-6a7e6c70ea4c8042eec172cf9cbb8c24cc2aff44.svg" type="image/svg+xml" style="width:753px;height:1416px;">
-<img src="_images/plantuml-6a7e6c70ea4c8042eec172cf9cbb8c24cc2aff44.png" alt="scale 0.75
+<object data="_images/plantuml-db00e1e8dcdab073fdf14293f455d9d479e99a11.svg" type="image/svg+xml" style="width:753px;height:1891px;">
+<img src="_images/plantuml-db00e1e8dcdab073fdf14293f455d9d479e99a11.png" alt="scale 0.75
 
+!define SHOW_PROJECT
+!define SHOW_NAME_RECORD
 !define SHOW_NETWORK
 !define SHOW_NETWORK_INTERNAL
 
