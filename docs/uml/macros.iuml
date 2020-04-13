@@ -224,9 +224,9 @@ skinparam defaultMonospacedFontName Andale Mono
 
   !ifdef SHOW_SOURCE_MAP || SHOW_BYTECODE_INTERNAL
     object(Instruction) {
-      + programCounter: String
-      + opcode: Integer
-      + pushData: String
+      + programCounter: Integer
+      + opcode: String
+      + pushData: Bytes
       + meta: InstructionMeta
     }
 
