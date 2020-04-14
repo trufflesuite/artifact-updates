@@ -15,7 +15,7 @@ Projects and Named Resources
 ----------------------------
 
 Certain resources are *named*, meaning that these entities may be referenced
-by user-defined semantic identifiers. Since Truffle targets the full dev.
+by user-defined semantic identifiers. Since Truffle targets the full development
 lifecycle, this means names refer to different things at different times.
 
 |Contracts| and |Networks|, for example, both use names. These resources
@@ -65,6 +65,7 @@ Contracts, Constructors, and Instances
 
   !define SHOW_COMPILATION
   !define EXTERN_COMPILATION
+  !define SHOW_SOURCE_MAP
 
   !define SHOW_BYTECODE
   !define EXTERN_BYTECODE
@@ -95,6 +96,7 @@ Sources, Bytecodes, and Compilations
 
 Contract Interfaces
 ```````````````````
+Contract Interfaces have not been implemented in the first version of Truffle DB, but will be added in a future iteration.
 
 .. uml::
 
@@ -151,6 +153,7 @@ Combined Data Model
    !define SHOW_AST
    !define SHOW_INSTRUCTION
    !define SHOW_SOURCE_MAP
+   !define SHOW_SOURCE_RANGE
    !define SHOW_CONSTRUCTOR
 
    !include uml/macros.iuml

@@ -172,7 +172,7 @@ incomplete and/or wrong.</p>
 <div class="section" id="projects-and-named-resources">
 <h2>Projects and Named Resources<a class="headerlink" href="#projects-and-named-resources" title="Permalink to this headline">¶</a></h2>
 <p>Certain resources are <em>named</em>, meaning that these entities may be referenced
-by user-defined semantic identifiers. Since Truffle targets the full dev.
+by user-defined semantic identifiers. Since Truffle targets the full development
 lifecycle, this means names refer to different things at different times.</p>
 <p><a class="reference internal" href="glossary.html#term-contract"><span class="xref std std-term">Contracts</span></a> and <a class="reference internal" href="glossary.html#term-network"><span class="xref std std-term">Networks</span></a>, for example, both use names. These resources
 represent entities that change over time. Contracts are written, rewritten,
@@ -209,8 +209,8 @@ resource serves as the aggregation point for the heads of these linked lists.</p
 <div class="section" id="contracts-constructors-and-instances">
 <h3>Contracts, Constructors, and Instances<a class="headerlink" href="#contracts-constructors-and-instances" title="Permalink to this headline">¶</a></h3>
 <p class="plantuml">
-<object data="_images/plantuml-e73463bf56cf53955e1b6b8449712d7e1e6c756b.svg" type="image/svg+xml" style="width:603px;height:979px;">
-<img src="_images/plantuml-e73463bf56cf53955e1b6b8449712d7e1e6c756b.png" alt="scale 0.75
+<object data="_images/plantuml-b649dcaa87930366a2aff63a4e0f58b9bcdcd1de.svg" type="image/svg+xml" style="width:753px;height:979px;">
+<img src="_images/plantuml-b649dcaa87930366a2aff63a4e0f58b9bcdcd1de.png" alt="scale 0.75
 
 !define SHOW_CONTRACT
 !define SHOW_INSTANCE
@@ -219,6 +219,7 @@ resource serves as the aggregation point for the heads of these linked lists.</p
 
 !define SHOW_COMPILATION
 !define EXTERN_COMPILATION
+!define SHOW_SOURCE_MAP
 
 !define SHOW_BYTECODE
 !define EXTERN_BYTECODE
@@ -233,7 +234,7 @@ resource serves as the aggregation point for the heads of these linked lists.</p
 <div class="section" id="sources-bytecodes-and-compilations">
 <h3>Sources, Bytecodes, and Compilations<a class="headerlink" href="#sources-bytecodes-and-compilations" title="Permalink to this headline">¶</a></h3>
 <p class="plantuml">
-<object data="_images/plantuml-e9147eb3f2fd48370e6ec239004ba66ea4d7f91a.svg" type="image/svg+xml" style="width:608px;height:816px;">
+<object data="_images/plantuml-e9147eb3f2fd48370e6ec239004ba66ea4d7f91a.svg" type="image/svg+xml" style="width:789px;height:493px;">
 <img src="_images/plantuml-e9147eb3f2fd48370e6ec239004ba66ea4d7f91a.png" alt="scale 0.75
 
 !define SHOW_CONTRACT
@@ -251,6 +252,7 @@ resource serves as the aggregation point for the heads of these linked lists.</p
 </div>
 <div class="section" id="contract-interfaces">
 <h3>Contract Interfaces<a class="headerlink" href="#contract-interfaces" title="Permalink to this headline">¶</a></h3>
+<p>Contract Interfaces have not been implemented in the first version of Truffle DB, but will be added in a future iteration.</p>
 <p class="plantuml">
 <object data="_images/plantuml-59db39335fa7b7b64cb08dcb9b2fcbc2d3765994.svg" type="image/svg+xml" style="width:706px;height:350px;">
 <img src="_images/plantuml-59db39335fa7b7b64cb08dcb9b2fcbc2d3765994.png" alt="scale 0.75
@@ -265,7 +267,7 @@ resource serves as the aggregation point for the heads of these linked lists.</p
 <div class="section" id="network">
 <h3>Network<a class="headerlink" href="#network" title="Permalink to this headline">¶</a></h3>
 <p class="plantuml">
-<object data="_images/plantuml-4a5fd22b5e8fe51e67d7d35534497242f44d383e.svg" type="image/svg+xml" style="width:237px;height:217px;">
+<object data="_images/plantuml-4a5fd22b5e8fe51e67d7d35534497242f44d383e.svg" type="image/svg+xml" style="width:286px;height:217px;">
 <img src="_images/plantuml-4a5fd22b5e8fe51e67d7d35534497242f44d383e.png" alt="scale 0.75
 
 !define SHOW_NETWORK
@@ -283,8 +285,8 @@ block, and possibly an originating fork.</p>
 <div class="section" id="combined-data-model">
 <h2>Combined Data Model<a class="headerlink" href="#combined-data-model" title="Permalink to this headline">¶</a></h2>
 <p class="plantuml">
-<object data="_images/plantuml-db00e1e8dcdab073fdf14293f455d9d479e99a11.svg" type="image/svg+xml" style="width:753px;height:1891px;">
-<img src="_images/plantuml-db00e1e8dcdab073fdf14293f455d9d479e99a11.png" alt="scale 0.75
+<object data="_images/plantuml-5c3a0bc57f1f5ee52620cb53ad96d72a9dc6375e.svg" type="image/svg+xml" style="width:750px;height:1845px;">
+<img src="_images/plantuml-5c3a0bc57f1f5ee52620cb53ad96d72a9dc6375e.png" alt="scale 0.75
 
 !define SHOW_PROJECT
 !define SHOW_NAME_RECORD
@@ -305,6 +307,7 @@ block, and possibly an originating fork.</p>
 !define SHOW_AST
 !define SHOW_INSTRUCTION
 !define SHOW_SOURCE_MAP
+!define SHOW_SOURCE_RANGE
 !define SHOW_CONSTRUCTOR
 
 !include uml/macros.iuml" />
