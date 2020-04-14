@@ -184,14 +184,10 @@ models names as a linked list of references to immutable entities.</p>
 to index by type.</p>
 <p><strong>NameRecord</strong> can be considered generically to represent a linked list of
 current and past resource name references for a given resource type <code class="docutils literal notranslate"><span class="pre">T</span></code>.
-Each NameRecord has the same <code class="docutils literal notranslate"><span class="pre">name</span></code>, plus the following:</p>
-<blockquote>
-<div><ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">type</span></code> to represent the underlying named resource type</li>
-<li><code class="docutils literal notranslate"><span class="pre">resource</span></code> to point to the underlying resource</li>
-<li><code class="docutils literal notranslate"><span class="pre">previous</span></code> to point to the previous name</li>
-</ul>
-</div></blockquote>
+Each NameRecord has the same <code class="docutils literal notranslate"><span class="pre">name</span></code>, plus the following:
+- <code class="docutils literal notranslate"><span class="pre">type</span></code> to represent the underlying named resource type
+- <code class="docutils literal notranslate"><span class="pre">resource</span></code> to point to the underlying resource
+- <code class="docutils literal notranslate"><span class="pre">previous</span></code> to point to the previous name</p>
 <p>In order to track the current NameRecords for a given type, the <strong>Project</strong>
 resource serves as the aggregation point for the heads of these linked lists.</p>
 <p class="plantuml">
