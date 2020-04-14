@@ -98,7 +98,6 @@ skinparam defaultMonospacedFontName Andale Mono
       + {method} interface: ContractInterface
       ..
       hashIdField(name,abi,sourceContract,compilation)
-      - sourceContractId: TBD
       - createBytecodeId
       - callBytecodeId
     }
@@ -261,13 +260,15 @@ skinparam defaultMonospacedFontName Andale Mono
       + compiler : Compiler
       + {method} sources : Array<Maybe<Source>>
       + {method} contracts : Array<SourceContract>
+      + sourceMaps: Array<SourceMap>
       ..
     }
   !else
     resource(Compilation) {
       + compiler : Compiler
       + {method} sources : Array<Maybe<Source>>
-      + {method} contracts : Array<SourceContract>
+      + {method} contracts : Array<SourceContract>s
+      + sourceMaps: Array<SourceMap>
       ..
       hashIdField(compiler,sourceIds)
       - sourceIds: Array<Maybe<ID>>
@@ -294,7 +295,7 @@ skinparam defaultMonospacedFontName Andale Mono
       + historicBlock: Block
       + {method} fork: Maybe<Network>
       ..
-      UNKNOWN_ID
+      hashIdField(networkId,historicBlock)
       - forkId: Maybe<ID>
     }
   !endif
@@ -353,7 +354,8 @@ skinparam defaultMonospacedFontName Andale Mono
       + value: Bytes
       + {method} linkReference: LinkReference
       ..
-      - _linkReference: TBD
+      - bytecodeIds: Array<Maybe<ID>>
+      - index: Integer
     }
 !endif
 
@@ -375,14 +377,12 @@ skinparam defaultMonospacedFontName Andale Mono
 
 !ifdef SHOW_SOURCE_MAP
     object(SourceMap) {
-      + {method} bytecode: Bytecode
-      + instructionSourceRanges(index: Integer): Maybe<SourceRange>
-      ..
-      - rawSourceMap: String
-      - bytecodeId: ID
+      + json: String
     }
+!endif
 
-    object(SourceRange) {
+!ifdef SHOW_SOURCE_RANGE
+  object(SourceRange) {
       + start: ByteOffset
       + length: Length
       + meta: Object
@@ -390,8 +390,6 @@ skinparam defaultMonospacedFontName Andale Mono
       ..
       - sourceId: ID
     }
-
-    SourceMap *-right- "n" SourceRange
 !endif
 
 !ifdef SHOW_SOURCE_CONTRACT
@@ -510,7 +508,7 @@ skinparam defaultMonospacedFontName Andale Mono
 
 
 !ifdef SHOW_COMPILATION && SHOW_SOURCE_MAP
-  Compilation *-- "n" SourceMap
+  Compilation *-- "0..1" SourceMap
 !endif
 
 
@@ -518,12 +516,11 @@ skinparam defaultMonospacedFontName Andale Mono
   SourceContract *-left- "0..1" AST
 !endif
 
-!ifdef SHOW_SOURCE_MAP && SHOW_BYTECODE
-  SourceMap o---- "1" Bytecode
+!ifdef SHOW_SOURCE_RANGE && SHOW_BYTECODE
   SourceRange o-- "1" Instruction
 !endif
 
-!ifdef SHOW_SOURCE_MAP && SHOW_SOURCE
+!ifdef SHOW_SOURCE_RANGE && SHOW_SOURCE
   Source "1" --o SourceRange
 !endif
 
