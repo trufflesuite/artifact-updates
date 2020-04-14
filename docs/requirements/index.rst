@@ -14,7 +14,7 @@ These use cases are written primarily for Truffle, as the primary producer
 and consumer of artifacts, but should apply generally for any and all
 tooling for smart contract / decentralized application development.
 
-Since the process to develop and deploy a decentralized applications can
+Since the process to develop and deploy decentralized applications can
 include many participants, these use cases refer to several different user
 profiles:
 
