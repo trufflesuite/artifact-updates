@@ -395,14 +395,12 @@ skinparam defaultMonospacedFontName Andale Mono
 !ifdef SHOW_PROCESSED_SOURCE
   !ifdef EXTERN_COMPILATION
     externObject(ProcessedSource) {
-      + name: String
       + ast: AST
       + {method} source: Source
       ..
     }
   !else
     object(ProcessedSource) {
-      + name: String
       + ast: AST
       + {method} source: Source
       ..
