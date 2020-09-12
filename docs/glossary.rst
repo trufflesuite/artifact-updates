@@ -93,15 +93,16 @@ Glossary
    Project
       A resource that serves as the aggregation point for the heads of linked lists of |NameRecords|
 
+   Processed Source
+      Output from the compiler about a particular |Source|, including list
+      of represented |Contracts| and optional |AST| information.
+
    Snapshot
       An immutable collection of data representing the result of a single
       compilation and/or a single deployment.
 
    Source
       High-level language code text, usually for a particular file on disk.
-
-   Source Contract
-      Source information for a |Contract|, comprised of the contract's Name, |AST|, and |Source|.
 
    Source Map
       Data describing how to translate |Bytecode| instructions into sections

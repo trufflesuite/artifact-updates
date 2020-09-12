@@ -84,7 +84,7 @@ skinparam defaultMonospacedFontName Andale Mono
       + {method} createBytecode: Maybe<Bytecode>
       + {method} callBytecode: Maybe<Bytecode>
       + {method} compilation: Maybe<Compilation>
-      + {method} sourceContract: Maybe<SourceContract>
+      + {method} processedSource: Maybe<ProcessedSource>
       + {method} interface: ContractInterface
     }
   !else
@@ -94,10 +94,10 @@ skinparam defaultMonospacedFontName Andale Mono
       + {method} createBytecode: Maybe<Bytecode>
       + {method} callBytecode: Maybe<Bytecode>
       + {method} compilation: Maybe<Compilation>
-      + {method} sourceContract: Maybe<SourceContract>
+      + {method} processedSource: Maybe<ProcessedSource>
       + {method} interface: ContractInterface
       ..
-      hashIdField(name,abi,sourceContract,compilation)
+      hashIdField(name,abi,processedSource,compilation)
       - createBytecodeId
       - callBytecodeId
     }
@@ -253,13 +253,13 @@ skinparam defaultMonospacedFontName Andale Mono
 
 
 !ifdef SHOW_COMPILATION
-  !define SHOW_SOURCE_CONTRACT
+  !define SHOW_PROCESSED_SOURCE
 
   !ifdef EXTERN_COMPILATION
     extern(Compilation) {
       + compiler : Compiler
       + {method} sources : Array<Maybe<Source>>
-      + {method} contracts : Array<SourceContract>
+      + {method} processedSources : Array<ProcessedSource>
       + sourceMaps: Array<SourceMap>
       ..
     }
@@ -267,7 +267,7 @@ skinparam defaultMonospacedFontName Andale Mono
     resource(Compilation) {
       + compiler : Compiler
       + {method} sources : Array<Maybe<Source>>
-      + {method} contracts : Array<SourceContract>s
+      + {method} processedSources : Array<ProcessedSource>
       + sourceMaps: Array<SourceMap>
       ..
       hashIdField(compiler,sourceIds)
@@ -276,7 +276,7 @@ skinparam defaultMonospacedFontName Andale Mono
     }
   !endif
 
-  SourceContract "n" --* Compilation
+  ProcessedSource "n" --* Compilation
 !endif
 
 !ifdef SHOW_NETWORK
@@ -392,17 +392,15 @@ skinparam defaultMonospacedFontName Andale Mono
     }
 !endif
 
-!ifdef SHOW_SOURCE_CONTRACT
+!ifdef SHOW_PROCESSED_SOURCE
   !ifdef EXTERN_COMPILATION
-    externObject(SourceContract) {
-      + name: String
+    externObject(ProcessedSource) {
       + ast: AST
       + {method} source: Source
       ..
     }
   !else
-    object(SourceContract) {
-      + name: String
+    object(ProcessedSource) {
       + ast: AST
       + {method} source: Source
       ..
@@ -456,9 +454,9 @@ skinparam defaultMonospacedFontName Andale Mono
   ContractInterface "1" ---o Contract
 !endif
 
-!ifdef SHOW_CONTRACT && SHOW_SOURCE_CONTRACT
+!ifdef SHOW_CONTRACT && SHOW_PROCESSED_SOURCE
   Contract o-- "0..1" Compilation
-  Contract o.. "1" SourceContract
+  Contract o.. "1" ProcessedSource
 !endif
 
 !ifdef SHOW_LINKED_BYTECODE && SHOW_BYTECODE
@@ -478,8 +476,8 @@ skinparam defaultMonospacedFontName Andale Mono
 !endif
 
 
-!ifdef SHOW_SOURCE_CONTRACT && SHOW_SOURCE
-  SourceContract o-- "1" Source
+!ifdef SHOW_PROCESSED_SOURCE && SHOW_SOURCE
+  ProcessedSource o-- "1" Source
 !endif
 
 !ifdef SHOW_INSTANCE && SHOW_NETWORK
@@ -512,8 +510,8 @@ skinparam defaultMonospacedFontName Andale Mono
 !endif
 
 
-!ifdef SHOW_SOURCE_CONTRACT && SHOW_AST
-  SourceContract *-left- "0..1" AST
+!ifdef SHOW_PROCESSED_SOURCE && SHOW_AST
+  ProcessedSource *-left- "0..1" AST
 !endif
 
 !ifdef SHOW_SOURCE_RANGE && SHOW_BYTECODE
