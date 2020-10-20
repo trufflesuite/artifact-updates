@@ -271,7 +271,7 @@ skinparam defaultMonospacedFontName Andale Mono
       + {method} sources : Array<Maybe<Source>>
       + {method} processedSources : Array<ProcessedSource>
       + sourceMaps: Array<SourceMap>
-      + metadata: METADATA
+      + metadata: Metadata
       ..
       hashIdField(compiler,sourceIds)
       - sourceIds: Array<Maybe<ID>>
