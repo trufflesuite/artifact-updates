@@ -76,6 +76,9 @@ Glossary
    Link Value
       The value used to replace |LinkReference| placeholders.
 
+   Metadata
+      Represents information about the compiled |Contract| that can be used to interact with the contract and verify its source code. `See solidity documentation for more information <https://solidity.readthedocs.io/en/v0.7.3/metadata.html?highlight=metadata#contract-metadata>`_.
+
    Name Record
       Represents a linked list of current and past resource name references for a given resource type. Each Name has ``name`` and ``role`` attributes, as well as a ``type`` to represent its underlying resource type, a ``reference`` to point to the entity it represents, and
       ``previous`` to point to the previous name.
