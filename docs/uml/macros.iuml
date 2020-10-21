@@ -304,20 +304,17 @@ skinparam defaultMonospacedFontName Andale Mono
         + hash : BlockHash
       }
 
+      resource(NetworkGenealogy) {
+        + ancestor: Network
+        + descendant: Network
+        ..
+        hashIdField(ancestor, descendant)
+      }
+
+      Network  "2" ---o  NetworkGenealogy
       Network o-- "0..1" Network : <<refines>>
       Network *-- "1" Block
     !endif
-!endif
-
-!ifdef SHOW_NETWORK_GENEALOGY
-    resource(NetworkGenealogy) {
-      + ancestor: Network
-      + descendant: Network
-      ..
-      hashIdField(ancestor, descendant)
-    }
-
-    Network  "2" ---o  NetworkGenealogy
 !endif
 
 '
