@@ -311,7 +311,7 @@ skinparam defaultMonospacedFontName Andale Mono
         hashIdField(ancestor, descendant)
       }
 
-      Network  "2" ---o  NetworkGenealogy
+      NetworkGenealogy o--  "2" Network
       Network o-- "0..1" Network : <<refines>>
       Network *-- "1" Block
     !endif
