@@ -524,4 +524,3 @@ skinparam defaultMonospacedFontName Andale Mono
 !ifdef SHOW_SOURCE_RANGE && SHOW_SOURCE
   Source "1" --o SourceRange
 !endif
-
