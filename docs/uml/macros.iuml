@@ -288,7 +288,6 @@ skinparam defaultMonospacedFontName Andale Mono
       + name : String
       + networkId : NetworkID
       + historicBlock: Block
-      + {method} fork: Maybe<Network>
       ..
     }
   !else
@@ -296,10 +295,8 @@ skinparam defaultMonospacedFontName Andale Mono
       + name : String
       + networkId : NetworkID
       + historicBlock: Block
-      + {method} fork: Maybe<Network>
       ..
       hashIdField(networkId,historicBlock)
-      - forkId: Maybe<ID>
     }
   !endif
 
@@ -310,12 +307,18 @@ skinparam defaultMonospacedFontName Andale Mono
         + hash : BlockHash
       }
 
+      resource(NetworkGenealogy) {
+        + ancestor: Network
+        + descendant: Network
+        ..
+        hashIdField(ancestor, descendant)
+      }
+
+      NetworkGenealogy o--  "2" Network
       Network o-- "0..1" Network : <<refines>>
       Network *-- "1" Block
     !endif
 !endif
-
-
 
 '
 ' Shared Data Objects
@@ -533,4 +536,3 @@ skinparam defaultMonospacedFontName Andale Mono
 !ifdef SHOW_SOURCE_RANGE && SHOW_SOURCE
   Source "1" --o SourceRange
 !endif
-
