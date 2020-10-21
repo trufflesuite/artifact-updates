@@ -317,7 +317,7 @@ skinparam defaultMonospacedFontName Andale Mono
       hashIdField(ancestor, descendant)
     }
 
-    Network  "2" ---o  NetworkGenealogy
+    NetworkGenealogy o-- "2" Network
 !endif
 
 '
@@ -527,4 +527,3 @@ skinparam defaultMonospacedFontName Andale Mono
 !ifdef SHOW_SOURCE_RANGE && SHOW_SOURCE
   Source "1" --o SourceRange
 !endif
-
