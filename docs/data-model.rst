@@ -73,8 +73,6 @@ Contracts, Constructors, and Instances
   !define SHOW_NETWORK
   !define EXTERN_NETWORK
 
-  !define SHOW_NETWORK_GENEALOGY
-
   !include uml/macros.iuml
 
 Sources, Bytecodes, and Compilations
@@ -119,7 +117,6 @@ Network
 
   !define SHOW_NETWORK
   !define SHOW_NETWORK_INTERNAL
-  !define SHOW_NETWORK_GENEALOGY
 
   !include uml/macros.iuml
 
@@ -139,7 +136,6 @@ Combined Data Model
    !define SHOW_NAME_RECORD
    !define SHOW_NETWORK
    !define SHOW_NETWORK_INTERNAL
-   !define SHOW_NETWORK_GENEALOGY
 
    !define SHOW_BYTECODE
 
