@@ -254,6 +254,7 @@ skinparam defaultMonospacedFontName Andale Mono
 
 !ifdef SHOW_COMPILATION
   !define SHOW_PROCESSED_SOURCE
+  !define SHOW_METADATA
 
   !ifdef EXTERN_COMPILATION
     extern(Compilation) {
@@ -261,6 +262,7 @@ skinparam defaultMonospacedFontName Andale Mono
       + {method} sources : Array<Maybe<Source>>
       + {method} processedSources : Array<ProcessedSource>
       + sourceMaps: Array<SourceMap>
+      + metadata: Metadata
       ..
     }
   !else
@@ -269,6 +271,7 @@ skinparam defaultMonospacedFontName Andale Mono
       + {method} sources : Array<Maybe<Source>>
       + {method} processedSources : Array<ProcessedSource>
       + sourceMaps: Array<SourceMap>
+      + metadata: Metadata
       ..
       hashIdField(compiler,sourceIds)
       - sourceIds: Array<Maybe<ID>>
@@ -421,6 +424,12 @@ skinparam defaultMonospacedFontName Andale Mono
   }
 !endif
 
+!ifdef SHOW_METADATA
+  object(Metadata) {
+    + json: String
+  }
+!endif
+
 '
 ' Relations
 '
@@ -509,6 +518,9 @@ skinparam defaultMonospacedFontName Andale Mono
   Compilation *-- "0..1" SourceMap
 !endif
 
+!ifdef SHOW_COMPILATION && SHOW_METADATA
+  Compilation *-- "0..1" Metadata
+!endif
 
 !ifdef SHOW_PROCESSED_SOURCE && SHOW_AST
   ProcessedSource *-left- "0..1" AST
